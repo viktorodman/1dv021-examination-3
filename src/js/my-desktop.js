@@ -12,10 +12,13 @@ template.innerHTML = `
   .main {
     height: 100%;
     width: 100%;
-    background-color: rgb(87, 87, 87);
+    background-image: url('image/background.jpg');
+    background-size: cover;
   }
+  
 </style>
 <div class="main">
+  <task-bar></task-bar>
 </div>
 `
 /**
