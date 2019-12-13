@@ -36,6 +36,8 @@ class MyDesktop extends window.HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+
+    this._taskBar = this.shadowRoot.querySelector('task-bar')
   }
 
   /**
@@ -44,7 +46,23 @@ class MyDesktop extends window.HTMLElement {
    * @memberof MyDesktop
    */
   connectedCallback () {
-    console.log('hej')
+    this._boundOnAppClick = this._onAppClick.bind(this)
+
+    this._taskBar.addEventListener('appclicked', this._boundOnAppClick)
+  }
+
+  _onAppClick (event) {
+    console.log(event.detail.appName)
+    console.log(event.detail.appImg)
+
+    switch (event.detail.appName) {
+      case 'memorygame': this._openNewMemoryGame(event.detail.appImg)
+    }
+  }
+
+  _openNewMemoryGame (image) {
+    console.log('memoryGame')
+    console.log(image)
   }
 }
 

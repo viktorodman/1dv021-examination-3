@@ -12,22 +12,7 @@ template.innerHTML = `
         :host {
             
         }
-        .taskButton {
-           margin-top:5px;
-           margin-left: 5px;
-           margin-right: 5px;
-           border-radius: 25px;
-           
-           background-color: Transparent;
-        background-repeat:no-repeat;
-        border: none;
-        cursor:pointer;
-        overflow: hidden;
-        outline:none;
-        }
-        img {
-            width: 80px;
-        }
+        
        .wrapper {
         width: 100%;
         height: 80px;
@@ -35,7 +20,7 @@ template.innerHTML = `
         position: fixed;
        }
        .taskBar {
-        background-color: rgba(103, 103, 103, 0.5);
+        background-color: rgba(15, 20, 167, 0.2);
         width: 350px;
         height: 100%;
         margin: auto;
@@ -47,9 +32,9 @@ template.innerHTML = `
     
     <div class="wrapper">
         <div class="taskBar">
-            <button class="taskButton"><img src="image/memory.png"></button>
-            <button class="taskButton"><img src="image/chat.png"></button>
-            <button class="taskButton"><img src="image/chat.png"></button>
+            <task-button imgurl="image/memory.png" appname="memorygame"></task-button>
+            <task-button imgurl="image/chat.png" appname="chatapp"></task-button>
+            <task-button appname="default"></task-button>
         </div>
     </div>
 `
@@ -68,6 +53,8 @@ class TaskBar extends window.HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+
+    this._taskBar = this.shadowRoot.querySelector('.taskBar')
   }
 
   /**
@@ -76,7 +63,32 @@ class TaskBar extends window.HTMLElement {
    * @memberof TaskBar
    */
   connectedCallback () {
+    this._boundOnButtonClick = this._onButtonClick.bind(this)
 
+    this._taskBar.addEventListener('click', this._boundOnButtonClick)
+  }
+
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof TaskBar
+   */
+  disconnectedCallback () {
+    this._taskBar.removeEventListener('click', this._boundOnButtonClick)
+  }
+
+  /**
+   *
+   *
+   * @memberof TaskBar
+   */
+  _onButtonClick (event) {
+    if (event.target.nodeName !== 'TASK-BUTTON') {
+      return
+    }
+    const appName = event.target.getAttribute('appname')
+    const appImg = event.target.getAttribute('imgurl')
+    this.dispatchEvent(new window.CustomEvent('appclicked', { detail: { appName, appImg } }))
   }
 }
 
