@@ -65,7 +65,7 @@ class TaskButton extends window.HTMLElement {
    * @param {String} name the attribute name
    * @param {String} oldValue old attribute value
    * @param {String} newValue new attribute value
-   * @memberof HighScore
+   * @memberof TaskButton
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'imgurl') {

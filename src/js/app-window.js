@@ -10,22 +10,17 @@ const template = document.createElement('template')
 template.innerHTML = `
     <style>
         .window {
-            width: 150px;
-            height: 150px;
-            background-color: black;
+            width: 300px;
+            height: 300px;
+            background-color: #333;
             position: absolute;
             left: 0px;
             top: 0px;
-
-        }
-        .topbar {
-            width: 100%;
-            background-color: white;
-            height: 10%;
+            border-radius: 5px;
         }
     </style>
     <div class="window">
-        <div class="topbar"></div>
+        <window-title-bar imgurl="image/chat.png" appname="Chat App"></window-title-bar>
     </div>
 `
 /**
@@ -45,14 +40,14 @@ class AppWindow extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this._window = this.shadowRoot.querySelector('.window')
-    this._topbar = this.shadowRoot.querySelector('.topbar')
+    this._titleBar = this.shadowRoot.querySelector('window-title-bar')
     this._mousePosition = undefined
     this._offset = [0, 0]
     this._isDown = false
   }
 
   /**
-   * Sourse for moving windows
+   * Source for moving windows
    * https://stackoverflow.com/questions/24050738/javascript-how-to-dynamically-move-div-by-clicking-and-dragging
    *
    * Runs when the element is appended to a document-connected element
@@ -63,10 +58,16 @@ class AppWindow extends window.HTMLElement {
     this._boundOnMouseMove = this._onMouseMove.bind(this)
     this._boundOnMouseUp = this._onMouseUp.bind(this)
     this._boundOnMouseDown = this._onMouseDown.bind(this)
+    this._boundOnTitleEvent = this._onTitleEvent.bind(this)
 
-    this._topbar.addEventListener('mousedown', this._boundOnMouseDown)
+    this._titleBar.addEventListener('mousedown', this._boundOnMouseDown)
     document.addEventListener('mouseup', this._boundOnMouseUp)
     document.addEventListener('mousemove', this._boundOnMouseMove)
+    this._titleBar.addEventListener('titlebutton', this._boundOnTitleEvent)
+  }
+
+  _onTitleEvent (event) {
+    console.log(event.detail)
   }
 
   _onMouseDown (event) {
