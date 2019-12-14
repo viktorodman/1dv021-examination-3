@@ -20,13 +20,17 @@ template.innerHTML = `
         position: fixed;
        }
        .taskBar {
-        background-color: rgba(15, 20, 167, 0.2);
+        background-color: rgba(53, 53, 53, 0.3);
         width: 350px;
         height: 100%;
         margin: auto;
+        border-left: 1px solid rgba(53, 53, 53, 0.9);
+        border-right: 1px solid rgba(53, 53, 53, 0.9);
+        border-top: 1px solid rgba(53, 53, 53, 0.9);
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
         text-align: center;
+        backdrop-filter: blur(2px);
        }
     </style>
     
@@ -78,8 +82,10 @@ class TaskBar extends window.HTMLElement {
   }
 
   /**
+   * Dispatches an event with the clicked apps
+   * name and image
    *
-   *
+   * @param {Event} event A click event
    * @memberof TaskBar
    */
   _onButtonClick (event) {
