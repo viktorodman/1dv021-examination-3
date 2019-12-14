@@ -27,7 +27,6 @@ template.innerHTML = `
 </style>
 <div class="main">
   <app-window></app-window>
-  <app-window></app-window>
   <task-bar></task-bar>
 </div>
 `

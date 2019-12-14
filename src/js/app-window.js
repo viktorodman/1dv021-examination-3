@@ -18,8 +18,15 @@ template.innerHTML = `
             top: 0px;
 
         }
+        .topbar {
+            width: 100%;
+            background-color: white;
+            height: 10%;
+        }
     </style>
-    <div class="window"></div>
+    <div class="window">
+        <div class="topbar"></div>
+    </div>
 `
 /**
  * Represents a App Window
@@ -38,6 +45,7 @@ class AppWindow extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this._window = this.shadowRoot.querySelector('.window')
+    this._topbar = this.shadowRoot.querySelector('.topbar')
     this._mousePosition = undefined
     this._offset = [0, 0]
     this._isDown = false
@@ -56,7 +64,7 @@ class AppWindow extends window.HTMLElement {
     this._boundOnMouseUp = this._onMouseUp.bind(this)
     this._boundOnMouseDown = this._onMouseDown.bind(this)
 
-    this._window.addEventListener('mousedown', this._boundOnMouseDown)
+    this._topbar.addEventListener('mousedown', this._boundOnMouseDown)
     document.addEventListener('mouseup', this._boundOnMouseUp)
     document.addEventListener('mousemove', this._boundOnMouseMove)
   }
