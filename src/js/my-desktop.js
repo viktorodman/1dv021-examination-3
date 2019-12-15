@@ -26,7 +26,7 @@ template.innerHTML = `
   
 </style>
 <div class="main">
-  <app-window></app-window>
+  <!-- <app-window imgurl="image/memory.png" appname="memoryGame"></app-window> -->
   <task-bar></task-bar>
 </div>
 `
@@ -47,6 +47,7 @@ class MyDesktop extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this._taskBar = this.shadowRoot.querySelector('task-bar')
+    this._mainWindow = this.shadowRoot.querySelector('.main')
   }
 
   /**
@@ -68,7 +69,7 @@ class MyDesktop extends window.HTMLElement {
    */
   _onAppClick (event) {
     switch (event.detail.appName) {
-      case 'memorygame': this._openNewMemoryGame(event.detail.appImg)
+      case 'memorygame': this._openNewMemoryGame(event.detail)
         break
       case 'chatapp': this._openNewChat(event.detail.appImg)
         break
@@ -82,9 +83,15 @@ class MyDesktop extends window.HTMLElement {
    * @param {String} image A image url
    * @memberof MyDesktop
    */
-  _openNewMemoryGame (image) {
+  _openNewMemoryGame (app) {
     console.log('IN MEMORY GAME')
-    console.log(image)
+    console.log(app.image)
+    const appWindow = document.createElement('app-window')
+    appWindow.setAttribute('imgurl', app.image)
+    appWindow.setAttribute('appname', app.appName)
+
+    this._mainWindow.appendChild(appWindow)
+    // imgurl="image/memory.png" appname="memoryGame"
   }
 
   /**

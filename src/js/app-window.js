@@ -18,9 +18,15 @@ template.innerHTML = `
             top: 0px;
             border-radius: 5px;
         }
+        .app {
+            width: 100%;
+            height: 100%;
+            background-color: red;
+        }
     </style>
     <div class="window">
         <window-title-bar imgurl="image/chat.png" appname="Chat App"></window-title-bar>
+        <div class="app"></div>
     </div>
 `
 /**
@@ -44,6 +50,42 @@ class AppWindow extends window.HTMLElement {
     this._mousePosition = undefined
     this._offset = [0, 0]
     this._isDown = false
+
+    this._windowTitleBar = this.shadowRoot.querySelector('window-title-bar')
+    this._appElement = undefined
+    this._appName = undefined
+    this._appImg = undefined
+  }
+
+  /**
+   * Get what attributes attributeChangedCallback should look for
+   *
+   * @readonly
+   * @static
+   * @memberof WindowTitleBar
+   */
+  static get observedAttributes () {
+    return ['appelement', 'imgurl', 'appname']
+  }
+
+  /**
+   * Is called when some of the observed attributes is called
+   *
+   * @param {String} name the attribute name
+   * @param {String} oldValue old attribute value
+   * @param {String} newValue new attribute value
+   * @memberof TaskButton
+   */
+  attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'imgurl') {
+      this._appImg = newValue
+    }
+    if (name === 'appname') {
+      this._appName = newValue
+    }
+    if (name === 'appelement') {
+      this._appElement = newValue
+    }
   }
 
   /**
@@ -55,6 +97,8 @@ class AppWindow extends window.HTMLElement {
    * @memberof AppWindow
    */
   connectedCallback () {
+    this._updateRendering()
+
     this._boundOnMouseMove = this._onMouseMove.bind(this)
     this._boundOnMouseUp = this._onMouseUp.bind(this)
     this._boundOnMouseDown = this._onMouseDown.bind(this)
@@ -66,10 +110,43 @@ class AppWindow extends window.HTMLElement {
     this._titleBar.addEventListener('titlebutton', this._boundOnTitleEvent)
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof AppWindow
+   */
+  disconnectedCallback () {
+    this._titleBar.removeEventListener('mousedown', this._boundOnMouseDown)
+    document.removeEventListener('mouseup', this._boundOnMouseUp)
+    document.removeEventListener('mousemove', this._boundOnMouseMove)
+    this._titleBar.removeEventListener('titlebutton', this._boundOnTitleEvent)
+  }
+
+  _updateRendering () {
+    if (this._appImg) {
+      this._windowTitleBar.setAttribute('imgurl', this._appImg)
+    }
+    if (this._appName) {
+      this._windowTitleBar.setAttribute('appname', this._appName)
+    }
+  }
+
+  /**
+   * Handels a custom event from window-title-bar
+   *
+   * @param {Event} event A custom event
+   * @memberof AppWindow
+   */
   _onTitleEvent (event) {
     console.log(event.detail)
   }
 
+  /**
+   * Runs when a mousebutton is pressed on the window-title-bar element.
+   * Sets this._isDown to true
+   * @param {Event} event A mousedown event
+   * @memberof AppWindow
+   */
   _onMouseDown (event) {
     this._isDown = true
     this._offset = [
@@ -78,10 +155,24 @@ class AppWindow extends window.HTMLElement {
     ]
   }
 
+  /**
+   * Runs when the mouse button is released.
+   * Sets this._isDown to false
+   *
+   * @param {Event} event A mouseup event
+   * @memberof AppWindow
+   */
   _onMouseUp (event) {
     this._isDown = false
   }
 
+  /**
+   * Runs when a mousebutton is pressed on the window-title-bar element
+   * and the mouse is moved.
+   *
+   * @param {Event} event
+   * @memberof AppWindow
+   */
   _onMouseMove (event) {
     event.preventDefault()
     if (this._isDown) {
