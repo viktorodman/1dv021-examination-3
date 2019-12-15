@@ -124,7 +124,9 @@ class WindowTitleBar extends window.HTMLElement {
     if (event.target.nodeName !== 'BUTTON') {
       return
     }
+    console.log('hej')
     this._clickedButton = event.target.name
+    console.log(this._clickedButton)
     this.dispatchEvent(new window.CustomEvent('titlebutton', { detail: this._clickedButton }))
   }
 }

@@ -48,6 +48,7 @@ class MyDesktop extends window.HTMLElement {
 
     this._taskBar = this.shadowRoot.querySelector('task-bar')
     this._mainWindow = this.shadowRoot.querySelector('.main')
+    this._windowID = 0
   }
 
   /**
@@ -57,6 +58,7 @@ class MyDesktop extends window.HTMLElement {
    */
   connectedCallback () {
     this._boundOnAppClick = this._onAppClick.bind(this)
+    this._boundOnAppExit = this._onAppExit.bind(this)
 
     this._taskBar.addEventListener('appclicked', this._boundOnAppClick)
   }
@@ -68,52 +70,24 @@ class MyDesktop extends window.HTMLElement {
    * @memberof MyDesktop
    */
   _onAppClick (event) {
-    switch (event.detail.appName) {
-      case 'memorygame': this._openNewMemoryGame(event.detail)
-        break
-      case 'chatapp': this._openNewChat(event.detail.appImg)
-        break
-      case 'default': this._openDefaultApp(event.detail.appImg)
-    }
-  }
-
-  /**
-   * Opens a new Memory Game Window
-   *
-   * @param {String} image A image url
-   * @memberof MyDesktop
-   */
-  _openNewMemoryGame (app) {
-    console.log('IN MEMORY GAME')
-    console.log(app.image)
+    this._windowID++
     const appWindow = document.createElement('app-window')
-    appWindow.setAttribute('imgurl', app.image)
-    appWindow.setAttribute('appname', app.appName)
-
+    appWindow.setAttribute('imgurl', event.detail.appImg)
+    appWindow.setAttribute('appname', event.detail.appName)
+    appWindow.setAttribute('windowid', this._windowID)
     this._mainWindow.appendChild(appWindow)
-    // imgurl="image/memory.png" appname="memoryGame"
+    appWindow.addEventListener('windowexit', this._boundOnAppExit)
   }
 
-  /**
-   * Opens a new Chat Window
-   *
-   * @param {String} image A image url
-   * @memberof MyDesktop
-   */
-  _openNewChat (image) {
-    console.log('IN CHAT APP')
-    console.log(image)
-  }
-
-  /**
-   * Opens a new Default App Window
-   *
-   * @param {String} image A image url
-   * @memberof MyDesktop
-   */
-  _openDefaultApp (image) {
-    console.log('IN DEFAULT APP')
-    console.log(image)
+  _onAppExit (event) {
+    const appWindows = this._mainWindow.querySelectorAll('app-window')
+    let selectedWindow
+    appWindows.forEach(window => {
+      if (window.getAttribute('windowid') === event.detail) {
+        selectedWindow = window
+      }
+    })
+    selectedWindow.remove()
   }
 }
 

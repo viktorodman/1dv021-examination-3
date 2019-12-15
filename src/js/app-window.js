@@ -55,6 +55,7 @@ class AppWindow extends window.HTMLElement {
     this._appElement = undefined
     this._appName = undefined
     this._appImg = undefined
+    this._windowID = undefined
   }
 
   /**
@@ -65,7 +66,7 @@ class AppWindow extends window.HTMLElement {
    * @memberof WindowTitleBar
    */
   static get observedAttributes () {
-    return ['appelement', 'imgurl', 'appname']
+    return ['appelement', 'imgurl', 'appname', 'windowid']
   }
 
   /**
@@ -85,6 +86,9 @@ class AppWindow extends window.HTMLElement {
     }
     if (name === 'appelement') {
       this._appElement = newValue
+    }
+    if (name === 'windowid') {
+      this._windowID = newValue
     }
   }
 
@@ -138,7 +142,8 @@ class AppWindow extends window.HTMLElement {
    * @memberof AppWindow
    */
   _onTitleEvent (event) {
-    console.log(event.detail)
+    this.dispatchEvent(new window.CustomEvent('windowexit', { detail: this._windowID }))
+    console.log('då')
   }
 
   /**
