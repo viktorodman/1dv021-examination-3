@@ -1,7 +1,7 @@
 /**
  * Module for TaskBar
  *
- * @module src/js/task-bar
+ * @module src/js/window/task-bar
  * @author Viktor Ödman
  * @version 1.0.0
 */
@@ -37,8 +37,8 @@ template.innerHTML = `
     
     <div class="wrapper">
         <div class="taskBar">
-            <task-button imgurl="image/memory.png" appname="memorygame"></task-button>
-            <task-button imgurl="image/chat.png" appname="chatapp"></task-button>
+            <task-button imgurl="image/app-icons/memory.png" appname="memorygame"></task-button>
+            <task-button imgurl="image/app-icons/chat.png" appname="chatapp"></task-button>
             <task-button appname="default"></task-button>
         </div>
     </div>

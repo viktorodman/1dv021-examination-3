@@ -5,6 +5,7 @@
  
 
 TODO
+*****Klart
     WINDOW
     Crate a Basic Window
     Add Buttons
@@ -12,6 +13,8 @@ TODO
     Make the window draggable
     TASKBAR
     Create Clickable Icons
+****Inte Klart
+    Fix Bug when i close the last window
     
 
 REQUIREMENTS

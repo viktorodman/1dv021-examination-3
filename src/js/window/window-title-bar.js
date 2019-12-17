@@ -1,7 +1,7 @@
 /**
  * Module for WindowTitleBar
  *
- * @module src/js/window-title-bar.js
+ * @module src/js/window/window-title-bar.js
  * @author Viktor Ödman
  * @version 1.0.0
 */
@@ -55,7 +55,7 @@ template.innerHTML = `
             <span class="title">Sample</span>
         </div>
         <div class="titleImage">
-            <img class="appImage" src="image/memory.png">
+            <img class="appImage" src="image/app-icons/memory.png">
         </div>
     </div>
 `

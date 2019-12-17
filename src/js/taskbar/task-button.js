@@ -1,7 +1,7 @@
 /**
  * Module for TaskButton
  *
- * @module src/js/task-button
+ * @module src/js/window/task-button
  * @author Viktor Ödman
  * @version 1.0.0
 */
@@ -25,7 +25,7 @@ template.innerHTML = `
             width: 80px;
         }
     </style>
-    <button class="taskButton"><img src="image/default.png"></button>
+    <button class="taskButton"><img src="image/app-icons/default.png"></button>
 `
 /**
  * Represents a Button

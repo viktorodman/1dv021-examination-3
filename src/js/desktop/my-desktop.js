@@ -1,7 +1,7 @@
 /**
  * Module for MyDesktop
  *
- * @module src/js/my-desktop
+ * @module src/js/desktop/my-desktop
  * @author Viktor Ödman
  * @version 1.0.0
 */
@@ -87,6 +87,12 @@ class MyDesktop extends window.HTMLElement {
     appWindow.addEventListener('windowexit', this._boundOnAppExit)
   }
 
+  /**
+   * Removes the clicked app-window from the dom
+   *
+   * @param {Event} event A Custom Event
+   * @memberof MyDesktop
+   */
   _onAppExit (event) {
     const appWindows = this._mainWindow.querySelectorAll('app-window')
     let selectedWindow
@@ -98,6 +104,12 @@ class MyDesktop extends window.HTMLElement {
     selectedWindow.remove()
   }
 
+  /**
+   * Changes the windows Z-index.
+   *
+   * @param {Event} event A click event
+   * @memberof MyDesktop
+   */
   _onWindowClick (event) {
     if (event.target.nodeName !== 'APP-WINDOW') {
       return
@@ -106,25 +118,23 @@ class MyDesktop extends window.HTMLElement {
     const windows = this._mainWindow.querySelectorAll('app-window')
     const sortedWindows = this.sortByZIndex(windows)
     if (event.target !== sortedWindows[0]) {
-      // Alla windows som har högre zindex ska få minus ett
-      // den klickade rutan ska få högsta zindex
       const filteredWindows = sortedWindows.filter(windows => windows.getAttribute('zindex') > clickedZIndex)
       event.target.setAttribute('zindex', sortedWindows[0].getAttribute('zindex'))
-      /* console.log(sortedWindows[0].style.zIndex) */
+
       filteredWindows.forEach(appwindow => {
-        console.log('före ' + appwindow.getAttribute('zindex'))
         const newZIndex = Number(appwindow.getAttribute('zindex')) - 1
         appwindow.setAttribute('zindex', newZIndex)
-        console.log('före ' + appwindow.getAttribute('zindex'))
       })
     }
-    /*  console.log('clicked Window' + clickedWindowZIndex)
-    windows.forEach(window => {
-      console.log(window.style.zIndex)
-    }) */
-    /* console.log(sortedWindows) */
   }
 
+  /**
+   * Sorts the passed elements by the z-index
+   *
+   * @param {HTMLCollection} elements a collection of app-windows
+   * @returns {Array} Returns a sorted array
+   * @memberof MyDesktop
+   */
   sortByZIndex (elements) {
     const elementsArray = Array.from(elements)
 

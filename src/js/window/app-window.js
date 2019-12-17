@@ -1,7 +1,7 @@
 /**
  * Module for TaskButton
  *
- * @module src/js/app-window
+ * @module src/js/window/app-window
  * @author Viktor Ödman
  * @version 1.0.0
 */
@@ -28,7 +28,7 @@ template.innerHTML = `
         }
     </style>
     <div class="window">
-        <window-title-bar imgurl="image/chat.png" appname="Chat App"></window-title-bar>
+        <window-title-bar imgurl="image/app-icons/chat.png" appname="Chat App"></window-title-bar>
         <div class="app"></div>
     </div>
 `
@@ -54,7 +54,6 @@ class AppWindow extends window.HTMLElement {
     this._offset = [0, 0]
     this._isDown = false
 
-    this._windowTitleBar = this.shadowRoot.querySelector('window-title-bar')
     this._appElement = undefined
     this._appName = undefined
     this._appImg = undefined
@@ -136,10 +135,10 @@ class AppWindow extends window.HTMLElement {
 
   _updateRendering () {
     if (this._appImg) {
-      this._windowTitleBar.setAttribute('imgurl', this._appImg)
+      this._titleBar.setAttribute('imgurl', this._appImg)
     }
     if (this._appName) {
-      this._windowTitleBar.setAttribute('appname', this._appName)
+      this._titleBar.setAttribute('appname', this._appName)
     }
   }
 
