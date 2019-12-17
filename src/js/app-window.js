@@ -14,14 +14,17 @@ template.innerHTML = `
             height: 300px;
             background-color: #333;
             position: absolute;
-            left: 0px;
-            top: 0px;
+            left: 20px;
+            top: 20px;
             border-radius: 5px;
         }
         .app {
             width: 100%;
             height: 100%;
             background-color: red;
+            border-style: solid;
+            border-color: grey;
+            border-width: 0px 1px 1px 1px;
         }
     </style>
     <div class="window">
@@ -56,6 +59,7 @@ class AppWindow extends window.HTMLElement {
     this._appName = undefined
     this._appImg = undefined
     this._windowID = undefined
+    this._zindex = undefined
   }
 
   /**
@@ -66,7 +70,7 @@ class AppWindow extends window.HTMLElement {
    * @memberof WindowTitleBar
    */
   static get observedAttributes () {
-    return ['appelement', 'imgurl', 'appname', 'windowid']
+    return ['appelement', 'imgurl', 'appname', 'windowid', 'zindex']
   }
 
   /**
@@ -89,6 +93,10 @@ class AppWindow extends window.HTMLElement {
     }
     if (name === 'windowid') {
       this._windowID = newValue
+    }
+    if (name === 'zindex') {
+      this._zindex = newValue
+      this._updateZIndex()
     }
   }
 
@@ -133,6 +141,10 @@ class AppWindow extends window.HTMLElement {
     if (this._appName) {
       this._windowTitleBar.setAttribute('appname', this._appName)
     }
+  }
+
+  _updateZIndex () {
+    this._window.style.zIndex = this._zindex
   }
 
   /**

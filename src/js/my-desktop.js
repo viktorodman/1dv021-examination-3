@@ -23,10 +23,15 @@ template.innerHTML = `
     background-position: bottom;
     
   }
+  a {
+    position: absolute;
+  }
+  a:focus {
+    background-color: yellow;
+  }
   
 </style>
 <div class="main">
-  <!-- <app-window imgurl="image/memory.png" appname="memoryGame"></app-window> -->
   <task-bar></task-bar>
 </div>
 `
@@ -59,8 +64,10 @@ class MyDesktop extends window.HTMLElement {
   connectedCallback () {
     this._boundOnAppClick = this._onAppClick.bind(this)
     this._boundOnAppExit = this._onAppExit.bind(this)
+    this._boundOnWindowClick = this._onWindowClick.bind(this)
 
     this._taskBar.addEventListener('appclicked', this._boundOnAppClick)
+    this._mainWindow.addEventListener('click', this._boundOnWindowClick)
   }
 
   /**
@@ -75,6 +82,7 @@ class MyDesktop extends window.HTMLElement {
     appWindow.setAttribute('imgurl', event.detail.appImg)
     appWindow.setAttribute('appname', event.detail.appName)
     appWindow.setAttribute('windowid', this._windowID)
+    appWindow.setAttribute('zindex', this._windowID)
     this._mainWindow.appendChild(appWindow)
     appWindow.addEventListener('windowexit', this._boundOnAppExit)
   }
@@ -88,6 +96,39 @@ class MyDesktop extends window.HTMLElement {
       }
     })
     selectedWindow.remove()
+  }
+
+  _onWindowClick (event) {
+    if (event.target.nodeName !== 'APP-WINDOW') {
+      return
+    }
+    const clickedZIndex = event.target.getAttribute('zindex')
+    const windows = this._mainWindow.querySelectorAll('app-window')
+    const sortedWindows = this.sortByZIndex(windows)
+    if (event.target !== sortedWindows[0]) {
+      // Alla windows som har högre zindex ska få minus ett
+      // den klickade rutan ska få högsta zindex
+      const filteredWindows = sortedWindows.filter(windows => windows.getAttribute('zindex') > clickedZIndex)
+      event.target.setAttribute('zindex', sortedWindows[0].getAttribute('zindex'))
+      /* console.log(sortedWindows[0].style.zIndex) */
+      filteredWindows.forEach(appwindow => {
+        console.log('före ' + appwindow.getAttribute('zindex'))
+        const newZIndex = Number(appwindow.getAttribute('zindex')) - 1
+        appwindow.setAttribute('zindex', newZIndex)
+        console.log('före ' + appwindow.getAttribute('zindex'))
+      })
+    }
+    /*  console.log('clicked Window' + clickedWindowZIndex)
+    windows.forEach(window => {
+      console.log(window.style.zIndex)
+    }) */
+    /* console.log(sortedWindows) */
+  }
+
+  sortByZIndex (elements) {
+    const elementsArray = Array.from(elements)
+
+    return elementsArray.sort((a, b) => Number(b.getAttribute('zindex')) - Number(a.getAttribute('zindex')))
   }
 }
 

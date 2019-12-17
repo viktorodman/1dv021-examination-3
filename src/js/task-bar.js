@@ -10,7 +10,8 @@ const template = document.createElement('template')
 template.innerHTML = `
     <style>
         :host {
-            
+            position: absolute;
+            z-index: 2147;
         }
         
        .wrapper {

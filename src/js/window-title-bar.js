@@ -15,6 +15,9 @@ template.innerHTML = `
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
             display: flex;
+            border-style: solid;
+            border-width: 1px 1px 0px 1px;
+            border-color: grey;
         }
         button {
             width: 17px;
