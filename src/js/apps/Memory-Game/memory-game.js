@@ -7,8 +7,8 @@ template.innerHTML = `
         color: green;
       }
       .mainDivMemory {
-        text-align: center;
-        color: red;
+        text-align: center; 
+        color: black;
         font-size: 30px;
       }
     </style>

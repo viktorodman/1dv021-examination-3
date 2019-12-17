@@ -1,7 +1,7 @@
 /**
  * Module for TaskButton
  *
- * @module src/js/window/task-button
+ * @module src/js/taskbar/task-button
  * @author Viktor Ödman
  * @version 1.0.0
 */
@@ -46,6 +46,7 @@ class TaskButton extends window.HTMLElement {
     this._img = this.shadowRoot.querySelector('img')
     this._imgURL = null
     this._appName = undefined
+    this._elementName = undefined
   }
 
   /**
@@ -56,7 +57,7 @@ class TaskButton extends window.HTMLElement {
    * @memberof TaskButton
    */
   static get observedAttributes () {
-    return ['imgurl', 'appname']
+    return ['imgurl', 'appname', 'elementname']
   }
 
   /**
@@ -73,6 +74,9 @@ class TaskButton extends window.HTMLElement {
     }
     if (name === 'appname') {
       this._appName = newValue
+    }
+    if (name === 'elementname') {
+      this._elementName = newValue
     }
   }
 

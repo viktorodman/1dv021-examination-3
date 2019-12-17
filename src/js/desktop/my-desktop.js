@@ -81,6 +81,7 @@ class MyDesktop extends window.HTMLElement {
     const appWindow = document.createElement('app-window')
     appWindow.setAttribute('imgurl', event.detail.appImg)
     appWindow.setAttribute('appname', event.detail.appName)
+    appWindow.setAttribute('elementname', event.detail.appElement)
     appWindow.setAttribute('windowid', this._windowID)
     appWindow.setAttribute('zindex', this._windowID)
     this._mainWindow.appendChild(appWindow)

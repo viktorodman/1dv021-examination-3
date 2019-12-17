@@ -6,7 +6,7 @@ div {
 }
 .brickContainer {
     text-align: center;
-    min-width: 650px;
+    min-width: 100%;
     max-width: fit-content;
     
 }
@@ -33,6 +33,7 @@ class MemoryBoard extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
+    this._defaultImage = 'image/memory-images/0.png'
     this._brickContainer = this.shadowRoot.querySelector('.brickContainer')
     this._rows = 4
     this._columns = 4
@@ -83,7 +84,7 @@ class MemoryBoard extends window.HTMLElement {
       const a = document.createElement('a')
       const brick = document.createElement('memory-brick')
 
-      brick.setAttribute('url', 'image/0.png')
+      brick.setAttribute('url', this._defaultImage)
       a.href = '#'
       a.setAttribute('brick-id', i + 1)
       a.setAttribute('row-index', rowIndex)
@@ -172,8 +173,8 @@ class MemoryBoard extends window.HTMLElement {
       } else {
         // NO MATCH
         setTimeout(() => {
-          this._changePicture(this._turn1.firstChild, 'image/0.png')
-          this._changePicture(this._turn2.firstChild, 'image/0.png')
+          this._changePicture(this._turn1.firstChild, this._defaultImage)
+          this._changePicture(this._turn2.firstChild, this._defaultImage)
 
           this._turn1 = null
           this._turn2 = null
@@ -218,8 +219,8 @@ class MemoryBoard extends window.HTMLElement {
   _createBrickArray () {
     const numberOfBricks = this._rows * this._columns / 2
     for (let i = 0; i < numberOfBricks; i++) {
-      this._brickArray.push(`image/${i + 1}.png`)
-      this._brickArray.push(`image/${i + 1}.png`)
+      this._brickArray.push(`image/memory-images/${i + 1}.png`)
+      this._brickArray.push(`image/memory-images/${i + 1}.png`)
     }
   }
 

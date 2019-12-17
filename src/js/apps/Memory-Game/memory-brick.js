@@ -7,10 +7,10 @@ template.innerHTML = `
           
         }
         .brickImage {
-            max-width: 150px;
-            max-height: 150px;
+            max-width: 80px;
+            max-height: 80px;
         }
-        .imgSelected {
+        .imgSelected { 
           border: 2px solid grey;
         }
         .imgDiv {

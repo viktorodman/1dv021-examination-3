@@ -10,8 +10,8 @@ const template = document.createElement('template')
 template.innerHTML = `
     <style>
         .window {
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
             background-color: #333;
             position: absolute;
             left: 20px;
@@ -50,6 +50,7 @@ class AppWindow extends window.HTMLElement {
 
     this._window = this.shadowRoot.querySelector('.window')
     this._titleBar = this.shadowRoot.querySelector('window-title-bar')
+    this._app = this.shadowRoot.querySelector('.app')
     this._mousePosition = undefined
     this._offset = [0, 0]
     this._isDown = false
@@ -69,7 +70,7 @@ class AppWindow extends window.HTMLElement {
    * @memberof WindowTitleBar
    */
   static get observedAttributes () {
-    return ['appelement', 'imgurl', 'appname', 'windowid', 'zindex']
+    return ['elementname', 'imgurl', 'appname', 'windowid', 'zindex']
   }
 
   /**
@@ -87,7 +88,7 @@ class AppWindow extends window.HTMLElement {
     if (name === 'appname') {
       this._appName = newValue
     }
-    if (name === 'appelement') {
+    if (name === 'elementname') {
       this._appElement = newValue
     }
     if (name === 'windowid') {
@@ -139,6 +140,10 @@ class AppWindow extends window.HTMLElement {
     }
     if (this._appName) {
       this._titleBar.setAttribute('appname', this._appName)
+    }
+    if (this._appElement) {
+      const newapp = document.createElement(this._appElement)
+      this._app.appendChild(newapp)
     }
   }
 
