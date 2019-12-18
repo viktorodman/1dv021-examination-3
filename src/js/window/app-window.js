@@ -21,7 +21,7 @@ template.innerHTML = `
         .app {
             width: 100%;
             height: 100%;
-            background-color: red;
+            background-color: #333;
             border-style: solid;
             border-color: grey;
             border-width: 0px 1px 1px 1px;

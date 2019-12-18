@@ -8,6 +8,10 @@
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
+      span {
+        color: white;
+        font-family: monospace;
+      }
       .winText {
         text-align: center;
         font-size: 60px;
@@ -20,6 +24,8 @@ template.innerHTML = `
       }
     </style>
     <div class="mainDivMemory">
+    <span>Play with the arrow keys and enter or with the mouse</span>
+      <span>Choose a Size</span>
       <form id="asd">
         <label for="alt1">
           4x4
@@ -67,7 +73,7 @@ class MemoryGame extends window.HTMLElement {
    * @memberof MemoryGame
    */
   connectedCallback () {
-    this.addMemoryBoard(4, 4)
+    /* this.addMemoryBoard(4, 4) */
     this._boundOnInputClick = this._onInputClick.bind(this)
 
     this._form.addEventListener('click', this._boundOnInputClick)

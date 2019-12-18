@@ -8,7 +8,6 @@ template.innerHTML = `
         }
         .brickImage {
             max-width: 80px;
-            max-height: 80px;
         }
         .imgSelected { 
           border: 2px solid grey;

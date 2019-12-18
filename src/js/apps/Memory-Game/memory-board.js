@@ -13,6 +13,7 @@ div {
 a {
   text-decoration: none;
   display: inline-block;
+  max-height: 80px;
 }
 
 a:focus {
@@ -20,6 +21,9 @@ a:focus {
 }
 .hidden {
   visibility: hidden;
+}
+.row {
+ max-height: 80px;
 }
 </style>
 <div class='brickContainer'> 
