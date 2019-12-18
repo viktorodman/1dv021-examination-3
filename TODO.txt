@@ -13,8 +13,9 @@ TODO
     Make the window draggable
     TASKBAR
     Create Clickable Icons
-****Inte Klart
     Fix Bug when i close the last window
+****Inte Klart
+    
     
 
 REQUIREMENTS

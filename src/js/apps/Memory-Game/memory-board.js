@@ -8,7 +8,6 @@ div {
     text-align: center;
     min-width: 100%;
     max-width: fit-content;
-    
 }
 
 a {

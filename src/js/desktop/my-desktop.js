@@ -71,6 +71,21 @@ class MyDesktop extends window.HTMLElement {
   }
 
   /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof MyDesktop
+   */
+  disconnectedCallback () {
+    if (this._mainWindow.querySelectorAll('app-window').length > 0) {
+      this._mainWindow.querySelectorAll('app-window').forEach(window => {
+        window.removeEventListener('windowexit', this._boundOnAppExit)
+      })
+    }
+    this._taskBar.removeEventListener('appclicked', this._boundOnAppClick)
+    this._mainWindow.removeEventListener('click', this._boundOnWindowClick)
+  }
+
+  /**
    *  Handels the clicks on the taskbars buttons
    *
    * @param {CustomEvent} event A custom event
@@ -102,6 +117,7 @@ class MyDesktop extends window.HTMLElement {
         selectedWindow = window
       }
     })
+    selectedWindow.removeEventListener('windowexit', this._boundOnAppExit)
     selectedWindow.remove()
   }
 
@@ -112,7 +128,7 @@ class MyDesktop extends window.HTMLElement {
    * @memberof MyDesktop
    */
   _onWindowClick (event) {
-    if (event.target.nodeName !== 'APP-WINDOW') {
+    if (event.target.nodeName !== 'APP-WINDOW' || this._mainWindow.querySelectorAll('app-window').length < 1) {
       return
     }
     const clickedZIndex = event.target.getAttribute('zindex')
