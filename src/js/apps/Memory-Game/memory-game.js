@@ -21,25 +21,19 @@ template.innerHTML = `
         text-align: center; 
         color: black;
         font-size: 30px;
+        width: 100%;
+        height: 100%;
+        background-color: #a0a0a0;
+      }
+      .boardDiv {
+        width: 100%;
+        height: 90%;
       }
     </style>
     <div class="mainDivMemory">
-    <span>Play with the arrow keys and enter or with the mouse</span>
-      <span>Choose a Size</span>
-      <form id="asd">
-        <label for="alt1">
-          4x4
-          <input id="alt1" type="radio" name="Alternatives" rows="4" columns="4">
-        </label>
-        <label for="alt2">
-          2x2
-          <input id="alt2" type="radio" name="Alternatives" rows="2" columns="2">
-        </label>
-        <label for="alt3">
-          2x4
-          <input id="alt3" type="radio" name="Alternatives" rows="2" columns="4">
-        </label>
-      </form>
+      
+      <memory-alternatives></memory-alternatives>
+      
       <div class="boardDiv">
       </div>
     </div>

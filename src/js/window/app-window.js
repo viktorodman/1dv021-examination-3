@@ -12,19 +12,26 @@ template.innerHTML = `
         .window {
             width: 400px;
             height: 400px;
-            background-color: #333;
+            min-width: 400px;
+            min-height: 400px;
+            max-width: 400px;
+            max-height: 400px;
+            background-color: none;
             position: absolute;
             left: 20px;
             top: 20px;
             border-radius: 5px;
-        }
-        .app {
-            width: 100%;
-            height: 100%;
-            background-color: #333;
             border-style: solid;
             border-color: grey;
             border-width: 0px 1px 1px 1px;
+        }
+        .app {
+            width: 100%;
+            height: 92%;
+            /* background-color: black; */
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            overflow: hidden;
         }
     </style>
     <div class="window">

@@ -10,8 +10,8 @@ template.innerHTML = `
     <style>
         .titlebar {
             width: 100%;
+            height: 8%;
             background-color: white;
-            height: 25px;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
             display: flex;
