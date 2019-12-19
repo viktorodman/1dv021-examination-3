@@ -36,7 +36,8 @@ template.innerHTML = `
     </style>
     <div class="window">
         <window-title-bar imgurl="image/app-icons/chat.png" appname="Chat App"></window-title-bar>
-        <div class="app"></div>
+        <div class="app">
+        </div>
     </div>
 `
 /**
