@@ -5,8 +5,8 @@ template.innerHTML = `
                 visibility: hidden;
             }
             input:checked + label {
-                background-color: #3d3d3d;
-                
+                /* background-color: #3d3d3d; */
+                border-bottom: 4px solid #f2b83a;
             }
             label {
                 width: 30px;
@@ -14,7 +14,7 @@ template.innerHTML = `
                 padding: 5px;
             }
             .altWrapper {
-                background-color: #0e0e0e;
+                background-color: #6e6f70;
                 height: 10%;
                 width: 65%;
                 display: inline-block;
@@ -39,10 +39,23 @@ class MemoryAlternatives extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
 
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+    this._radioButtons = this.shadowRoot.querySelectorAll('input')
+    this._altWrapper = this.shadowRoot.querySelector('.altWrapper')
   }
 
   connectedCallback () {
+    this._boundOnRadioClick = this._onRadioClick.bind(this)
 
+    this._altWrapper.addEventListener('click', this._boundOnRadioClick)
+  }
+
+  _onRadioClick (event) {
+    if (event.target.nodeName !== 'INPUT') {
+      return
+    }
+    const columns = event.target.getAttribute('columns')
+    const rows = event.target.getAttribute('rows')
+    this.dispatchEvent(new window.CustomEvent('altchange', { detail: { columns, rows } }))
   }
 }
 

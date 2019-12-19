@@ -17,7 +17,7 @@ template.innerHTML = `
         font-size: 60px;
         color: green;
       }
-      .mainDivMemory {
+      .memoryWrapper {
         text-align: center; 
         color: black;
         font-size: 30px;
@@ -30,12 +30,9 @@ template.innerHTML = `
         height: 90%;
       }
     </style>
-    <div class="mainDivMemory">
-      
-      <memory-alternatives></memory-alternatives>
-      
-      <div class="boardDiv">
-      </div>
+    <div class="memoryWrapper">
+        <memory-alternatives></memory-alternatives>
+        
     </div>
 `
 /**
@@ -54,11 +51,10 @@ class MemoryGame extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
-    this._sizes = this.shadowRoot.querySelector('#sizes')
-
     this._boardDiv = this.shadowRoot.querySelector('.boardDiv')
     this.memoryBoard = undefined
-    this._form = this.shadowRoot.querySelector('#asd')
+    this._alternatives = this.shadowRoot.querySelector('memory-alternatives')
+    this._boardSize = null
   }
 
   /**
@@ -68,19 +64,13 @@ class MemoryGame extends window.HTMLElement {
    */
   connectedCallback () {
     /* this.addMemoryBoard(4, 4) */
-    this._boundOnInputClick = this._onInputClick.bind(this)
+    this._boundOnAltChange = this._onAltChange.bind(this)
 
-    this._form.addEventListener('click', this._boundOnInputClick)
+    this._alternatives.addEventListener('altchange', this._boundOnAltChange)
   }
 
-  _onInputClick (event) {
-    if (event.target.nodeName !== 'INPUT') {
-      return
-    }
-    this.cleanForm(this._boardDiv)
-    const rows = Number(event.target.getAttribute('rows'))
-    const columns = Number(event.target.getAttribute('columns'))
-    this.addMemoryBoard(rows, columns)
+  _onAltChange (event) {
+    this._boardSize = [event.detail.rows, event.detail.columns]
   }
 
   /**
