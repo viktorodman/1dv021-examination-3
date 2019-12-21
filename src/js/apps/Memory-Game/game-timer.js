@@ -35,13 +35,29 @@ class GameTimer extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
-    this.intervalID = null
-    this.maxTime = 20
-    this.currentTime = this.maxTime
-    this.timerDisplay = this.shadowRoot.querySelector('.timer')
-    this.totalTime = undefined
-    this.startTime = undefined
-    this.stopTime = undefined
+    this._intervalID = null
+    this._maxTime = 20
+    this._currentTime = null
+    this._timerDisplay = this.shadowRoot.querySelector('.timer')
+    this._totalTime = undefined
+    this._startTime = undefined
+    this._stopTime = undefined
+    this._descending = false
+  }
+
+  static get observedAttributes () {
+    return ['descending', 'starttime']
+  }
+
+  attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'descending') {
+      if (newValue === 'true') {
+        this._descending = true
+      }
+    }
+    if (name === 'starttime') {
+      this._maxTime = Number(newValue)
+    }
   }
 
   /**
@@ -50,10 +66,32 @@ class GameTimer extends window.HTMLElement {
    * @memberof QuizApp
    */
   connectedCallback () {
-    this.startTime = Date.now()
-    this.timerDisplay.textContent = this.maxTime
-    this.intervalID = setInterval(() => {
-      this.updateTimer()
+    if (this._descending) {
+      this._currentTime = this._maxTime
+      this._descendingClock()
+    } else {
+      this.currentTime = 0
+      this._ascendingClock()
+    }
+  }
+
+  disconnectedCallback () {
+    this.stopTime()
+  }
+
+  _descendingClock () {
+    this._startTime = Date.now()
+    this._timerDisplay.textContent = this._maxTime
+    this._intervalID = setInterval(() => {
+      this._removeTime()
+    }, 1000)
+  }
+
+  _ascendingClock () {
+    this._startTime = Date.now()
+    this._timerDisplay.textContent = this._currentTime
+    this._intervalID = setInterval(() => {
+      this._addTime()
     }, 1000)
   }
 
@@ -62,13 +100,18 @@ class GameTimer extends window.HTMLElement {
    *
    * @memberof GameTimer
    */
-  updateTimer () {
-    this.currentTime -= 1
-    this.timerDisplay.textContent = this.currentTime
+  _removeTime () {
+    this._currentTime -= 1
+    this._timerDisplay.textContent = this.currentTime
     if (this.currentTime === 0) {
       this.dispatchEvent(new window.CustomEvent('timezero'))
       this.stopTimer()
     }
+  }
+
+  _addTime () {
+    this._currentTime += 1
+    this._timerDisplay.textContent = this._currentTime
   }
 
   /**
@@ -77,7 +120,8 @@ class GameTimer extends window.HTMLElement {
    * @memberof GameTimer
    */
   stopTimer () {
-    clearInterval(this.intervalID)
+    clearInterval(this._intervalID)
+    return this._getTotalTime()
   }
 
   /**
@@ -86,7 +130,7 @@ class GameTimer extends window.HTMLElement {
    * @returns {number} the total time from when the timer was started
    * @memberof GameTimer
    */
-  getTotalTime () {
+  _getTotalTime () {
     this.stopTime = Date.now()
     const totalTime = (this.stopTime - this.startTime) / 1000
     return totalTime.toFixed(2)

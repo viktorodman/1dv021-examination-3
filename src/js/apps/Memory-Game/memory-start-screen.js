@@ -9,17 +9,18 @@ template.innerHTML = `
         }
         button {
             font-size: 30px;
+            
         }
     </style>
     <div class="wrapper">
         <div class="title">
             <span>Memory Game</span>
         </div>
-        <div class="description">
-            <span>Select a board size and press start</span>
-        </div>
         <div class="buttons">
             <button>START</button>
+        </div>
+        <div class="description">
+            <span>Select a board size and press start</span>
         </div>
     </div>
 `

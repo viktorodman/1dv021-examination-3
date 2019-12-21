@@ -34,6 +34,7 @@ template.innerHTML = `
     <div class="memoryWrapper">
         <memory-alternatives></memory-alternatives>
         <memory-start-screen></memory-start-screen>
+        <game-timer></game-timer>
         <!-- <memory-board></memory-board>
         <memory-game-buttons></memory-game-buttons> -->
     </div>
