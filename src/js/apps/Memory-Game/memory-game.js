@@ -55,10 +55,12 @@ class MemoryGame extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this._memoryWrapper = this.shadowRoot.querySelector('.memoryWrapper')
-    this.memoryBoard = undefined
     this._alternatives = this.shadowRoot.querySelector('memory-alternatives')
     this._startScreen = this.shadowRoot.querySelector('memory-start-screen')
+
+    this._memoryBoard = undefined
     this._boardSize = null
+    this._gameButtons = undefined
   }
 
   /**
@@ -71,6 +73,7 @@ class MemoryGame extends window.HTMLElement {
     this._boundOnStartGame = this._onStartGame.bind(this)
     this._boundOnRestart = this._onRestart.bind(this)
     this._boundOnHome = this._onHome.bind(this)
+    this._boundOnWin = this._onWin.bind(this)
 
     this._alternatives.addEventListener('altchange', this._boundOnAltChange)
     this._startScreen.addEventListener('startgame', this._boundOnStartGame)
@@ -86,16 +89,29 @@ class MemoryGame extends window.HTMLElement {
       this._startScreen.removeEventListener('startgame', this._boundOnStartGame)
       this._startScreen.remove()
       this._alternatives.remove()
+      this.addGameButtons()
       this.addMemoryBoard(this._boardSize[0], this._boardSize[1])
     }
   }
 
   _onRestart (event) {
-    console.log('restart')
+    this._memoryBoard.removeEventListener('gameover', this._boundOnWin)
+    this._memoryBoard.remove()
+    this.addMemoryBoard(this._boardSize[0], this._boardSize[1])
   }
 
   _onHome (event) {
-    console.log('home')
+    this.cleanForm(this._memoryWrapper)
+    const alternatives = document.createElement('memory-alternatives')
+    const startScreen = document.createElement('memory-start-screen')
+
+    this._memoryWrapper.appendChild(alternatives)
+    this._memoryWrapper.appendChild(startScreen)
+    this._alternatives = this.shadowRoot.querySelector('memory-alternatives')
+    this._startScreen = this.shadowRoot.querySelector('memory-start-screen')
+    this._boardSize = null
+    this._alternatives.addEventListener('altchange', this._boundOnAltChange)
+    this._startScreen.addEventListener('startgame', this._boundOnStartGame)
   }
 
   /**
@@ -119,22 +135,25 @@ class MemoryGame extends window.HTMLElement {
    */
   addMemoryBoard (boardRows, boardColumns) {
     const board = document.createElement('memory-board')
-    const gameButtons = document.createElement('memory-game-buttons')
 
     board.setAttribute('rows', boardRows)
     board.setAttribute('columns', boardColumns)
 
-    this._memoryWrapper.appendChild(board)
+    this._memoryWrapper.insertBefore(board, this._gameButtons)
+
+    this._memoryBoard = this.shadowRoot.querySelector('memory-board')
+
+    this._memoryBoard.addEventListener('gameover', this._boundOnWin)
+  }
+
+  addGameButtons () {
+    const gameButtons = document.createElement('memory-game-buttons')
     this._memoryWrapper.appendChild(gameButtons)
 
     this._gameButtons = this.shadowRoot.querySelector('memory-game-buttons')
-    this._memoryBoard = this.shadowRoot.querySelector('memory-board')
 
     this._gameButtons.addEventListener('restartclick', this._boundOnRestart)
     this._gameButtons.addEventListener('homeclick', this._boundOnHome)
-    this._memoryBoard.addEventListener('gameover', event => {
-      this._win()
-    })
   }
 
   /**
@@ -142,7 +161,7 @@ class MemoryGame extends window.HTMLElement {
    *
    * @memberof MemoryGame
    */
-  _win () {
+  _onWin (event) {
     this.cleanForm(this._boardDiv)
     const h1 = document.createElement('h1')
     h1.setAttribute('class', 'winText')
