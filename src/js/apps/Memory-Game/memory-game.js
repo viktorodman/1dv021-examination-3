@@ -34,7 +34,7 @@ template.innerHTML = `
     <div class="memoryWrapper">
         <memory-alternatives></memory-alternatives>
         <memory-start-screen></memory-start-screen>
-        <game-timer></game-timer>
+        
         <!-- <memory-board></memory-board>
         <memory-game-buttons></memory-game-buttons> -->
     </div>
@@ -55,12 +55,14 @@ class MemoryGame extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
+    this._boardSize = null
+
     this._memoryWrapper = this.shadowRoot.querySelector('.memoryWrapper')
     this._alternatives = this.shadowRoot.querySelector('memory-alternatives')
     this._startScreen = this.shadowRoot.querySelector('memory-start-screen')
 
     this._memoryBoard = undefined
-    this._boardSize = null
+    this._timer = undefined
     this._gameButtons = undefined
   }
 
@@ -90,15 +92,17 @@ class MemoryGame extends window.HTMLElement {
       this._startScreen.removeEventListener('startgame', this._boundOnStartGame)
       this._startScreen.remove()
       this._alternatives.remove()
-      this.addGameButtons()
-      this.addMemoryBoard(this._boardSize[0], this._boardSize[1])
+      this._addTimer()
+      this._addGameButtons()
+      this._addMemoryBoard(this._boardSize[0], this._boardSize[1])
     }
   }
 
   _onRestart (event) {
     this._memoryBoard.removeEventListener('gameover', this._boundOnWin)
     this._memoryBoard.remove()
-    this.addMemoryBoard(this._boardSize[0], this._boardSize[1])
+    this._timer.resetTimer()
+    this._addMemoryBoard(this._boardSize[0], this._boardSize[1])
   }
 
   _onHome (event) {
@@ -111,6 +115,7 @@ class MemoryGame extends window.HTMLElement {
     this._alternatives = this.shadowRoot.querySelector('memory-alternatives')
     this._startScreen = this.shadowRoot.querySelector('memory-start-screen')
     this._boardSize = null
+
     this._alternatives.addEventListener('altchange', this._boundOnAltChange)
     this._startScreen.addEventListener('startgame', this._boundOnStartGame)
   }
@@ -134,7 +139,7 @@ class MemoryGame extends window.HTMLElement {
    * @param {Number} boardColumns Number of columns
    * @memberof MemoryGame
    */
-  addMemoryBoard (boardRows, boardColumns) {
+  _addMemoryBoard (boardRows, boardColumns) {
     const board = document.createElement('memory-board')
 
     board.setAttribute('rows', boardRows)
@@ -147,7 +152,7 @@ class MemoryGame extends window.HTMLElement {
     this._memoryBoard.addEventListener('gameover', this._boundOnWin)
   }
 
-  addGameButtons () {
+  _addGameButtons () {
     const gameButtons = document.createElement('memory-game-buttons')
     this._memoryWrapper.appendChild(gameButtons)
 
@@ -155,6 +160,13 @@ class MemoryGame extends window.HTMLElement {
 
     this._gameButtons.addEventListener('restartclick', this._boundOnRestart)
     this._gameButtons.addEventListener('homeclick', this._boundOnHome)
+  }
+
+  _addTimer () {
+    const timer = document.createElement('game-timer')
+    this._memoryWrapper.appendChild(timer)
+
+    this._timer = this.shadowRoot.querySelector('game-timer')
   }
 
   /**

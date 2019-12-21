@@ -11,11 +11,11 @@ template.innerHTML = `
     <style>
         .window {
             width: 400px;
-            height: 400px;
+            height: 450px;
             min-width: 400px;
-            min-height: 400px;
+            min-height: 450px;
             max-width: 400px;
-            max-height: 400px;
+            max-height: 450px;
             background-color: none;
             position: absolute;
             left: 20px;

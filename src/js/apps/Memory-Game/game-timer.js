@@ -9,14 +9,11 @@
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
-        :host {
-            font-size: 110px;
-        }
-        p {
-            margin: 0;
+        .timer {
+          
         }
     </style>
-    <p class="timer"></p>
+    <span class="timer"></span>
 `
 /**
  * Represents a timer
@@ -37,7 +34,7 @@ class GameTimer extends window.HTMLElement {
 
     this._intervalID = null
     this._maxTime = 20
-    this._currentTime = null
+    this._currentTime = undefined
     this._timerDisplay = this.shadowRoot.querySelector('.timer')
     this._totalTime = undefined
     this._startTime = undefined
@@ -68,9 +65,11 @@ class GameTimer extends window.HTMLElement {
   connectedCallback () {
     if (this._descending) {
       this._currentTime = this._maxTime
+      this._timerDisplay.textContent = this._currentTime
       this._descendingClock()
     } else {
-      this.currentTime = 0
+      this._currentTime = 0
+      this._timerDisplay.textContent = this._currentTime
       this._ascendingClock()
     }
   }
@@ -89,7 +88,6 @@ class GameTimer extends window.HTMLElement {
 
   _ascendingClock () {
     this._startTime = Date.now()
-    this._timerDisplay.textContent = this._currentTime
     this._intervalID = setInterval(() => {
       this._addTime()
     }, 1000)
@@ -142,8 +140,9 @@ class GameTimer extends window.HTMLElement {
    * @memberof GameTimer
    */
   resetTimer () {
-    this.timerDisplay.textContent = 20
-    this.currentTime = this.maxTime
+    this._startTime = Date.now()
+    this._currentTime = 0
+    this._timerDisplay.textContent = this._currentTime
   }
 }
 
