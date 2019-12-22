@@ -42,10 +42,25 @@ class GameTimer extends window.HTMLElement {
     this._descending = false
   }
 
+  /**
+   * Get what attributes attributeChangedCallback should look for
+   *
+   * @readonly
+   * @static
+   * @memberof GameTimer
+   */
   static get observedAttributes () {
     return ['descending', 'starttime']
   }
 
+  /**
+   * Is called when some of the observed attributes is called
+   *
+   * @param {String} name the attribute name
+   * @param {String} oldValue old attribute value
+   * @param {String} newValue new attribute value
+   * @memberof GameTimer
+   */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'descending') {
       if (newValue === 'true') {
@@ -60,25 +75,35 @@ class GameTimer extends window.HTMLElement {
   /**
    * Runs when the element is appended to a document-connected element
    *
-   * @memberof QuizApp
+   * @memberof GameTimer
    */
   connectedCallback () {
     if (this._descending) {
       this._currentTime = this._maxTime
       this._timerDisplay.textContent = this._currentTime
-      this._descendingClock()
+      this._descendingTimer()
     } else {
       this._currentTime = 0
       this._timerDisplay.textContent = this._currentTime
-      this._ascendingClock()
+      this._ascendingTimer()
     }
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof GameTimer
+   */
   disconnectedCallback () {
     this._stopTimer()
   }
 
-  _descendingClock () {
+  /**
+   * Starts a descending timer
+   *
+   * @memberof GameTimer
+   */
+  _descendingTimer () {
     this._startTime = Date.now()
     this._timerDisplay.textContent = this._maxTime
     this._intervalID = setInterval(() => {
@@ -86,7 +111,12 @@ class GameTimer extends window.HTMLElement {
     }, 1000)
   }
 
-  _ascendingClock () {
+  /**
+   * Starts a ascending timer
+   *
+   * @memberof GameTimer
+   */
+  _ascendingTimer () {
     this._startTime = Date.now()
     this._intervalID = setInterval(() => {
       this._addTime()
@@ -107,14 +137,20 @@ class GameTimer extends window.HTMLElement {
     }
   }
 
+  /**
+   * Adds a second to the timer and display the new time
+   *
+   * @memberof GameTimer
+   */
   _addTime () {
     this._currentTime += 1
     this._timerDisplay.textContent = this._currentTime
   }
 
   /**
-   * Stops the timer
+   * Stops the timer and returns the total timer
    *
+   * @returns {Number} The total time
    * @memberof GameTimer
    */
   _stopTimer () {

@@ -34,9 +34,6 @@ template.innerHTML = `
     <div class="memoryWrapper">
         <memory-alternatives></memory-alternatives>
         <memory-start-screen></memory-start-screen>
-        
-        <!-- <memory-board></memory-board>
-        <memory-game-buttons></memory-game-buttons> -->
     </div>
 `
 /**
@@ -82,10 +79,45 @@ class MemoryGame extends window.HTMLElement {
     this._startScreen.addEventListener('startgame', this._boundOnStartGame)
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof MemoryGame
+   */
+  disconnectedCallback () {
+    if (this._alternatives) {
+      this._alternatives.removeEventListener('altchange', this._boundOnAltChange)
+    }
+    if (this._startScreen) {
+      this._startScreen.removeEventListener('startgame', this._boundOnStartGame)
+    }
+    if (this._memoryBoard) {
+      this._memoryBoard.removeEventListener('gameover', this._boundOnWin)
+    }
+    if (this._gameButtons) {
+      this._gameButtons.removeEventListener('restartclick', this._boundOnRestart)
+      this._gameButtons.removeEventListener('homeclick', this._boundOnHome)
+    }
+  }
+
+  /**
+   * Runs when a radiobutton is clicked on the memory-alternatives.
+   * Sets the boardsize of the memory board
+   *
+   * @param {Event} event An altchange event (custom event)
+   * @memberof MemoryGame
+   */
   _onAltChange (event) {
     this._boardSize = [event.detail.rows, event.detail.columns]
   }
 
+  /**
+   * Starts a new memory game
+   * Runs when the start game button is clicked.
+   *
+   * @param {Event} event A startgame event (custom event)
+   * @memberof MemoryGame
+   */
   _onStartGame (event) {
     if (this._boardSize) {
       this._alternatives.removeEventListener('altchange', this._boundOnAltChange)
@@ -97,6 +129,13 @@ class MemoryGame extends window.HTMLElement {
     }
   }
 
+  /**
+   * Restarts the memory game
+   * Runs when the restart button is clicked.
+   *
+   * @param {Event} event A restartclick event (custom event)
+   * @memberof MemoryGame
+   */
   _onRestart (event) {
     this._memoryBoard.removeEventListener('gameover', this._boundOnWin)
     this._gameButtons.removeEventListener('restartclick', this._boundOnRestart)
@@ -107,6 +146,13 @@ class MemoryGame extends window.HTMLElement {
     this._addMemoryBoard(this._boardSize[0], this._boardSize[1])
   }
 
+  /**
+   * Removes the memory game and displays the start screen
+   * Runs when the home button is clicked
+   *
+   * @param {Event} event A homeclick event (Custom Event)
+   * @memberof MemoryGame
+   */
   _onHome (event) {
     this.cleanForm(this._memoryWrapper)
     const alternatives = document.createElement('memory-alternatives')
@@ -154,6 +200,11 @@ class MemoryGame extends window.HTMLElement {
     this._memoryBoard.addEventListener('gameover', this._boundOnWin)
   }
 
+  /**
+   * Adds a 'memory-game-buttons' element
+   *
+   * @memberof MemoryGame
+   */
   _addGameButtons () {
     const gameButtons = document.createElement('memory-game-buttons')
     this._memoryWrapper.appendChild(gameButtons)
@@ -164,6 +215,11 @@ class MemoryGame extends window.HTMLElement {
     this._gameButtons.addEventListener('homeclick', this._boundOnHome)
   }
 
+  /**
+   * Adds a 'game-timer' Element
+   *
+   * @memberof MemoryGame
+   */
   _addTimer () {
     const timer = document.createElement('game-timer')
     this._memoryWrapper.appendChild(timer)

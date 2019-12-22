@@ -1,3 +1,11 @@
+/**
+ * Module for MemoryAlternatives
+ *
+ * @module src/js/apps/Memory-Game/memory-alternatives
+ * @author Viktor Ödman
+ * @version 1.0.0
+*/
+
 const template = document.createElement('template')
 template.innerHTML = `
         <style>
@@ -32,8 +40,17 @@ template.innerHTML = `
             <label for="alt3">2x4</label>
         </div>
 `
-
+/**
+ * Represents Alternatives for a memory-game
+ *
+ * @class MemoryAlternatives
+ * @extends {window.HTMLElement}
+ */
 class MemoryAlternatives extends window.HTMLElement {
+  /**
+   * Creates an instance of MemoryAlternatives.
+   * @memberof MemoryAlternatives
+   */
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
@@ -43,12 +60,32 @@ class MemoryAlternatives extends window.HTMLElement {
     this._altWrapper = this.shadowRoot.querySelector('.altWrapper')
   }
 
+  /**
+   * Runs when the element is appended to a document-connected element
+   *
+   * @memberof MemoryAlternatives
+   */
   connectedCallback () {
     this._boundOnRadioClick = this._onRadioClick.bind(this)
 
     this._altWrapper.addEventListener('click', this._boundOnRadioClick)
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof MemoryAlternatives
+   */
+  disconnectedCallback () {
+    this._altWrapper.removeEventListener('click', this._boundOnRadioClick)
+  }
+
+  /**
+   * Dispatches a event when a radiobutton is clicked
+   *
+   * @param {Event} event A click event
+   * @memberof MemoryAlternatives
+   */
   _onRadioClick (event) {
     if (event.target.nodeName !== 'INPUT') {
       return

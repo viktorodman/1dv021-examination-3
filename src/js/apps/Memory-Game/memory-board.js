@@ -1,3 +1,11 @@
+/**
+ * Module for MemoryBoard
+ *
+ * @module src/js/apps/Memory-Game/memory-board
+ * @author Viktor Ödman
+ * @version 1.0.0
+*/
+
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
@@ -29,8 +37,18 @@ a:focus {
 <div class='brickContainer'> 
 </div>
 `
+/**
+ * Represents a Memory-Board
+ *
+ * @class MemoryBoard
+ * @extends {window.HTMLElement}
+ */
 
 class MemoryBoard extends window.HTMLElement {
+  /**
+   * Creates an instance of MemoryBoard.
+   * @memberof MemoryBoard
+   */
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
@@ -46,10 +64,25 @@ class MemoryBoard extends window.HTMLElement {
     this._turn2 = null
   }
 
+  /**
+   * Get what attributes attributeChangedCallback should look for
+   *
+   * @readonly
+   * @static
+   * @memberof MemoryBoard
+   */
   static get observedAttributes () {
     return ['rows', 'columns']
   }
 
+  /**
+   * Is called when some of the observed attributes is called
+   *
+   * @param {String} name the attribute name
+   * @param {String} oldValue old attribute value
+   * @param {String} newValue new attribute value
+   * @memberof MemoryBoard
+   */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'rows') {
       this._rows = newValue
@@ -60,6 +93,11 @@ class MemoryBoard extends window.HTMLElement {
   }
 
   // https://gist.github.com/ebidel/2d2bb0cdec3f2a16cf519dbaa791ce1b
+  /**
+   * Runs when the element is appended to a document-connected element
+   *
+   * @memberof MemoryBoard
+   */
   connectedCallback () {
     this._createBrickArray()
     this.shuffleBrickArray()
@@ -72,11 +110,21 @@ class MemoryBoard extends window.HTMLElement {
     this._brickContainer.addEventListener('keydown', this._boundOnKeyDown)
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof MemoryBoard
+   */
   disconnectedCallback () {
     this._brickContainer.removeEventListener('click', this._boundOnBrickClick)
     this._brickContainer.removeEventListener('keydown', this._boundOnKeyDown)
   }
 
+  /**
+   * Creates a board with memory-bricks
+   *
+   * @memberof MemoryBoard
+   */
   _updateRendering () {
     this._createRowDivs()
     let currentRow = 1
@@ -87,7 +135,7 @@ class MemoryBoard extends window.HTMLElement {
       const a = document.createElement('a')
       const brick = document.createElement('memory-brick')
 
-      brick.setAttribute('url', this._defaultImage)
+      brick.setAttribute('default', this._defaultImage)
       a.href = '#'
       a.setAttribute('brick-id', i + 1)
       a.setAttribute('row-index', rowIndex)
@@ -102,12 +150,24 @@ class MemoryBoard extends window.HTMLElement {
     }
   }
 
+  /**
+   * Runs when a memory-brick is clicked with the mouse
+   *
+   * @param {Event} event A click event
+   * @memberof MemoryBoard
+   */
   _onBrickClick (event) {
     console.log(event.target)
     this.flipBrick(event.target.parentElement)
     event.preventDefault()
   }
 
+  /**
+   * Runs when a keyboard key is pressed
+   *
+   * @param {Event} event A keydown event
+   * @memberof MemoryBoard
+   */
   _onKeyDown (event) {
     event.preventDefault()
     switch (event.code) {
@@ -123,6 +183,13 @@ class MemoryBoard extends window.HTMLElement {
     }
   }
 
+  /**
+   * Runs when the arrow up key is pressed
+   * Sets focus on the brick above the current brick
+   *
+   * @param {HTMLElement} eventTarget An html element
+   * @memberof MemoryBoard
+   */
   _arrowUp (eventTarget) {
     const index = Number(eventTarget.getAttribute('row-index'))
 
@@ -131,6 +198,13 @@ class MemoryBoard extends window.HTMLElement {
     }
   }
 
+  /**
+   * Runs when the arrow down key is pressed
+   * Sets focus on the brick below the current brick
+   *
+   * @param {HTMLElement} eventTarget An html element
+   * @memberof MemoryBoard
+   */
   _arrowDown (eventTarget) {
     const index = Number(eventTarget.getAttribute('row-index'))
     if (eventTarget.parentElement.nextSibling !== null) {
@@ -138,18 +212,39 @@ class MemoryBoard extends window.HTMLElement {
     }
   }
 
+  /**
+   * Runs when the arrow left key is pressed
+   * Sets focus on the brick to the left of the current brick
+   *
+   * @param {HTMLElement} eventTarget An html element
+   * @memberof MemoryBoard
+   */
   _arrowLeft (eventTarget) {
     if (eventTarget.previousSibling !== null) {
       eventTarget.previousSibling.focus()
     }
   }
 
+  /**
+   * Runs when the arrow right key is pressed
+   * Sets focus on the brick to the right of the current brick
+   *
+   * @param {HTMLElement} eventTarget An html element
+   * @memberof MemoryBoard
+   */
   _arrowRight (eventTarget) {
     if (eventTarget.nextSibling !== null) {
       eventTarget.nextSibling.focus()
     }
   }
 
+  /**
+   * Flips the passed memory-brick and also checks if
+   * the brick is equal to the previous brick
+   *
+   * @param {HTMLElement} eventTarget An 'a' element.
+   * @memberof MemoryBoard
+   */
   flipBrick (eventTarget) {
     if (eventTarget.nodeName !== 'A' || this._turn2) {
       return
@@ -186,12 +281,25 @@ class MemoryBoard extends window.HTMLElement {
     }
   }
 
+  /**
+   * Dispatches an event if all bricks are cleared from the board
+   *
+   * @memberof MemoryBoard
+   */
   checkWin () {
     if (this._clearedBricks === this._columns * this._rows / 2) {
       this.dispatchEvent(new window.CustomEvent('gameover'))
     }
   }
 
+  /**
+   * Checks if two URL's are the same.
+   *
+   * @param {String} image1 An image url
+   * @param {String} image2 An image url
+   * @returns {Boolean} Return true if the urls match
+   * @memberof MemoryBoard
+   */
   _checkMatch (image1, image2) {
     let match = false
     if (image1 === image2) {
@@ -200,16 +308,35 @@ class MemoryBoard extends window.HTMLElement {
     return match
   }
 
+  /**
+   * Changes the picture on the passed memory-brick.
+   *
+   * @param {HTMLElement} brick A memory-brick
+   * @param {String} image An image URL
+   * @memberof MemoryBoard
+   */
   _changePicture (brick, image) {
     brick.setAttribute('url', image)
   }
 
+  /**
+   * Gets an image based on the passed bricks 'brick-id'
+   *
+   * @param {HTMLElement} brick A memory-brick
+   * @returns {String} An image url
+   * @memberof MemoryBoard
+   */
   _getImage (brick) {
     const index = Number(brick.getAttribute('brick-id')) - 1
     const image = this._brickArray[index]
     return image
   }
 
+  /**
+   * Creates divs for the rows on the board
+   *
+   * @memberof MemoryBoard
+   */
   _createRowDivs () {
     for (let i = 0; i < this._rows; i++) {
       const div = document.createElement('div')
@@ -219,6 +346,11 @@ class MemoryBoard extends window.HTMLElement {
     }
   }
 
+  /**
+   * Creates an array with picture urls
+   *
+   * @memberof MemoryBoard
+   */
   _createBrickArray () {
     const numberOfBricks = this._rows * this._columns / 2
     for (let i = 0; i < numberOfBricks; i++) {
@@ -227,6 +359,11 @@ class MemoryBoard extends window.HTMLElement {
     }
   }
 
+  /**
+   * Shuffles an Array
+   *
+   * @memberof MemoryBoard
+   */
   shuffleBrickArray () {
     let currentIndex = this._brickArray.length
     let temporaryValue = 0
