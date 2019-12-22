@@ -75,7 +75,7 @@ class GameTimer extends window.HTMLElement {
   }
 
   disconnectedCallback () {
-    this.stopTime()
+    this._stopTimer()
   }
 
   _descendingClock () {
@@ -103,7 +103,7 @@ class GameTimer extends window.HTMLElement {
     this._timerDisplay.textContent = this.currentTime
     if (this.currentTime === 0) {
       this.dispatchEvent(new window.CustomEvent('timezero'))
-      this.stopTimer()
+      this._stopTimer()
     }
   }
 
@@ -117,7 +117,7 @@ class GameTimer extends window.HTMLElement {
    *
    * @memberof GameTimer
    */
-  stopTimer () {
+  _stopTimer () {
     clearInterval(this._intervalID)
     return this._getTotalTime()
   }
@@ -129,8 +129,8 @@ class GameTimer extends window.HTMLElement {
    * @memberof GameTimer
    */
   _getTotalTime () {
-    this.stopTime = Date.now()
-    const totalTime = (this.stopTime - this.startTime) / 1000
+    this._stopTime = Date.now()
+    const totalTime = (this._stopTime - this._startTime) / 1000
     return totalTime.toFixed(2)
   }
 

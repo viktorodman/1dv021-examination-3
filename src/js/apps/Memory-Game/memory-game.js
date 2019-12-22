@@ -90,8 +90,7 @@ class MemoryGame extends window.HTMLElement {
     if (this._boardSize) {
       this._alternatives.removeEventListener('altchange', this._boundOnAltChange)
       this._startScreen.removeEventListener('startgame', this._boundOnStartGame)
-      this._startScreen.remove()
-      this._alternatives.remove()
+      this.cleanForm(this._memoryWrapper)
       this._addTimer()
       this._addGameButtons()
       this._addMemoryBoard(this._boardSize[0], this._boardSize[1])
@@ -100,8 +99,11 @@ class MemoryGame extends window.HTMLElement {
 
   _onRestart (event) {
     this._memoryBoard.removeEventListener('gameover', this._boundOnWin)
-    this._memoryBoard.remove()
-    this._timer.resetTimer()
+    this._gameButtons.removeEventListener('restartclick', this._boundOnRestart)
+    this._gameButtons.removeEventListener('homeclick', this._boundOnHome)
+    this.cleanForm(this._memoryWrapper)
+    this._addTimer()
+    this._addGameButtons()
     this._addMemoryBoard(this._boardSize[0], this._boardSize[1])
   }
 
@@ -175,11 +177,21 @@ class MemoryGame extends window.HTMLElement {
    * @memberof MemoryGame
    */
   _onWin (event) {
-    this.cleanForm(this._boardDiv)
     const h1 = document.createElement('h1')
-    h1.setAttribute('class', 'winText')
+    const span = document.createElement('span')
+    const div = document.createElement('div')
+
+    const time = this._timer._stopTimer()
+    this._memoryBoard.remove()
+    this._timer.remove()
+
+    span.textContent = `Your time ${time}`
     h1.textContent = 'YOU WIN'
-    this._boardDiv.appendChild(h1)
+    h1.setAttribute('class', 'winText')
+
+    div.appendChild(span)
+    div.appendChild(h1)
+    this._memoryWrapper.insertBefore(div, this._gameButtons)
   }
 }
 
