@@ -9,6 +9,10 @@ const template = document.createElement('template')
 template.innerHTML = `
     <div class="chatContainer">
         <div class="messageContainer">
+            <chat-message username="testName" message="testMessage"></chat-message>
+            <chat-message username="testName" message="testMessage"></chat-message>
+            <chat-message username="testName" message="testMessage"></chat-message>
+            <chat-message username="testName" message="testMessage"></chat-message>
         </div>
     </div>
 `
@@ -29,10 +33,10 @@ class ChatApp extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this._socket = undefined
-    this._socketURL = undefined
+    this._socketURL = 'ws://vhost3.lnu.se:20080/socket/'
     this._data = {
       type: 'message',
-      data: 'test',
+      data: 'bingo',
       username: 'testname',
       channel: 'my, not so secret, channel',
       key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
@@ -56,7 +60,7 @@ class ChatApp extends window.HTMLElement {
    * @param {String} name the attribute name
    * @param {String} oldValue old attribute value
    * @param {String} newValue new attribute value
-   * @memberof MemoryBoard
+   * @memberof ChatApp
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'socketurl') {

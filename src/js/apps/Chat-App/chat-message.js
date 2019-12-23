@@ -9,6 +9,7 @@
 const template = document.createElement('template')
 template.innerHTML = `
     <div class="messageContainer">
+        <span class="username"></span>
         <span class="message"></span>
     </div>
 `
@@ -23,6 +24,45 @@ class ChatMessage extends window.HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+
+    this._userName = undefined
+    this._message = undefined
+
+    this._nameSpan = this.shadowRoot.querySelector('.username')
+    this._messageSpan = this.shadowRoot.querySelector('.message')
+  }
+
+  /**
+   * Get what attributes attributeChangedCallback should look for
+   *
+   * @readonly
+   * @static
+   * @memberof ChatMessage
+   */
+  static get observedAttributes () {
+    return ['username', 'message']
+  }
+
+  /**
+   * Is called when some of the observed attributes is called
+   *
+   * @param {String} name the attribute name
+   * @param {String} oldValue old attribute value
+   * @param {String} newValue new attribute value
+   * @memberof ChatMessage
+   */
+  attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'username') {
+      this._userName = newValue
+    }
+    if (name === 'message') {
+      this._message = newValue
+    }
+  }
+
+  connectedCallback () {
+    this._messageSpan.textContent = this._message
+    this._nameSpan.textContent = this._userName
   }
 }
-window.customElements('chat-message', ChatMessage)
+window.customElements.define('chat-message', ChatMessage)

@@ -38,7 +38,7 @@ template.innerHTML = `
     <div class="wrapper">
         <div class="taskBar">
             <task-button imgurl="image/app-icons/memory.png" appname="memorygame" elementname="memory-game"></task-button>
-            <task-button imgurl="image/app-icons/chat.png" appname="chatapp"></task-button>
+            <task-button imgurl="image/app-icons/chat.png" appname="chatapp" elementname="chat-app"></task-button>
             <task-button appname="default"></task-button>
         </div>
     </div>
