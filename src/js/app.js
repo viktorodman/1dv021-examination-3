@@ -21,3 +21,5 @@ import './apps/Memory-Game/memory-alternatives.js'
 import './apps/Memory-Game/memory-start-screen.js'
 import './apps/Memory-Game/memory-game-buttons.js'
 import './apps/Memory-Game/game-timer.js'
+// Chat App
+import './apps/Chat-App/chat-app.js'

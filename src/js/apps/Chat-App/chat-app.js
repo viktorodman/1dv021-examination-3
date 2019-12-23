@@ -7,8 +7,9 @@
 */
 const template = document.createElement('template')
 template.innerHTML = `
-    <div class="chatcontainer">
-    
+    <div class="chatContainer">
+        <div class="messageContainer">
+        </div>
     </div>
 `
 /**
@@ -65,6 +66,7 @@ class ChatApp extends window.HTMLElement {
 
   connectedCallback () {
     this._socket = new window.WebSocket(this._socketURL)
+
     this._boundOnOpen = this._onOpen.bind(this)
     this._boundOnMessage = this._onMessage.bind(this)
 

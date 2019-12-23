@@ -32,6 +32,7 @@ template.innerHTML = `
   
 </style>
 <div class="main">
+  <!-- <chat-app socketurl="ws://vhost3.lnu.se:20080/socket/"></chat-app> -->
   <task-bar></task-bar>
 </div>
 `
