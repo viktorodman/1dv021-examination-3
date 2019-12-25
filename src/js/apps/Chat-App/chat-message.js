@@ -17,7 +17,7 @@ template.innerHTML = `
     </style>
     <div class="messageContainer">
         <span class="username"></span>
-        <span> : </span>
+        <span>: </span>
         <span class="message"></span>
     </div>
 `

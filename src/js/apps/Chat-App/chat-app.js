@@ -45,9 +45,9 @@ class ChatApp extends window.HTMLElement {
     this._messageContainer = this.shadowRoot.querySelector('.messageContainer')
     this._data = {
       type: 'message',
-      data: 'bingo',
+      data: '',
       username: 'testname',
-      channel: 'my, not so secret, channel',
+      channel: '',
       key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     }
   }
@@ -82,10 +82,18 @@ class ChatApp extends window.HTMLElement {
 
     this._boundOnOpen = this._onOpen.bind(this)
     this._boundOnMessage = this._onMessage.bind(this)
+    this._boundOnSendMessage = this._onSendMessage.bind(this)
 
-    /* this._socket.addEventListener('open', this._boundOnOpen)
-    this._socket.addEventListener('message', this._boundOnMessage) */
-    this._userMessage.addEventListener('sendmessage', this._boundOnMessage)
+    this._socket.addEventListener('open', this._boundOnOpen)
+    this._socket.addEventListener('message', this._boundOnMessage)
+    this._userMessage.addEventListener('sendmessage', this._boundOnSendMessage)
+  }
+
+  disconnectedCallback () {
+    this._socket.close()
+    this._socket.removeEventListener('open', this._boundOnOpen)
+    this._socket.removeEventListener('message', this._boundOnMessage)
+    this._userMessage.removeEventListener('sendmessage', this._boundOnSendMessage)
   }
 
   _onOpen (event) {
@@ -93,12 +101,25 @@ class ChatApp extends window.HTMLElement {
   }
 
   _onMessage (event) {
-    /* console.log(event.data) */
+    const data = JSON.parse(event.data)
+    console.log(data)
     const message = document.createElement('chat-message')
-    message.setAttribute('username', 'blää')
-    message.setAttribute('message', event.detail)
+    message.setAttribute('username', data.username)
+    message.setAttribute('message', data.data)
     this._messageContainer.appendChild(message)
     this._messageContainer.scrollTop = this._messageContainer.scrollHeight
+  }
+
+  _onSendMessage (event) {
+    console.log(event.detail)
+    const sendmessage = {
+      type: 'message',
+      data: event.detail,
+      username: 'testname',
+      channel: '',
+      key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+    }
+    this._socket.send(JSON.stringify(sendmessage))
   }
 }
 window.customElements.define('chat-app', ChatApp)
