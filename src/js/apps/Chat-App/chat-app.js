@@ -12,15 +12,8 @@ template.innerHTML = `
             background-color: #42c2f5;
             height: 100%;
         }
-        .messageContainer {
-            height: 80%;
-            overflow: auto;
-        }
     </style>
     <div class="chatContainer">
-        <div class="messageContainer">
-        </div>
-        <message-area></message-area>
     </div>
 `
 /**
@@ -38,19 +31,11 @@ class ChatApp extends window.HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
-
     this._storage = window.localStorage
-    this._socket = undefined
+    this._chatContainer = this.shadowRoot.querySelector('.chatContainer')
     this._socketURL = 'ws://vhost3.lnu.se:20080/socket/'
-    this._userMessage = this.shadowRoot.querySelector('message-area')
-    this._messageContainer = this.shadowRoot.querySelector('.messageContainer')
-    this._data = {
-      type: 'message',
-      data: '',
-      username: 'testname',
-      channel: '',
-      key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
-    }
+    this._newName = undefined
+    this._chat = undefined
   }
 
   /**
@@ -79,55 +64,33 @@ class ChatApp extends window.HTMLElement {
   }
 
   connectedCallback () {
-    /*  this._storage.setItem('chat', '{"username": "viktor"}') */
-    console.log(JSON.parse(this._storage.getItem('chat')).username)
-    /* console.log(xd.username) */
-    this._socket = new window.WebSocket(this._socketURL)
-
-    this._boundOnOpen = this._onOpen.bind(this)
-    this._boundOnMessage = this._onMessage.bind(this)
-    this._boundOnSendMessage = this._onSendMessage.bind(this)
-
-    this._socket.addEventListener('open', this._boundOnOpen)
-    this._socket.addEventListener('message', this._boundOnMessage)
-    this._userMessage.addEventListener('sendmessage', this._boundOnSendMessage)
-  }
-
-  _updateRendering () {
-
-  }
-
-  disconnectedCallback () {
-    this._socket.close()
-    this._socket.removeEventListener('open', this._boundOnOpen)
-    this._socket.removeEventListener('message', this._boundOnMessage)
-    this._userMessage.removeEventListener('sendmessage', this._boundOnSendMessage)
-  }
-
-  _onOpen (event) {
-    this._socket.send(JSON.stringify(this._data))
-  }
-
-  _onMessage (event) {
-    const data = JSON.parse(event.data)
-    console.log(data)
-    const message = document.createElement('chat-message')
-    message.setAttribute('username', data.username)
-    message.setAttribute('message', data.data)
-    this._messageContainer.appendChild(message)
-    this._messageContainer.scrollTop = this._messageContainer.scrollHeight
-  }
-
-  _onSendMessage (event) {
-    console.log(event.detail)
-    const sendmessage = {
-      type: 'message',
-      data: event.detail,
-      username: 'testname',
-      channel: '',
-      key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+    if (JSON.parse(this._storage.getItem('chat')).username) {
+      this._displayChat()
+    } else {
+      this._enterName()
     }
-    this._socket.send(JSON.stringify(sendmessage))
+  }
+
+  _enterName () {
+    this._boundOnNameEntered = this._onNameEntered.bind(this)
+    const nameEnter = document.createElement('enter-name')
+    this._chatContainer.appendChild(nameEnter)
+    this._newName = this.shadowRoot.querySelector('enter-name')
+
+    this._newName.addEventListener('nameEntered', this._boundOnNameEntered)
+  }
+
+  _onNameEntered (event) {
+    this._storage.setItem('chat', `{"username": "${event.detail}"}`)
+    this._newName.removeEventListener('nameEntered', this._boundOnNameEntered)
+    this._newName.remove()
+    this._displayChat()
+  }
+
+  _displayChat () {
+    const chat = document.createElement('chat-display')
+    chat.setAttribute('socketurl', this._socketURL)
+    this._chatContainer.appendChild(chat)
   }
 }
 window.customElements.define('chat-app', ChatApp)

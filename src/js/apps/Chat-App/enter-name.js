@@ -48,16 +48,16 @@ template.innerHTML = `
 </style>
 
     <div>
-      <h2 class="title">QUIZ APP</h2>
+      <h2 class="title">CHAT APP</h2>
     </div>
     <div>
-      <p class="description">Enter your name and press Play to start the quiz</p>
+      <p class="description">Enter your name and press Start to start chatting</p>
     </div>
     <div>
       <input class="name" type="text" placeholder="Name">
     </div>
     <div>
-    <button class="nameButton">Play</button>
+    <button class="nameButton">Start</button>
     </div>
     <div>
         <p class="errorMessage"></p>
