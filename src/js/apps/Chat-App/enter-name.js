@@ -39,7 +39,7 @@ template.innerHTML = `
         color: #f2b83a;
         opacity: 1;
     }
-    .quizTitle {
+    .title {
         font-size: 60px;
         margin: 0px;
         padding-top: 15px;
@@ -48,13 +48,13 @@ template.innerHTML = `
 </style>
 
     <div>
-      <h2 class="quizTitle">QUIZ APP</h2>
+      <h2 class="title">QUIZ APP</h2>
     </div>
     <div>
       <p class="description">Enter your name and press Play to start the quiz</p>
     </div>
     <div>
-      <input class="playerName" type="text" placeholder="Name">
+      <input class="name" type="text" placeholder="Name">
     </div>
     <div>
     <button class="nameButton">Play</button>
@@ -80,7 +80,7 @@ class EnterName extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this.button = this.shadowRoot.querySelector('.nameButton')
-    this._input = this.shadowRoot.querySelector('.playerName')
+    this._input = this.shadowRoot.querySelector('.name')
     this._error = this.shadowRoot.querySelector('.errorMessage')
     this.name = undefined
   }

@@ -54,6 +54,7 @@ class MyDesktop extends window.HTMLElement {
     this._taskBar = this.shadowRoot.querySelector('task-bar')
     this._mainWindow = this.shadowRoot.querySelector('.main')
     this._windowID = 0
+    this._storage = window.localStorage
   }
 
   /**
@@ -62,6 +63,10 @@ class MyDesktop extends window.HTMLElement {
    * @memberof MyDesktop
    */
   connectedCallback () {
+    if (this._storage.getItem('chat') === null) {
+      console.log('xd')
+      this._storage.setItem('chat', '{}')
+    }
     this._boundOnAppClick = this._onAppClick.bind(this)
     this._boundOnAppExit = this._onAppExit.bind(this)
     this._boundOnWindowClick = this._onWindowClick.bind(this)

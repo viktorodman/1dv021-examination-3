@@ -39,6 +39,7 @@ class ChatApp extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
+    this._storage = window.localStorage
     this._socket = undefined
     this._socketURL = 'ws://vhost3.lnu.se:20080/socket/'
     this._userMessage = this.shadowRoot.querySelector('message-area')
@@ -78,6 +79,9 @@ class ChatApp extends window.HTMLElement {
   }
 
   connectedCallback () {
+    /*  this._storage.setItem('chat', '{"username": "viktor"}') */
+    console.log(JSON.parse(this._storage.getItem('chat')).username)
+    /* console.log(xd.username) */
     this._socket = new window.WebSocket(this._socketURL)
 
     this._boundOnOpen = this._onOpen.bind(this)
@@ -87,6 +91,10 @@ class ChatApp extends window.HTMLElement {
     this._socket.addEventListener('open', this._boundOnOpen)
     this._socket.addEventListener('message', this._boundOnMessage)
     this._userMessage.addEventListener('sendmessage', this._boundOnSendMessage)
+  }
+
+  _updateRendering () {
+
   }
 
   disconnectedCallback () {
