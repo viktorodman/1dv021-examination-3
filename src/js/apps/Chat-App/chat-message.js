@@ -8,8 +8,16 @@
 
 const template = document.createElement('template')
 template.innerHTML = `
+    <style>
+        .messageContainer {
+            background-color:grey;
+            border-top: 1px solid white;
+            border-bottom: 1px solid white;
+        }
+    </style>
     <div class="messageContainer">
         <span class="username"></span>
+        <span> : </span>
         <span class="message"></span>
     </div>
 `

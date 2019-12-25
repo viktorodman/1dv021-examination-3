@@ -7,13 +7,20 @@
 */
 const template = document.createElement('template')
 template.innerHTML = `
+    <style>
+        .chatContainer {
+            background-color: #42c2f5;
+            height: 100%;
+        }
+        .messageContainer {
+            height: 80%;
+            overflow: auto;
+        }
+    </style>
     <div class="chatContainer">
         <div class="messageContainer">
-            <chat-message username="testName" message="testMessage"></chat-message>
-            <chat-message username="testName" message="testMessage"></chat-message>
-            <chat-message username="testName" message="testMessage"></chat-message>
-            <chat-message username="testName" message="testMessage"></chat-message>
         </div>
+        <message-area></message-area>
     </div>
 `
 /**
@@ -34,6 +41,8 @@ class ChatApp extends window.HTMLElement {
 
     this._socket = undefined
     this._socketURL = 'ws://vhost3.lnu.se:20080/socket/'
+    this._userMessage = this.shadowRoot.querySelector('message-area')
+    this._messageContainer = this.shadowRoot.querySelector('.messageContainer')
     this._data = {
       type: 'message',
       data: 'bingo',
@@ -74,8 +83,9 @@ class ChatApp extends window.HTMLElement {
     this._boundOnOpen = this._onOpen.bind(this)
     this._boundOnMessage = this._onMessage.bind(this)
 
-    this._socket.addEventListener('open', this._boundOnOpen)
-    this._socket.addEventListener('message', this._boundOnMessage)
+    /* this._socket.addEventListener('open', this._boundOnOpen)
+    this._socket.addEventListener('message', this._boundOnMessage) */
+    this._userMessage.addEventListener('sendmessage', this._boundOnMessage)
   }
 
   _onOpen (event) {
@@ -83,7 +93,12 @@ class ChatApp extends window.HTMLElement {
   }
 
   _onMessage (event) {
-    console.log(event.data)
+    /* console.log(event.data) */
+    const message = document.createElement('chat-message')
+    message.setAttribute('username', 'blää')
+    message.setAttribute('message', event.detail)
+    this._messageContainer.appendChild(message)
+    this._messageContainer.scrollTop = this._messageContainer.scrollHeight
   }
 }
 window.customElements.define('chat-app', ChatApp)
