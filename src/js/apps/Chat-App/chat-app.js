@@ -9,7 +9,7 @@ const template = document.createElement('template')
 template.innerHTML = `
     <style>
         .chatContainer {
-            background-color: #42c2f5;
+            background-color: #001f3f;
             height: 100%;
         }
     </style>

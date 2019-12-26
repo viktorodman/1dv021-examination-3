@@ -9,10 +9,26 @@
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
+        :host {
+            /* font-family: monospace; */
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
         .messageContainer {
-            background-color:grey;
-            border-top: 1px solid white;
-            border-bottom: 1px solid white;
+            /* background-color:grey; */
+            border-bottom: 1px solid #7FDBFF;
+            color: #7FDBFF;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+        .username {
+            text-transform: uppercase;
+        }
+        .server {
+            color: red;
+            font-style: oblique;
         }
     </style>
     <div class="messageContainer">
@@ -38,6 +54,8 @@ class ChatMessage extends window.HTMLElement {
 
     this._nameSpan = this.shadowRoot.querySelector('.username')
     this._messageSpan = this.shadowRoot.querySelector('.message')
+    this._serverMessage = false
+    this._messageContainer = this.shadowRoot.querySelector('.messageContainer')
   }
 
   /**
@@ -48,7 +66,7 @@ class ChatMessage extends window.HTMLElement {
    * @memberof ChatMessage
    */
   static get observedAttributes () {
-    return ['username', 'message']
+    return ['username', 'message', 'server']
   }
 
   /**
@@ -66,11 +84,19 @@ class ChatMessage extends window.HTMLElement {
     if (name === 'message') {
       this._message = newValue
     }
+    if (name === 'server') {
+      if (newValue === 'true') {
+        this._serverMessage = true
+      }
+    }
   }
 
   connectedCallback () {
     this._messageSpan.textContent = this._message
     this._nameSpan.textContent = this._userName
+    if (this._serverMessage) {
+      this._messageContainer.classList.add('server')
+    }
   }
 }
 window.customElements.define('chat-message', ChatMessage)

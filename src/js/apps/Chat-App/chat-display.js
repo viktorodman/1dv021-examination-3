@@ -10,8 +10,9 @@ const template = document.createElement('template')
 template.innerHTML = `
     <style>
     .messageContainer {
-        height: 80%;
+        height: 70%;
         overflow: auto;
+        padding: 12px;
     }
     </style>
     <div class="messageContainer">
@@ -83,13 +84,19 @@ class ChatDisplay extends window.HTMLElement {
   }
 
   _onOpen (event) {
-    this._socket.send(JSON.stringify(this._data))
+    /* this._socket.send(JSON.stringify(this._data)) */
   }
 
   _onMessage (event) {
     const data = JSON.parse(event.data)
     console.log(data)
+    if (data.username === 'The Server' && data.type === 'heartbeat') {
+      return
+    }
     const message = document.createElement('chat-message')
+    if (data.username === 'The Server') {
+      message.setAttribute('server', 'true')
+    }
     message.setAttribute('username', data.username)
     message.setAttribute('message', data.data)
     this._messageContainer.appendChild(message)

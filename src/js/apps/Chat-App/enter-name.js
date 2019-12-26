@@ -12,15 +12,22 @@ template.innerHTML = `
     :host {
         text-align: center;
         font-size: 30px;
+        color: #7FDBFF;
     }
+  .wrapper {
+    height: 100%;
+    width: 100%;
+    
+  }
   button {
         font-size: 30px;
         margin-bottom: 20px;
-        background-color: #f2b83a;
+        background-color: #7FDBFF;
         transition-duration: 0.4s;
         padding-left: 30px;
         padding-right: 30px;
         margin-top: 20px;
+        outline: none;
     }
     button:hover {
         background-color: #cfcfcf;
@@ -30,28 +37,30 @@ template.innerHTML = `
         text-align: center;
         margin-bottom: 20px;
         border: none;
-        border-bottom: 2px solid #f2b83a;
-        background-color: #333;
-        color: #f2b83a;
+        border-bottom: 2px solid #7FDBFF;
+        background-color: #001f3f;
         width: 30%;
+        color: #7FDBFF;
     }
     input[type="text"]::placeholder {
-        color: #f2b83a;
+        color: #7FDBFF;
         opacity: 1;
     }
     .title {
         font-size: 60px;
         margin: 0px;
         padding-top: 15px;
-        color: #f2b83a;
+    }
+    .errorMessage {
+      color: red;
     }
 </style>
-
+<div class="wrapper">
     <div>
       <h2 class="title">CHAT APP</h2>
     </div>
     <div>
-      <p class="description">Enter your name and press Start to start chatting</p>
+      <p class="description">Enter your name</p>
     </div>
     <div>
       <input class="name" type="text" placeholder="Name">
@@ -62,6 +71,7 @@ template.innerHTML = `
     <div>
         <p class="errorMessage"></p>
     </div>
+  </div>
 `
 /**
  * Represents a name form
@@ -79,10 +89,10 @@ class EnterName extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
-    this.button = this.shadowRoot.querySelector('.nameButton')
+    this._button = this.shadowRoot.querySelector('.nameButton')
     this._input = this.shadowRoot.querySelector('.name')
     this._error = this.shadowRoot.querySelector('.errorMessage')
-    this.name = undefined
+    this._name = undefined
   }
 
   /**
@@ -91,20 +101,25 @@ class EnterName extends window.HTMLElement {
    * @memberof QuizApp
    */
   connectedCallback () {
-    this.button.addEventListener('click', () => this.addName())
+    this._boundOnButtonClick = this._addName.bind(this)
+    this._boundOnEnter = this._onEnter.bind(this)
+
+    this._button.addEventListener('click', this._boundOnButtonClick)
+    this._input.addEventListener('keydown', this._boundOnEnter)
   }
 
-  /**
-   * Adds the entered name
-   *
-   * @memberof EnterName
-   */
-  addName () {
+  _onEnter (event) {
+    if (event.code === 'Enter') {
+      this._addName()
+    }
+  }
+
+  _addName () {
     if (this._input.value.length > 0) {
-      this.name = this._input.value
-      this.dispatchEvent(new window.CustomEvent('nameEntered', { detail: this.name }))
+      this._name = this._input.value
+      this.dispatchEvent(new window.CustomEvent('nameEntered', { detail: this._name }))
     } else {
-      this._error.textContent = 'Fyll i ett namn'
+      this._error.textContent = 'Please Enter A Name'
     }
   }
 }

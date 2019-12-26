@@ -12,19 +12,30 @@ template.innerHTML = `
     .messageBox {
       height: 20%;
     }
-    textArea {
-      background-color: red;
-      width: 100%;
+    textarea::placeholder {
+      color: #7FDBFF;
+    }
+    textarea {
+      background-color: #111111;
+      width: 93%;
       height: 100%;
       outline: none;
       resize: none;
+      display: block;
+      margin: auto;
+      border-radius: 5px;
+      border: 2px solid #111111;
+      font-size: 20px;
+      box-sizing: border-box;
+      padding: 25px;
+      color: #7FDBFF;
     }
     button {
       font-size: 30px;
     }
   </style>
     <div class="messageBox">
-        <textarea></textarea>
+        <textarea placeholder="Enter Message"></textarea>
         
     </div>
 `
