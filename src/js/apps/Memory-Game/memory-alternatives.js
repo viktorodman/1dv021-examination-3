@@ -14,17 +14,17 @@ template.innerHTML = `
             }
             input:checked + label {
                 /* background-color: #3d3d3d; */
-                border-bottom: 4px solid #f2b83a;
+                border-bottom: 4px solid #001f3f;
             }
             label {
                 width: 30px;
-                color: #f2b83a;
+                color: #001f3f;
                 padding: 5px;
             }
             .altWrapper {
-                background-color: #6e6f70;
+                background-color: #317a5a;
                 height: 10%;
-                width: 65%;
+                /* width: 65%; */
                 display: inline-block;
                 padding: 10px;
                 border-bottom-left-radius: 5px;

@@ -8,14 +8,13 @@
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
-      span {
-        color: white;
-        font-family: monospace;
-      }
+    :host {
+      color: #001f3f;
+      font-family: monospace;
+    }
       .winText {
         text-align: center;
         font-size: 60px;
-        color: green;
       }
       .memoryWrapper {
         text-align: center; 
@@ -23,7 +22,7 @@ template.innerHTML = `
         font-size: 30px;
         width: 100%;
         height: 100%;
-        background-color: #a0a0a0;
+        background-color: #3D9970;
         
       }
       .boardDiv {

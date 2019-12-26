@@ -13,10 +13,15 @@ template.innerHTML = `
             margin-top: 20px;
             /* width: 90%;
             margin: 0 auto; */
+            color: #001f3f;
         }
         button {
             font-size: 30px;
-            
+            background-color: #317a5a;
+            color: #001f3f;
+            outline: none;
+            margin-top: 30px;
+            margin-bottom: 30px;
         }
     </style>
     <div class="wrapper">

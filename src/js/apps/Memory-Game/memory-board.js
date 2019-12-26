@@ -25,7 +25,7 @@ a {
 }
 
 a:focus {
-  background-color: yellow;
+  background-color: #001f3f;
 }
 .hidden {
   visibility: hidden;

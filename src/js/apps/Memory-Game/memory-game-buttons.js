@@ -9,7 +9,12 @@
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
-
+      button {
+        background-color: #317a5a;
+        color: #001f3f;
+        outline: none;
+        font-size: 20px;
+      }
     </style>
 
     <div class="gameButtons">

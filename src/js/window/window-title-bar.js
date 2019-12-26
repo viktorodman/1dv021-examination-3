@@ -11,7 +11,7 @@ template.innerHTML = `
         .titlebar {
             width: 100%;
             height: 8%;
-            background-color: white;
+            background-color: #DDDDDD;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
             display: flex;

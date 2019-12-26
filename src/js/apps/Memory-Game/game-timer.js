@@ -10,7 +10,7 @@ const template = document.createElement('template')
 template.innerHTML = `
     <style>
         .timer {
-          
+          color: #001f3f;
         }
     </style>
     <span class="timer"></span>
