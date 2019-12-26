@@ -9,8 +9,11 @@
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
+  :host {
+        font-family: "Courier New", Courier, monospace;
+    }
     .messageBox {
-      height: 20%;
+      height: 15%;
     }
     textarea::placeholder {
       color: #7FDBFF;
@@ -27,7 +30,7 @@ template.innerHTML = `
       border: 2px solid #111111;
       font-size: 20px;
       box-sizing: border-box;
-      padding: 25px;
+      padding: 15px;
       color: #7FDBFF;
     }
     button {

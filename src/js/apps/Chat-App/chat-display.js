@@ -10,13 +10,28 @@ const template = document.createElement('template')
 template.innerHTML = `
     <style>
     .messageContainer {
-        height: 70%;
+        height: 65%;
         overflow: auto;
         padding: 12px;
     }
+    .nameChange {
+        margin-left: 15px;
+        color: #7FDBFF;
+        background-color: #111111;
+        border: none;
+        margin-bottom: 2px;
+        outline: none;
+        transition-duration: 0.4s;
+    }
+    .nameChange:hover {
+        background-color: #7FDBFF; /* Green */
+        color: #111111;
+    }
     </style>
+    <channel-picker></channel-picker>
     <div class="messageContainer">
     </div>
+    <button class="nameChange">Change Name</button>
     <message-area></message-area>
 `
 class ChatDisplay extends window.HTMLElement {
@@ -28,6 +43,7 @@ class ChatDisplay extends window.HTMLElement {
     this._socketURL = undefined
     this._userMessage = this.shadowRoot.querySelector('message-area')
     this._messageContainer = this.shadowRoot.querySelector('.messageContainer')
+    this._changeName = this.shadowRoot.querySelector('.nameChange')
     this._data = {
       type: 'message',
       data: '',
@@ -69,11 +85,12 @@ class ChatDisplay extends window.HTMLElement {
     this._boundOnOpen = this._onOpen.bind(this)
     this._boundOnMessage = this._onMessage.bind(this)
     this._boundOnSendMessage = this._onSendMessage.bind(this)
+    this._boundOnNameChange = this._onNameChange.bind(this)
 
     this._socket.addEventListener('open', this._boundOnOpen)
     this._socket.addEventListener('message', this._boundOnMessage)
     this._userMessage.addEventListener('sendmessage', this._boundOnSendMessage)
-    console.log(this._userName)
+    this._changeName.addEventListener('click', this._boundOnNameChange)
   }
 
   disconnectedCallback () {
@@ -113,6 +130,10 @@ class ChatDisplay extends window.HTMLElement {
       key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     }
     this._socket.send(JSON.stringify(sendmessage))
+  }
+
+  _onNameChange (event) {
+    this.dispatchEvent(new window.CustomEvent('changeName'))
   }
 }
 window.customElements.define('chat-display', ChatDisplay)

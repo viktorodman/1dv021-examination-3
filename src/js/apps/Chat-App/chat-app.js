@@ -64,6 +64,8 @@ class ChatApp extends window.HTMLElement {
   }
 
   connectedCallback () {
+    this._boundOnNameEntered = this._onNameEntered.bind(this)
+    this._boundOnNameChange = this._onNameChange.bind(this)
     if (JSON.parse(this._storage.getItem('chat')).username) {
       this._displayChat()
     } else {
@@ -72,7 +74,6 @@ class ChatApp extends window.HTMLElement {
   }
 
   _enterName () {
-    this._boundOnNameEntered = this._onNameEntered.bind(this)
     const nameEnter = document.createElement('enter-name')
     this._chatContainer.appendChild(nameEnter)
     this._newName = this.shadowRoot.querySelector('enter-name')
@@ -91,6 +92,15 @@ class ChatApp extends window.HTMLElement {
     const chat = document.createElement('chat-display')
     chat.setAttribute('socketurl', this._socketURL)
     this._chatContainer.appendChild(chat)
+    this._chat = this.shadowRoot.querySelector('chat-display')
+
+    this._chat.addEventListener('changeName', this._boundOnNameChange)
+  }
+
+  _onNameChange (event) {
+    this._chat.removeEventListener('changeName', this._boundOnNameChange)
+    this._chat.remove()
+    this._enterName()
   }
 }
 window.customElements.define('chat-app', ChatApp)

@@ -9,10 +9,28 @@
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
-    
+     .channel {
+      text-align: center;
+    }
+      input[type="text"] {
+        font-size: 16px;
+        background-color: #111111;
+        color: #7FDBFF;
+        outline: none;
+        border: none;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+    input[type="text"]::placeholder {
+        color: #7FDBFF;
+        opacity: 1;
+        font-style: oblique;
+    }
     </style>
     <div class="channel">
-    
+      <input class="name" type="text" placeholder="Pick A Channel">
     </div>
 `
 /**

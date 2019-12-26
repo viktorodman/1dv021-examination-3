@@ -11,8 +11,8 @@ template.innerHTML = `
     <style>
         :host {
             /* font-family: monospace; */
-            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-            font-size: 18px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 15px;
             letter-spacing: 1px;
         }
         .messageContainer {
@@ -27,7 +27,7 @@ template.innerHTML = `
             text-transform: uppercase;
         }
         .server {
-            color: red;
+            color: #FF4136;
             font-style: oblique;
         }
     </style>
