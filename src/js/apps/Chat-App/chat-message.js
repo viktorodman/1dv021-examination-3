@@ -11,7 +11,7 @@ template.innerHTML = `
     <style>
         :host {
             /* font-family: monospace; */
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
             font-size: 18px;
             letter-spacing: 1px;
         }
