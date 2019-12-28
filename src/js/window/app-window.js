@@ -10,12 +10,8 @@ const template = document.createElement('template')
 template.innerHTML = `
     <style>
         .window {
-            width: 400px;
-            height: 450px;
-            min-width: 400px;
-            min-height: 450px;
-            max-width: 400px;
-            max-height: 450px;
+            /* width: 400px;
+            height: 450px; */
             background-color: none;
             position: absolute;
             left: 20px;
@@ -68,6 +64,8 @@ class AppWindow extends window.HTMLElement {
     this._appImg = undefined
     this._windowID = undefined
     this._zindex = undefined
+    this._appwidth = 400
+    this._appheight = 450
   }
 
   /**
@@ -78,7 +76,7 @@ class AppWindow extends window.HTMLElement {
    * @memberof WindowTitleBar
    */
   static get observedAttributes () {
-    return ['elementname', 'imgurl', 'appname', 'windowid', 'zindex']
+    return ['elementname', 'imgurl', 'appname', 'windowid', 'zindex', 'appwidth', 'appheight']
   }
 
   /**
@@ -105,6 +103,12 @@ class AppWindow extends window.HTMLElement {
     if (name === 'zindex') {
       this._zindex = newValue
       this._updateZIndex()
+    }
+    if (name === 'appwidth') {
+      this._appwidth = newValue
+    }
+    if (name === 'appheight') {
+      this._appheight = newValue
     }
   }
 
@@ -153,6 +157,8 @@ class AppWindow extends window.HTMLElement {
       const newapp = document.createElement(this._appElement)
       this._app.appendChild(newapp)
     }
+    this._window.style.width = `${this._appwidth}px`
+    this._window.style.height = `${this._appheight}px`
   }
 
   _updateZIndex () {

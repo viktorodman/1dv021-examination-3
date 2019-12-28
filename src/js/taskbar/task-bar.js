@@ -39,7 +39,7 @@ template.innerHTML = `
         <div class="taskBar">
             <task-button imgurl="image/app-icons/memory.png" appname="memorygame" elementname="memory-game"></task-button>
             <task-button imgurl="image/app-icons/chat.png" appname="chatapp" elementname="chat-app"></task-button>
-            <task-button appname="default"></task-button>
+            <task-button imgurl="image/app-icons/pong.png" appname="pong" elementname="pong-game"></task-button>
         </div>
     </div>
 `

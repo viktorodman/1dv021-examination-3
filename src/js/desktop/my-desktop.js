@@ -64,7 +64,6 @@ class MyDesktop extends window.HTMLElement {
    */
   connectedCallback () {
     if (this._storage.getItem('chat') === null) {
-      console.log('xd')
       this._storage.setItem('chat', '{}')
     }
     this._boundOnAppClick = this._onAppClick.bind(this)
@@ -104,6 +103,7 @@ class MyDesktop extends window.HTMLElement {
     appWindow.setAttribute('elementname', event.detail.appElement)
     appWindow.setAttribute('windowid', this._windowID)
     appWindow.setAttribute('zindex', this._windowID)
+
     this._mainWindow.appendChild(appWindow)
     appWindow.addEventListener('windowexit', this._boundOnAppExit)
   }
