@@ -103,7 +103,10 @@ class MyDesktop extends window.HTMLElement {
     appWindow.setAttribute('elementname', event.detail.appElement)
     appWindow.setAttribute('windowid', this._windowID)
     appWindow.setAttribute('zindex', this._windowID)
-
+    if (event.detail.appName === 'pong') {
+      appWindow.setAttribute('appwidth', '600')
+      appWindow.setAttribute('appheight', '400')
+    }
     this._mainWindow.appendChild(appWindow)
     appWindow.addEventListener('windowexit', this._boundOnAppExit)
   }

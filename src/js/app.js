@@ -28,3 +28,6 @@ import './apps/Chat-App/message-area.js'
 import './apps/Chat-App/enter-name.js'
 import './apps/Chat-App/chat-display.js'
 import './apps/Chat-App/channel-picker.js'
+// Pong Game
+import './apps/Pong/pong-game.js'
+import './apps/Pong/pong-table.js'

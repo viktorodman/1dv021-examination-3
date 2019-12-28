@@ -9,8 +9,15 @@
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
+        .wrapper {
+            width: 100%;
+            height: 100%;
+            background-color: #FF4136;
+        }
     </style>
-    <span>Test</span>
+    <div class="wrapper">
+        <pong-table>
+    </div>
 `
 /**
  * Represents a Pong Game
@@ -26,6 +33,11 @@ class PongGame extends window.HTMLElement {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
+    this.shadowRoot.appendChild(template.content.cloneNode(true))
+  }
+
+  connectedCallback () {
+    console.log('From PongGame')
   }
 }
 
