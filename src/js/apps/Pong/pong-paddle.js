@@ -12,14 +12,32 @@ template.innerHTML = `
             position: absolute;
             left: 40px;
         }
-        .paddle {
+        .paddleWrapper {
             width: 10px;
-            height: 70px;
-            background-color: #0074D9;
-            border-radius: 25px;
+            
+            /* background-color: #0074D9; */
+        }
+        .paddleTop {
+            width: 100%;
+            height: 20px;
+            background-color: red;
+        }
+        .paddleMiddle {
+            width: 100%;
+            height: 20px;
+            background-color: blue;
+        }
+        .paddleBottom {
+            width: 100%;
+            height: 20px;
+            background-color: green;
         }
     </style>
-    <div class="paddle"></div>
+    <div class="paddleWrapper">
+        <div class="paddleTop"></div>
+        <div class="paddleMiddle"></div>
+        <div class="paddleBottom"></div>
+    </div>
 `
 class PongPaddle extends window.HTMLElement {
   constructor () {
@@ -28,10 +46,13 @@ class PongPaddle extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this._intervalID = undefined
+    this._paddle = this.shadowRoot.querySelector('.paddle')
   }
 
   connectedCallback () {
-
+    /*  const width = this._paddle.offsetWidth
+    console.log(width) */
+    /* this.dispatchEvent(new window.CustomEvent('altchange', { detail: { columns, rows } })) */
   }
 }
 
