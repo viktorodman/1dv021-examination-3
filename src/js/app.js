@@ -31,3 +31,4 @@ import './apps/Chat-App/channel-picker.js'
 // Pong Game
 import './apps/Pong/pong-game.js'
 import './apps/Pong/pong-table.js'
+import './apps/Pong/pong-paddle.js'

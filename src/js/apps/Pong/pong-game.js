@@ -16,7 +16,7 @@ template.innerHTML = `
         }
     </style>
     <div class="wrapper">
-        <pong-table>
+        <pong-table></pong-table>
     </div>
 `
 /**
@@ -36,6 +36,11 @@ class PongGame extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
   }
 
+  /**
+   * Runs when the element is appended to a document-connected element
+   *
+   * @memberof PongGame
+   */
   connectedCallback () {
     console.log('From PongGame')
   }
