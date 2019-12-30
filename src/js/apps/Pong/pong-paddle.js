@@ -22,7 +22,7 @@ class PongPaddle extends window.HTMLElement {
     this._paddleSpacing = 10
     this._color = 'black'
     this._tableSide = undefined
-    this._dy = 2
+    this._dy = 1
 
     this._position = {
       x: null,

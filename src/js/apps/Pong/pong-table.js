@@ -48,6 +48,11 @@ class PongTable extends window.HTMLElement {
     this._paddleOne = undefined
     this._paddleTwo = undefined
     this._twoPlayers = false
+
+    this._paddleOneUp = false
+    this._paddleOneDown = false
+    this._paddleTwoUp = false
+    this._paddleTwoDown = false
   }
 
   /**
@@ -85,20 +90,40 @@ class PongTable extends window.HTMLElement {
   connectedCallback () {
     this._a.focus()
     this._boundOnKeyDown = this._onKeyDown.bind(this)
+    this._boundOnKeyUp = this._onKeyUp.bind(this)
     this._createShapes()
     this._intervalID = window.setInterval(() => {
       this._renderBoard()
-    }, 100)
+    }, 10)
 
     this._a.addEventListener('keydown', this._boundOnKeyDown)
+    this._a.addEventListener('keyup', this._boundOnKeyUp)
   }
 
   _onKeyDown (event) {
     event.preventDefault()
+    console.log(event.code)
     switch (event.code) {
-      case 'ArrowUp': this._paddleOne._moveUp()
+      case 'ArrowUp': this._paddleOneUp = true
         break
-      case 'ArrowDown': this._paddleOne._moveDown()
+      case 'ArrowDown': this._paddleOneDown = true
+        break
+      case 'KeyW': this._paddleTwoUp = true
+        break
+      case 'KeyS': this._paddleTwoDown = true
+    }
+  }
+
+  _onKeyUp (event) {
+    event.preventDefault()
+    switch (event.code) {
+      case 'ArrowUp': this._paddleOneUp = false
+        break
+      case 'ArrowDown': this._paddleOneDown = false
+        break
+      case 'KeyW': this._paddleTwoUp = false
+        break
+      case 'KeyS': this._paddleTwoDown = false
     }
   }
 
@@ -118,6 +143,19 @@ class PongTable extends window.HTMLElement {
 
   _renderBoard () {
     this.ctx.clearRect(0, 0, this._table.width, this._table.height)
+    if (this._paddleOneUp) {
+      this._paddleOne._moveUp()
+    }
+    if (this._paddleOneDown) {
+      this._paddleOne._moveDown()
+    }
+    if (this._paddleTwoUp) {
+      this._paddleTwo._moveUp()
+    }
+    if (this._paddleTwoDown) {
+      this._paddleTwo._moveDown()
+    }
+
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
   }
