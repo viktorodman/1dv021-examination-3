@@ -102,7 +102,6 @@ class PongTable extends window.HTMLElement {
 
   _onKeyDown (event) {
     event.preventDefault()
-    console.log(event.code)
     switch (event.code) {
       case 'ArrowUp': this._paddleOneUp = true
         break
@@ -143,21 +142,25 @@ class PongTable extends window.HTMLElement {
 
   _renderBoard () {
     this.ctx.clearRect(0, 0, this._table.width, this._table.height)
-    if (this._paddleOneUp) {
-      this._paddleOne._moveUp()
-    }
-    if (this._paddleOneDown) {
-      this._paddleOne._moveDown()
-    }
-    if (this._paddleTwoUp) {
-      this._paddleTwo._moveUp()
-    }
-    if (this._paddleTwoDown) {
-      this._paddleTwo._moveDown()
-    }
+
+    this._checkPaddleCanvasCollision(this._paddleOne, this._paddleOneUp, this._paddleOneDown)
+    this._checkPaddleCanvasCollision(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
 
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
+  }
+
+  _checkPaddleCanvasCollision (paddle, up, down) {
+    if (up) {
+      if (paddle._getY() > 0) {
+        paddle._moveUp()
+      }
+    }
+    if (down) {
+      if ((paddle._getY() + paddle._getHeight()) < this._table.height) {
+        paddle._moveDown()
+      }
+    }
   }
 }
 window.customElements.define('pong-table', PongTable)

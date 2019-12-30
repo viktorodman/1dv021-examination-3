@@ -100,6 +100,18 @@ class PongPaddle extends window.HTMLElement {
     this._position.x = (this._myCanvas.canvasWidth - this._width) - this._paddleSpacing
     this._color = 'red'
   }
+
+  _getHeight () {
+    return this._height
+  }
+
+  _getWidth () {
+    return this._width
+  }
+
+  _getY () {
+    return this._position.y
+  }
 }
 
 window.customElements.define('pong-paddle', PongPaddle)
