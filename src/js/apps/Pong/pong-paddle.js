@@ -20,8 +20,9 @@ class PongPaddle extends window.HTMLElement {
     this._height = 30
     this._width = 10
     this._paddleSpacing = 10
-    this.color = 'black'
+    this._color = 'black'
     this._tableSide = undefined
+    this._dy = 2
 
     this._position = {
       x: null,
@@ -54,7 +55,12 @@ class PongPaddle extends window.HTMLElement {
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'paddleposition') {
-      this._tableSide = newValue
+      if (newValue === 'right') {
+        this._setRight()
+      }
+      if (newValue === 'left') {
+        this._setLeft()
+      }
     }
     if (name === 'canvaswidth') {
       this._myCanvas.canvasWidth = Number(newValue)
@@ -70,18 +76,29 @@ class PongPaddle extends window.HTMLElement {
   }
 
   _render (canvas) {
-    if (this._tableSide === 'right') {
-      this._position.x = (this._myCanvas.canvasWidth - this._width) - this._paddleSpacing
-    }
-    if (this._tableSide === 'left') {
-      this._position.x = this._paddleSpacing
-    }
-
     canvas.beginPath()
     canvas.rect(this._position.x, this._position.y, this._width, this._height)
-    canvas.fillStyle = this.color
+    canvas.fillStyle = this._color
     canvas.fill()
     canvas.closePath()
+  }
+
+  _moveUp () {
+    this._position.y -= this._dy
+  }
+
+  _moveDown () {
+    this._position.y += this._dy
+  }
+
+  _setLeft () {
+    this._position.x = this._paddleSpacing
+    this._color = 'blue'
+  }
+
+  _setRight () {
+    this._position.x = (this._myCanvas.canvasWidth - this._width) - this._paddleSpacing
+    this._color = 'red'
   }
 }
 

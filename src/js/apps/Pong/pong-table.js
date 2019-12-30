@@ -20,10 +20,10 @@ template.innerHTML = `
         margin: auto;
        }
     </style>
+    <a href="#" class="canvasWrapper">
    <canvas class="table">
-       <pong-paddle class="paddleOne" paddleposition="right"></pong-paddle>
-       <pong-paddle class="paddleTwo" paddleposition="left"></pong-paddle>
    </canvas>
+   </a>
 `
 /**
  * Represents a Pong Table
@@ -43,9 +43,10 @@ class PongTable extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this._table = this.shadowRoot.querySelector('.table')
+    this._a = this.shadowRoot.querySelector('.canvasWrapper')
     this.ctx = this._table.getContext('2d')
-    this._paddleOne = this.shadowRoot.querySelector('.paddleOne')
-    this._paddleTwo = this.shadowRoot.querySelector('.paddleTwo')
+    this._paddleOne = undefined
+    this._paddleTwo = undefined
     this._twoPlayers = false
   }
 
@@ -82,14 +83,41 @@ class PongTable extends window.HTMLElement {
    * @memberof PongTable
    */
   connectedCallback () {
-    this._paddleOne.setAttribute('canvaswidth', this._table.width)
-    this._paddleOne.setAttribute('canvasheight', this._table.height)
-    this._paddleTwo.setAttribute('canvaswidth', this._table.width)
-    this._paddleTwo.setAttribute('canvasheight', this._table.height)
-    this._start()
+    this._a.focus()
+    this._boundOnKeyDown = this._onKeyDown.bind(this)
+    this._createShapes()
+    this._intervalID = window.setInterval(() => {
+      this._renderBoard()
+    }, 100)
+
+    this._a.addEventListener('keydown', this._boundOnKeyDown)
   }
 
-  _start () {
+  _onKeyDown (event) {
+    event.preventDefault()
+    switch (event.code) {
+      case 'ArrowUp': this._paddleOne._moveUp()
+        break
+      case 'ArrowDown': this._paddleOne._moveDown()
+    }
+  }
+
+  _createPaddle (player1) {
+    const paddle = document.createElement('pong-paddle')
+    paddle.setAttribute('canvaswidth', this._table.width)
+    paddle.setAttribute('canvasheight', this._table.height)
+    player1 ? paddle.setAttribute('paddleposition', 'right') : paddle.setAttribute('paddleposition', 'left')
+
+    return this._table.appendChild(paddle)
+  }
+
+  _createShapes () {
+    this._paddleOne = this._createPaddle(true)
+    this._paddleTwo = this._createPaddle(false)
+  }
+
+  _renderBoard () {
+    this.ctx.clearRect(0, 0, this._table.width, this._table.height)
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
   }
