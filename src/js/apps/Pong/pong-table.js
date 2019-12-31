@@ -41,12 +41,13 @@ class PongTable extends window.HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
-
+    this._dpi = window.devicePixelRatio
     this._table = this.shadowRoot.querySelector('.table')
     this._a = this.shadowRoot.querySelector('.canvasWrapper')
     this.ctx = this._table.getContext('2d')
     this._paddleOne = undefined
     this._paddleTwo = undefined
+    this._ball = undefined
     this._twoPlayers = false
 
     this._paddleOneUp = false
@@ -88,6 +89,7 @@ class PongTable extends window.HTMLElement {
    * @memberof PongTable
    */
   connectedCallback () {
+    this._fixDpi()
     this._a.focus()
     this._boundOnKeyDown = this._onKeyDown.bind(this)
     this._boundOnKeyUp = this._onKeyUp.bind(this)
@@ -98,6 +100,21 @@ class PongTable extends window.HTMLElement {
 
     this._a.addEventListener('keydown', this._boundOnKeyDown)
     this._a.addEventListener('keyup', this._boundOnKeyUp)
+  }
+
+  disconnectedCallback () {
+    clearInterval(this._intervalID)
+    this._a.removeEventListener('keydown', this._boundOnKeyDown)
+    this._a.removeEventListener('keyup', this._boundOnKeyUp)
+  }
+
+  _fixDpi () {
+    const styleWidth = +window.getComputedStyle(this._table).getPropertyValue('width').slice(0, -2)
+    const styleHeight = +window.getComputedStyle(this._table).getPropertyValue('height').slice(0, -2)
+    this._table.setAttribute('height', styleHeight * this._dpi)
+    this._table.setAttribute('width', styleWidth * this._dpi)
+    /* console.log(styleHeight * this._dpi)
+    console.log(this._dpi) */
   }
 
   _onKeyDown (event) {
@@ -142,19 +159,29 @@ class PongTable extends window.HTMLElement {
     return this._table.appendChild(paddle)
   }
 
+  _createBall () {
+    const ball = document.createElement('pong-ball')
+    ball.setAttribute('ballradius', 3)
+    ball.setAttribute('ballcolor', '#F012BE')
+    ball._setStartPosition(this._table.width, this._table.height)
+    return this._table.appendChild(ball)
+  }
+
   _createShapes () {
     this._paddleOne = this._createPaddle(true)
     this._paddleTwo = this._createPaddle(false)
+    this._ball = this._createBall()
   }
 
   _renderBoard () {
     this.ctx.clearRect(0, 0, this._table.width, this._table.height)
-
+    this._fixDpi()
     this._movePaddle(this._paddleOne, this._paddleOneUp, this._paddleOneDown)
     this._movePaddle(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
 
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
+    this._ball._render(this.ctx)
   }
 
   _movePaddle (paddle, up, down) {
