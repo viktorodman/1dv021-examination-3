@@ -128,9 +128,16 @@ class PongTable extends window.HTMLElement {
 
   _createPaddle (player1) {
     const paddle = document.createElement('pong-paddle')
-    paddle.setAttribute('canvaswidth', this._table.width)
-    paddle.setAttribute('canvasheight', this._table.height)
-    player1 ? paddle.setAttribute('paddleposition', 'right') : paddle.setAttribute('paddleposition', 'left')
+    paddle.setAttribute('paddlewidth', 10)
+    paddle.setAttribute('paddleheight', 30)
+    if (player1) {
+      paddle.setAttribute('paddlecolor', '#FF4136')
+      paddle._setRight(this._table.width)
+    } else {
+      paddle.setAttribute('paddlecolor', '#0074D9')
+      paddle._setLeft()
+    }
+    paddle._setTop(this._table.height)
 
     return this._table.appendChild(paddle)
   }

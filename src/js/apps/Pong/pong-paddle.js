@@ -1,21 +1,15 @@
 /**
- * Module for PongTable
+ * Module for PongPaddle
  *
- * @module src/js/Pong/pong-table
+ * @module src/js/Pong/pong-paddle
  * @author Viktor Ödman
  * @version 1.0.0
 */
-const template = document.createElement('template')
-template.innerHTML = `
-    <style>
-    </style>    
-`
 // https://stackoverflow.com/questions/52128997/how-to-create-canvas-class-with-javascript-es6
 class PongPaddle extends window.HTMLElement {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
-    this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this._height = 30
     this._width = 10
@@ -28,10 +22,6 @@ class PongPaddle extends window.HTMLElement {
       x: null,
       y: null
     }
-    this._myCanvas = {
-      canvasWidth: undefined,
-      canvasHeight: undefined
-    }
   }
 
   /**
@@ -42,7 +32,7 @@ class PongPaddle extends window.HTMLElement {
    * @memberof PongPaddle
    */
   static get observedAttributes () {
-    return ['paddleposition', 'canvaswidth', 'canvasheight']
+    return ['paddlecolor', 'paddlewidth', 'paddleheight']
   }
 
   /**
@@ -54,20 +44,14 @@ class PongPaddle extends window.HTMLElement {
    * @memberof PongPaddle
    */
   attributeChangedCallback (name, oldValue, newValue) {
-    if (name === 'paddleposition') {
-      if (newValue === 'right') {
-        this._setRight()
-      }
-      if (newValue === 'left') {
-        this._setLeft()
-      }
+    if (name === 'paddlecolor') {
+      this._color = newValue
     }
-    if (name === 'canvaswidth') {
-      this._myCanvas.canvasWidth = Number(newValue)
+    if (name === 'paddlewidth') {
+      this._width = Number(newValue)
     }
-    if (name === 'canvasheight') {
-      this._myCanvas.canvasHeight = Number(newValue)
-      this._position.y = (Number(newValue) / 2) - (this._height / 2)
+    if (name === 'paddleheight') {
+      this._height = Number(newValue)
     }
   }
 
@@ -93,12 +77,14 @@ class PongPaddle extends window.HTMLElement {
 
   _setLeft () {
     this._position.x = this._paddleSpacing
-    this._color = '#0074D9'
   }
 
-  _setRight () {
-    this._position.x = (this._myCanvas.canvasWidth - this._width) - this._paddleSpacing
-    this._color = '#FF4136'
+  _setRight (canvasWidth) {
+    this._position.x = (canvasWidth - this._width) - this._paddleSpacing
+  }
+
+  _setTop (canvasHeight) {
+    this._position.y = (canvasHeight / 2) - (this._height / 2)
   }
 
   _getHeight () {
