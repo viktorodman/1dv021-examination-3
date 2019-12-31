@@ -14,8 +14,6 @@ template.innerHTML = `
             height: 450px; */
             background-color: none;
             position: absolute;
-            left: 20px;
-            top: 20px;
             border-radius: 5px;
             border-style: solid;
             border-color: grey;
@@ -76,7 +74,17 @@ class AppWindow extends window.HTMLElement {
    * @memberof WindowTitleBar
    */
   static get observedAttributes () {
-    return ['elementname', 'imgurl', 'appname', 'windowid', 'zindex', 'appwidth', 'appheight']
+    return [
+      'elementname',
+      'imgurl',
+      'appname',
+      'windowid',
+      'zindex',
+      'appwidth',
+      'appheight',
+      'startx',
+      'starty'
+    ]
   }
 
   /**
@@ -109,6 +117,12 @@ class AppWindow extends window.HTMLElement {
     }
     if (name === 'appheight') {
       this._appheight = newValue
+    }
+    if (name === 'startx') {
+      this._window.style.left = newValue
+    }
+    if (name === 'starty') {
+      this._window.style.top = newValue
     }
   }
 
@@ -215,8 +229,14 @@ class AppWindow extends window.HTMLElement {
         x: event.clientX,
         y: event.clientY
       }
-      this._window.style.left = (this._mousePosition.x + this._offset[0]) + 'px'
-      this._window.style.top = (this._mousePosition.y + this._offset[1]) + 'px'
+      const x = this._mousePosition.x + this._offset[0]
+      const y = this._mousePosition.y + this._offset[1]
+      if (x > 0 && x < (this._window.offsetParent.offsetWidth - parseInt(this._window.style.width, 10))) {
+        this._window.style.left = (x) + 'px'
+      }
+      if (y > 0 && y < (this._window.offsetParent.offsetHeight - parseInt(this._window.style.height, 10))) {
+        this._window.style.top = (y) + 'px'
+      }
     }
   }
 }

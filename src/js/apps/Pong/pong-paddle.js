@@ -93,12 +93,12 @@ class PongPaddle extends window.HTMLElement {
 
   _setLeft () {
     this._position.x = this._paddleSpacing
-    this._color = 'blue'
+    this._color = '#0074D9'
   }
 
   _setRight () {
     this._position.x = (this._myCanvas.canvasWidth - this._width) - this._paddleSpacing
-    this._color = 'red'
+    this._color = '#FF4136'
   }
 
   _getHeight () {

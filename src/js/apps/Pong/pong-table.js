@@ -143,14 +143,14 @@ class PongTable extends window.HTMLElement {
   _renderBoard () {
     this.ctx.clearRect(0, 0, this._table.width, this._table.height)
 
-    this._checkPaddleCanvasCollision(this._paddleOne, this._paddleOneUp, this._paddleOneDown)
-    this._checkPaddleCanvasCollision(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
+    this._movePaddle(this._paddleOne, this._paddleOneUp, this._paddleOneDown)
+    this._movePaddle(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
 
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
   }
 
-  _checkPaddleCanvasCollision (paddle, up, down) {
+  _movePaddle (paddle, up, down) {
     if (up) {
       if (paddle._getY() > 0) {
         paddle._moveUp()
