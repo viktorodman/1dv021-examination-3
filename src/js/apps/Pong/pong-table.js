@@ -173,7 +173,7 @@ class PongTable extends window.HTMLElement {
   _createBall () {
     const ball = document.createElement('pong-ball')
     ball.setAttribute('ballradius', 10)
-    ball.setAttribute('ballcolor', '#F012BE')
+    ball.setAttribute('ballcolor', '#FFFFFF')
     ball._setStartPosition(this._table.width, this._table.height)
     return this._table.appendChild(ball)
   }
@@ -186,10 +186,14 @@ class PongTable extends window.HTMLElement {
 
   _renderBoard () {
     this.ctx.clearRect(0, 0, this._table.width, this._table.height)
+    const ballX = this._ball.getPosition().x
+    const ballY = this._ball.getPosition().y
+    const ballRadius = this._ball._getBallRadius()
 
     this._updatePaddles()
     this._updateBall()
-    this._checkWallCollision()
+    this._checkWallCollision(ballX, ballY, ballRadius)
+    this._checkPaddleCollision(ballX, ballY, ballRadius)
   }
 
   _updatePaddles () {
@@ -204,16 +208,34 @@ class PongTable extends window.HTMLElement {
     this._ball._render(this.ctx)
   }
 
-  _checkWallCollision () {
-    const x = this._ball.getPosition().x
-    const y = this._ball.getPosition().y
-    /* console.log(x - this._getBallRadius())
-    console.log(y - this._getBallRadius()) */
-    if (y - this._ball._getBallRadius() < 0) {
+  _checkWallCollision (ballX, ballY, ballRadius) {
+    if (ballY - ballRadius < 0) {
       this._ball._moveDown()
     }
-    if (y + this._ball._getBallRadius() > this._table.height) {
+    if (ballY + ballRadius > this._table.height) {
       this._ball._moveUp()
+    }
+  }
+
+  _checkPaddleCollision (ballX, ballY, ballRadius) {
+    const leftPaddleX = this._paddleTwo.getX() + (this._paddleTwo._getWidth())
+    const leftPaddleY = this._paddleTwo._getY()
+    const rightPaddleX = this._paddleOne.getX() - (this._paddleOne._getWidth() / 2)
+    const rightPaddleY = this._paddleOne._getY()
+    if (ballX - ballRadius <= leftPaddleX) {
+      if (ballY + ballRadius > leftPaddleY && ballY - ballRadius < leftPaddleY + this._paddleTwo._getHeight()) {
+        this._ball._moveRight()
+      } else {
+        /* this._ball._stopBall() */
+        this._ball._stopBall()
+      }
+    }
+    if (ballX >= rightPaddleX) {
+      if (ballY + ballRadius > rightPaddleY && ballY - ballRadius < rightPaddleY + this._paddleOne._getHeight()) {
+        this._ball._moveLeft()
+      } else {
+        this._ball._stopBall()
+      }
     }
   }
 

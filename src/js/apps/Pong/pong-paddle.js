@@ -107,6 +107,10 @@ class PongPaddle extends window.HTMLElement {
   _getY () {
     return this._position.y
   }
+
+  getX () {
+    return this._position.x
+  }
 }
 
 window.customElements.define('pong-paddle', PongPaddle)
