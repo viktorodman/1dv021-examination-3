@@ -57,17 +57,10 @@ class PongTable extends window.HTMLElement {
     }
     this._table = this._createCanvas()
     this.ctx = this._table.getContext('2d')
-    /* this._table.width = this._table.getBoundingClientRect().width
-    this._table.height = this._table.getBoundingClientRect().height
-    this._a = this.shadowRoot.querySelector('.canvasWrapper')
-    this.ctx = this._table.getContext('2d') */
-
     this._paddleOne = undefined
     this._paddleTwo = undefined
     this._ball = undefined
     this._twoPlayers = false
-    this._tableHeight = undefined
-    this._tableWidth = undefined
 
     this._paddleOneUp = false
     this._paddleOneDown = false
@@ -196,6 +189,7 @@ class PongTable extends window.HTMLElement {
 
     this._updatePaddles()
     this._updateBall()
+    this._checkWallCollision()
   }
 
   _updatePaddles () {
@@ -203,6 +197,24 @@ class PongTable extends window.HTMLElement {
     this._movePaddle(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
+  }
+
+  _updateBall () {
+    this._ball._move()
+    this._ball._render(this.ctx)
+  }
+
+  _checkWallCollision () {
+    const x = this._ball.getPosition().x
+    const y = this._ball.getPosition().y
+    /* console.log(x - this._getBallRadius())
+    console.log(y - this._getBallRadius()) */
+    if (y - this._ball._getBallRadius() < 0) {
+      this._ball._moveDown()
+    }
+    if (y + this._ball._getBallRadius() > this._table.height) {
+      this._ball._moveUp()
+    }
   }
 
   _movePaddle (paddle, up, down) {
@@ -216,12 +228,6 @@ class PongTable extends window.HTMLElement {
         paddle._moveDown()
       }
     }
-  }
-
-  _updateBall () {
-    this._ball._moveDown()
-    this._ball._moveLeft()
-    this._ball._render(this.ctx)
   }
 }
 window.customElements.define('pong-table', PongTable)

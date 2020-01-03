@@ -13,7 +13,7 @@ class PongPaddle extends window.HTMLElement {
     this._dpi = window.devicePixelRatio
     this._height = 30
     this._width = 10
-    this._paddleSpacing = 10
+    this._paddleSpacing = 20
     this._color = 'black'
     this._tableSide = undefined
     this._dy = 1

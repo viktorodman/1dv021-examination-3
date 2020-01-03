@@ -19,6 +19,10 @@ class PongBall extends window.HTMLElement {
       x: null,
       y: null
     }
+    this._direction = {
+      dirY: 2,
+      dirX: 2
+    }
   }
 
   /**
@@ -61,20 +65,37 @@ class PongBall extends window.HTMLElement {
     canvas.closePath()
   }
 
+  getDirection () {
+    return this._direction
+  }
+
+  getPosition () {
+    return this._position
+  }
+
+  _move () {
+    this._position.x += this._direction.dirX
+    this._position.y += this._direction.dirY
+  }
+
   _moveUp () {
-    this._position.y -= this._dy
+    this._direction.dirY = -2
   }
 
   _moveDown () {
-    this._position.y += this._dy
+    this._direction.dirY = 2
   }
 
   _moveLeft () {
-    this._position.x -= this._dx
+    this._direction.dirX = -2
   }
 
   _moveRight () {
-    this._position.x += this._dx
+    this._direction.dirY = 2
+  }
+
+  _getBallRadius () {
+    return this._radius
   }
 
   _setStartPosition (canvasWidth, canvasHeight) {
