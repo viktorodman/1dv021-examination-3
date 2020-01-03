@@ -10,7 +10,7 @@ class PongPaddle extends window.HTMLElement {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
-
+    this._dpi = window.devicePixelRatio
     this._height = 30
     this._width = 10
     this._paddleSpacing = 10
@@ -65,6 +65,15 @@ class PongPaddle extends window.HTMLElement {
     canvas.fillStyle = this._color
     canvas.fill()
     canvas.closePath()
+  }
+
+  _setStartPosition (canvasWidth, canvasHeight, rightPaddle) {
+    if (rightPaddle) {
+      this._setRight(canvasWidth)
+    } else {
+      this._setLeft()
+    }
+    this._setTop(canvasHeight)
   }
 
   _moveUp () {

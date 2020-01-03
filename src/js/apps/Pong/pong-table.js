@@ -12,18 +12,27 @@ template.innerHTML = `
         padding: 0;
         margin: 0;
         }
-       .table {
+       /* .table {
         width: 100%;
         height: 100%;
         background-color: #3D9970;
         display: block;
         margin: auto;
+       } */
+       .test {
+         width: 100%;
+         height: 100%;
+         background-color: orange;
        }
     </style>
-    <a href="#" class="canvasWrapper">
-   <canvas class="table">
-   </canvas>
-   </a>
+    
+      <div class="test">
+       <a href="#" class="canvasWrapper">
+       </a>
+   <!-- <canvas class="table">
+  </canvas> -->
+  </div>
+  
 `
 /**
  * Represents a Pong Table
@@ -41,14 +50,24 @@ class PongTable extends window.HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
-    this._dpi = window.devicePixelRatio
-    this._table = this.shadowRoot.querySelector('.table')
-    this._a = this.shadowRoot.querySelector('.canvasWrapper')
+    this._canvasWrapper = this.shadowRoot.querySelector('.canvasWrapper')
+    this._resolution = {
+      width: 1000,
+      height: 500
+    }
+    this._table = this._createCanvas()
     this.ctx = this._table.getContext('2d')
+    /* this._table.width = this._table.getBoundingClientRect().width
+    this._table.height = this._table.getBoundingClientRect().height
+    this._a = this.shadowRoot.querySelector('.canvasWrapper')
+    this.ctx = this._table.getContext('2d') */
+
     this._paddleOne = undefined
     this._paddleTwo = undefined
     this._ball = undefined
     this._twoPlayers = false
+    this._tableHeight = undefined
+    this._tableWidth = undefined
 
     this._paddleOneUp = false
     this._paddleOneDown = false
@@ -89,8 +108,7 @@ class PongTable extends window.HTMLElement {
    * @memberof PongTable
    */
   connectedCallback () {
-    this._fixDpi()
-    this._a.focus()
+    this._canvasWrapper.focus()
     this._boundOnKeyDown = this._onKeyDown.bind(this)
     this._boundOnKeyUp = this._onKeyUp.bind(this)
     this._createShapes()
@@ -98,23 +116,24 @@ class PongTable extends window.HTMLElement {
       this._renderBoard()
     }, 10)
 
-    this._a.addEventListener('keydown', this._boundOnKeyDown)
-    this._a.addEventListener('keyup', this._boundOnKeyUp)
+    this._canvasWrapper.addEventListener('keydown', this._boundOnKeyDown)
+    this._canvasWrapper.addEventListener('keyup', this._boundOnKeyUp)
   }
 
   disconnectedCallback () {
     clearInterval(this._intervalID)
-    this._a.removeEventListener('keydown', this._boundOnKeyDown)
-    this._a.removeEventListener('keyup', this._boundOnKeyUp)
+    this._canvasWrapper.removeEventListener('keydown', this._boundOnKeyDown)
+    this._canvasWrapper.removeEventListener('keyup', this._boundOnKeyUp)
   }
 
-  _fixDpi () {
-    const styleWidth = +window.getComputedStyle(this._table).getPropertyValue('width').slice(0, -2)
-    const styleHeight = +window.getComputedStyle(this._table).getPropertyValue('height').slice(0, -2)
-    this._table.setAttribute('height', styleHeight * this._dpi)
-    this._table.setAttribute('width', styleWidth * this._dpi)
-    /* console.log(styleHeight * this._dpi)
-    console.log(this._dpi) */
+  _createCanvas () {
+    const canvas = document.createElement('canvas')
+    canvas.width = this._resolution.width
+    canvas.height = this._resolution.height
+    canvas.style.width = '100%'
+    canvas.style.height = '100%'
+    canvas.style.backgroundColor = '#3D9970'
+    return this._canvasWrapper.appendChild(canvas)
   }
 
   _onKeyDown (event) {
@@ -145,23 +164,22 @@ class PongTable extends window.HTMLElement {
 
   _createPaddle (player1) {
     const paddle = document.createElement('pong-paddle')
-    paddle.setAttribute('paddlewidth', 10)
-    paddle.setAttribute('paddleheight', 30)
+    paddle.setAttribute('paddlewidth', 20)
+    paddle.setAttribute('paddleheight', 60)
     if (player1) {
       paddle.setAttribute('paddlecolor', '#FF4136')
-      paddle._setRight(this._table.width)
+      paddle._setStartPosition(this._table.width, this._table.height, true)
     } else {
       paddle.setAttribute('paddlecolor', '#0074D9')
-      paddle._setLeft()
+      paddle._setStartPosition(this._table.width, this._table.height, false)
     }
-    paddle._setTop(this._table.height)
 
     return this._table.appendChild(paddle)
   }
 
   _createBall () {
     const ball = document.createElement('pong-ball')
-    ball.setAttribute('ballradius', 3)
+    ball.setAttribute('ballradius', 10)
     ball.setAttribute('ballcolor', '#F012BE')
     ball._setStartPosition(this._table.width, this._table.height)
     return this._table.appendChild(ball)
@@ -175,13 +193,16 @@ class PongTable extends window.HTMLElement {
 
   _renderBoard () {
     this.ctx.clearRect(0, 0, this._table.width, this._table.height)
-    this._fixDpi()
+
+    this._updatePaddles()
+    this._updateBall()
+  }
+
+  _updatePaddles () {
     this._movePaddle(this._paddleOne, this._paddleOneUp, this._paddleOneDown)
     this._movePaddle(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
-
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
-    this._ball._render(this.ctx)
   }
 
   _movePaddle (paddle, up, down) {
@@ -195,6 +216,12 @@ class PongTable extends window.HTMLElement {
         paddle._moveDown()
       }
     }
+  }
+
+  _updateBall () {
+    this._ball._moveDown()
+    this._ball._moveLeft()
+    this._ball._render(this.ctx)
   }
 }
 window.customElements.define('pong-table', PongTable)
