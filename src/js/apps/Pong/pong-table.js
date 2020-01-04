@@ -114,6 +114,9 @@ class PongTable extends window.HTMLElement {
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
     this._ball._render(this.ctx)
+    this.ctx.font = '30px Arial'
+    this.ctx.textAlign = 'center'
+    this.ctx.fillText('Press Space To Start', this._table.width / 2, this._table.height / 3)
     this._canvasWrapper.addEventListener('keydown', this._boundOnSpace)
   }
 
@@ -121,26 +124,6 @@ class PongTable extends window.HTMLElement {
     this._intervalID = window.setInterval(() => {
       this._renderBoard()
     }, 10)
-  }
-
-  _onSpace (event) {
-    event.preventDefault()
-    if (event.code !== 'Space') {
-      return
-    }
-    this._canvasWrapper.removeEventListener('keydown', this._boundOnSpace)
-    this._pause = false
-    this._startGame()
-  }
-
-  _createCanvas () {
-    const canvas = document.createElement('canvas')
-    canvas.width = this._resolution.width
-    canvas.height = this._resolution.height
-    canvas.style.width = '100%'
-    canvas.style.height = '100%'
-    canvas.style.backgroundColor = '#3D9970'
-    return this._canvasWrapper.appendChild(canvas)
   }
 
   _onKeyDown (event) {
@@ -167,6 +150,26 @@ class PongTable extends window.HTMLElement {
         break
       case 'KeyS': this._paddleTwoDown = false
     }
+  }
+
+  _onSpace (event) {
+    event.preventDefault()
+    if (event.code !== 'Space') {
+      return
+    }
+    this._canvasWrapper.removeEventListener('keydown', this._boundOnSpace)
+    this._pause = false
+    this._startGame()
+  }
+
+  _createCanvas () {
+    const canvas = document.createElement('canvas')
+    canvas.width = this._resolution.width
+    canvas.height = this._resolution.height
+    canvas.style.width = '100%'
+    canvas.style.height = '100%'
+    canvas.style.backgroundColor = '#3D9970'
+    return this._canvasWrapper.appendChild(canvas)
   }
 
   _createPaddle (player1) {
@@ -199,12 +202,15 @@ class PongTable extends window.HTMLElement {
   }
 
   _renderBoard () {
+    this.ctx.clearRect(0, 0, this._table.width, this._table.height)
     if (this._pause) {
       clearInterval(this._intervalID)
       this._ball._setStartPosition(this._table.width, this._table.height)
+      this._paddleOne._setStartPosition(this._table.width, this._table.height, true)
+      this._paddleTwo._setStartPosition(this._table.width, this._table.height, false)
       this._pauseGame()
     }
-    this.ctx.clearRect(0, 0, this._table.width, this._table.height)
+
     const ballX = this._ball.getPosition().x
     const ballY = this._ball.getPosition().y
     const ballRadius = this._ball._getBallRadius()
