@@ -14,40 +14,13 @@ class PongScore extends window.HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
 
-    this._side = 'left'
-    this._font = '30px Arial'
+    this._side = undefined
+    this._font = '60px Arial'
     this._fontSize = undefined
     this._score = 0
     this._position = {
       x: null,
       y: null
-    }
-  }
-
-  /**
-   * Get what attributes attributeChangedCallback should look for
-   *
-   * @readonly
-   * @static
-   * @memberof PongScore
-   */
-  static get observedAttributes () {
-    return ['position']
-  }
-
-  /**
-   * Is called when some of the observed attributes is called
-   *
-   * @param {String} name the attribute name
-   * @param {String} oldValue old attribute value
-   * @param {String} newValue new attribute value
-   * @memberof PongScore
-   */
-  attributeChangedCallback (name, oldValue, newValue) {
-    if (name === 'position') {
-      if (newValue === 'right') {
-        this._side = 'right'
-      }
     }
   }
 
@@ -57,17 +30,31 @@ class PongScore extends window.HTMLElement {
 
   _render (canvas) {
     canvas.font = this._font
+
+    canvas.textAlign = 'center'
+
     canvas.fillText(this._score, this._position.x, this._position.y)
+    /* canvas.fillText('asdfa', 10, 10) */
   }
 
-  setPosition (canvasWidth, canvasHeight) {
-    if (this._side === 'right') {
+  setScorePosition (canvasWidth, canvasHeight, right) {
+    if (right) {
       this._position.x = (canvasWidth / 2) + (canvasWidth / 6)
+      this._side = true
     } else {
       this._position.x = (canvasWidth / 2) - (canvasWidth / 6)
+      this._side = false
     }
 
-    this._position.y = 0
+    this._position.y = canvasHeight / 10
+  }
+
+  addScore () {
+    this._score += 1
+  }
+
+  getScore () {
+    return this._score
   }
 }
 

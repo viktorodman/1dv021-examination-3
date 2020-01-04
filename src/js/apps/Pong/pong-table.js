@@ -114,6 +114,8 @@ class PongTable extends window.HTMLElement {
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
     this._ball._render(this.ctx)
+    this._p1Score._render(this.ctx)
+    this._p2Score._render(this.ctx)
     this.ctx.font = '30px Arial'
     this.ctx.textAlign = 'center'
     this.ctx.fillText('Press Space To Start', this._table.width / 2, this._table.height / 3)
@@ -195,10 +197,24 @@ class PongTable extends window.HTMLElement {
     return this._table.appendChild(ball)
   }
 
+  _createScore (player1) {
+    const score = document.createElement('pong-score')
+
+    if (player1) {
+      score.setScorePosition(this._table.width, this._table.height, true)
+    } else {
+      score.setScorePosition(this._table.width, this._table.height, false)
+    }
+
+    return this._table.appendChild(score)
+  }
+
   _createShapes () {
     this._paddleOne = this._createPaddle(true)
     this._paddleTwo = this._createPaddle(false)
     this._ball = this._createBall()
+    this._p1Score = this._createScore(true)
+    this._p2Score = this._createScore(false)
   }
 
   _renderBoard () {
@@ -217,6 +233,8 @@ class PongTable extends window.HTMLElement {
 
     this._updatePaddles()
     this._updateBall()
+    this._updateScore()
+
     this._checkWallCollision(ballX, ballY, ballRadius)
     this._checkPaddleCollision(ballX, ballY, ballRadius, this._paddleOne.getX(), this._paddleTwo.getX())
   }
@@ -233,6 +251,11 @@ class PongTable extends window.HTMLElement {
     this._ball._render(this.ctx)
   }
 
+  _updateScore () {
+    this._p1Score._render(this.ctx)
+    this._p2Score._render(this.ctx)
+  }
+
   _checkWallCollision (ballX, ballY, ballRadius) {
     if (ballY - ballRadius < 0) {
       this._ball._moveDown()
@@ -241,9 +264,11 @@ class PongTable extends window.HTMLElement {
       this._ball._moveUp()
     }
     if (ballX < 0) {
+      this._p2Score.addScore()
       this._pause = true
     }
     if (ballX > this._table.width) {
+      this._p1Score.addScore()
       this._pause = true
     }
   }
