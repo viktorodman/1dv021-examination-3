@@ -21,7 +21,7 @@ class PongBall extends window.HTMLElement {
     }
     this._direction = {
       dirY: -2,
-      dirX: -2
+      dirX: 2
     }
   }
 
@@ -99,8 +99,8 @@ class PongBall extends window.HTMLElement {
   }
 
   _setStartPosition (canvasWidth, canvasHeight) {
-    this._position.x = (canvasWidth / 2) - this._radius
-    this._position.y = (canvasHeight / 2) - this._radius
+    this._position.x = (canvasWidth / 2)
+    this._position.y = (canvasHeight / 2)
   }
 
   _stopBall () {

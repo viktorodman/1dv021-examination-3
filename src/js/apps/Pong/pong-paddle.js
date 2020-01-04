@@ -70,7 +70,9 @@ class PongPaddle extends window.HTMLElement {
   _setStartPosition (canvasWidth, canvasHeight, rightPaddle) {
     if (rightPaddle) {
       this._setRight(canvasWidth)
+      this._tableSide = 'right'
     } else {
+      this._tableSide = 'left'
       this._setLeft()
     }
     this._setTop(canvasHeight)
@@ -109,7 +111,15 @@ class PongPaddle extends window.HTMLElement {
   }
 
   getX () {
-    return this._position.x
+    let xPosition = this._position.x + this._getWidth()
+    if (this._tableSide === 'right') {
+      xPosition = this._position.x - (this._getWidth() / 2)
+    }
+    return xPosition
+  }
+
+  getBottomPos () {
+    return (this._getY() + this._getHeight())
   }
 }
 

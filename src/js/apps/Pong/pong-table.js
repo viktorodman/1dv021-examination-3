@@ -12,25 +12,16 @@ template.innerHTML = `
         padding: 0;
         margin: 0;
         }
-       /* .table {
-        width: 100%;
-        height: 100%;
-        background-color: #3D9970;
-        display: block;
-        margin: auto;
-       } */
+       
        .test {
          width: 100%;
          height: 100%;
          background-color: orange;
        }
     </style>
-    
       <div class="test">
        <a href="#" class="canvasWrapper">
        </a>
-   <!-- <canvas class="table">
-  </canvas> -->
   </div>
   
 `
@@ -66,6 +57,7 @@ class PongTable extends window.HTMLElement {
     this._paddleOneDown = false
     this._paddleTwoUp = false
     this._paddleTwoDown = false
+    this._pause = true
   }
 
   /**
@@ -104,10 +96,9 @@ class PongTable extends window.HTMLElement {
     this._canvasWrapper.focus()
     this._boundOnKeyDown = this._onKeyDown.bind(this)
     this._boundOnKeyUp = this._onKeyUp.bind(this)
+    this._boundOnSpace = this._onSpace.bind(this)
     this._createShapes()
-    this._intervalID = window.setInterval(() => {
-      this._renderBoard()
-    }, 10)
+    this._pauseGame()
 
     this._canvasWrapper.addEventListener('keydown', this._boundOnKeyDown)
     this._canvasWrapper.addEventListener('keyup', this._boundOnKeyUp)
@@ -117,6 +108,29 @@ class PongTable extends window.HTMLElement {
     clearInterval(this._intervalID)
     this._canvasWrapper.removeEventListener('keydown', this._boundOnKeyDown)
     this._canvasWrapper.removeEventListener('keyup', this._boundOnKeyUp)
+  }
+
+  _pauseGame () {
+    this._paddleOne._render(this.ctx)
+    this._paddleTwo._render(this.ctx)
+    this._ball._render(this.ctx)
+    this._canvasWrapper.addEventListener('keydown', this._boundOnSpace)
+  }
+
+  _startGame () {
+    this._intervalID = window.setInterval(() => {
+      this._renderBoard()
+    }, 10)
+  }
+
+  _onSpace (event) {
+    event.preventDefault()
+    if (event.code !== 'Space') {
+      return
+    }
+    this._canvasWrapper.removeEventListener('keydown', this._boundOnSpace)
+    this._pause = false
+    this._startGame()
   }
 
   _createCanvas () {
@@ -185,6 +199,11 @@ class PongTable extends window.HTMLElement {
   }
 
   _renderBoard () {
+    if (this._pause) {
+      clearInterval(this._intervalID)
+      this._ball._setStartPosition(this._table.width, this._table.height)
+      this._pauseGame()
+    }
     this.ctx.clearRect(0, 0, this._table.width, this._table.height)
     const ballX = this._ball.getPosition().x
     const ballY = this._ball.getPosition().y
@@ -193,7 +212,7 @@ class PongTable extends window.HTMLElement {
     this._updatePaddles()
     this._updateBall()
     this._checkWallCollision(ballX, ballY, ballRadius)
-    this._checkPaddleCollision(ballX, ballY, ballRadius)
+    this._checkPaddleCollision(ballX, ballY, ballRadius, this._paddleOne.getX(), this._paddleTwo.getX())
   }
 
   _updatePaddles () {
@@ -215,26 +234,24 @@ class PongTable extends window.HTMLElement {
     if (ballY + ballRadius > this._table.height) {
       this._ball._moveUp()
     }
+    if (ballX < 0) {
+      this._pause = true
+    }
+    if (ballX > this._table.width) {
+      this._pause = true
+    }
   }
 
-  _checkPaddleCollision (ballX, ballY, ballRadius) {
-    const leftPaddleX = this._paddleTwo.getX() + (this._paddleTwo._getWidth())
-    const leftPaddleY = this._paddleTwo._getY()
-    const rightPaddleX = this._paddleOne.getX() - (this._paddleOne._getWidth() / 2)
-    const rightPaddleY = this._paddleOne._getY()
-    if (ballX - ballRadius <= leftPaddleX) {
-      if (ballY + ballRadius > leftPaddleY && ballY - ballRadius < leftPaddleY + this._paddleTwo._getHeight()) {
+  _checkPaddleCollision (ballX, ballY, ballRadius, rightPaddleX, leftPaddleX) {
+    if (ballX - ballRadius === leftPaddleX) {
+      if (ballY + ballRadius > this._paddleTwo._getY() && ballY - ballRadius < this._paddleTwo.getBottomPos()) {
         this._ball._moveRight()
-      } else {
-        /* this._ball._stopBall() */
-        this._ball._stopBall()
       }
     }
-    if (ballX >= rightPaddleX) {
-      if (ballY + ballRadius > rightPaddleY && ballY - ballRadius < rightPaddleY + this._paddleOne._getHeight()) {
+
+    if (ballX === rightPaddleX) {
+      if (ballY + ballRadius > this._paddleOne._getY() && ballY - ballRadius < this._paddleOne.getBottomPos()) {
         this._ball._moveLeft()
-      } else {
-        this._ball._stopBall()
       }
     }
   }
@@ -246,7 +263,7 @@ class PongTable extends window.HTMLElement {
       }
     }
     if (down) {
-      if ((paddle._getY() + paddle._getHeight()) < this._table.height) {
+      if (paddle.getBottomPos() < this._table.height) {
         paddle._moveDown()
       }
     }
