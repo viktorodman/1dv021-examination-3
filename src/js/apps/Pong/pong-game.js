@@ -34,6 +34,9 @@ class PongGame extends window.HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+
+    this._pongTable = this.shadowRoot.querySelector('pong-table')
+    this._wrapper = this.shadowRoot.querySelector('.wrapper')
   }
 
   /**
@@ -42,7 +45,11 @@ class PongGame extends window.HTMLElement {
    * @memberof PongGame
    */
   connectedCallback () {
-    console.log('From PongGame')
+    this._pongTable.addEventListener('win', event => {
+      const gameOver = document.createElement('game-over')
+      this._pongTable.remove()
+      this._wrapper.appendChild(gameOver)
+    })
   }
 }
 

@@ -17,6 +17,7 @@ class PongPaddle extends window.HTMLElement {
     this._color = 'black'
     this._tableSide = undefined
     this._dy = 1
+    this._name = undefined
 
     this._position = {
       x: null,
@@ -32,7 +33,7 @@ class PongPaddle extends window.HTMLElement {
    * @memberof PongPaddle
    */
   static get observedAttributes () {
-    return ['paddlecolor', 'paddlewidth', 'paddleheight']
+    return ['paddlecolor', 'paddlewidth', 'paddleheight', 'paddlename']
   }
 
   /**
@@ -52,6 +53,9 @@ class PongPaddle extends window.HTMLElement {
     }
     if (name === 'paddleheight') {
       this._height = Number(newValue)
+    }
+    if (name === 'paddlename') {
+      this._name = newValue
     }
   }
 
@@ -120,6 +124,10 @@ class PongPaddle extends window.HTMLElement {
 
   getBottomPos () {
     return (this._getY() + this._getHeight())
+  }
+
+  getName () {
+    return this._name
   }
 }
 

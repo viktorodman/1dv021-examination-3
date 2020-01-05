@@ -58,6 +58,8 @@ class PongTable extends window.HTMLElement {
     this._paddleTwoUp = false
     this._paddleTwoDown = false
     this._pause = true
+
+    this._winScore = 5
   }
 
   /**
@@ -180,9 +182,11 @@ class PongTable extends window.HTMLElement {
     paddle.setAttribute('paddleheight', 60)
     if (player1) {
       paddle.setAttribute('paddlecolor', '#FF4136')
+      paddle.setAttribute('paddlename', 'Player 1')
       paddle._setStartPosition(this._table.width, this._table.height, true)
     } else {
       paddle.setAttribute('paddlecolor', '#0074D9')
+      paddle.setAttribute('paddlename', 'Player 2')
       paddle._setStartPosition(this._table.width, this._table.height, false)
     }
 
@@ -237,6 +241,9 @@ class PongTable extends window.HTMLElement {
 
     this._checkWallCollision(ballX, ballY, ballRadius)
     this._checkPaddleCollision(ballX, ballY, ballRadius, this._paddleOne.getX(), this._paddleTwo.getX())
+
+    this._checkWin(this._p1Score.getScore(), this._paddleOne.getName())
+    this._checkWin(this._p2Score.getScore(), this._paddleTwo.getName())
   }
 
   _updatePaddles () {
@@ -264,11 +271,11 @@ class PongTable extends window.HTMLElement {
       this._ball._moveUp()
     }
     if (ballX < 0) {
-      this._p2Score.addScore()
+      this._p1Score.addScore()
       this._pause = true
     }
     if (ballX > this._table.width) {
-      this._p1Score.addScore()
+      this._p2Score.addScore()
       this._pause = true
     }
   }
@@ -297,6 +304,12 @@ class PongTable extends window.HTMLElement {
       if (paddle.getBottomPos() < this._table.height) {
         paddle._moveDown()
       }
+    }
+  }
+
+  _checkWin (score, player) {
+    if (score === 5) {
+      this.dispatchEvent(new window.CustomEvent('win', { detail: player }))
     }
   }
 }
