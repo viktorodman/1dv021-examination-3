@@ -13,13 +13,12 @@ template.innerHTML = `
         margin: 0;
         }
        
-       .test {
+       .table {
          width: 100%;
          height: 100%;
-         background-color: orange;
        }
     </style>
-      <div class="test">
+      <div class="table">
        <a href="#" class="canvasWrapper">
        </a>
   </div>
@@ -250,9 +249,10 @@ class PongTable extends window.HTMLElement {
     this._movePaddle(this._paddleOne, this._paddleOneUp, this._paddleOneDown)
     if (this._twoPlayers) {
       this._movePaddle(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
+    } else {
+      this._moveBot()
     }
 
-    this._moveBot()
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
   }
