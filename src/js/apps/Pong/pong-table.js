@@ -172,20 +172,20 @@ class PongTable extends window.HTMLElement {
     canvas.height = this._resolution.height
     canvas.style.width = '100%'
     canvas.style.height = '100%'
-    canvas.style.backgroundColor = '#3D9970'
+    canvas.style.backgroundColor = '#85144b'
     return this._canvasWrapper.appendChild(canvas)
   }
 
   _createPaddle (player1) {
     const paddle = document.createElement('pong-paddle')
-    paddle.setAttribute('paddlewidth', 20)
-    paddle.setAttribute('paddleheight', 60)
+    paddle.setAttribute('paddlewidth', 40)
+    paddle.setAttribute('paddleheight', 70)
     if (player1) {
-      paddle.setAttribute('paddlecolor', '#FF4136')
+      paddle.setAttribute('paddlecolor', '#7FDBFF')
       paddle.setAttribute('paddlename', 'Player 1')
       paddle._setStartPosition(this._table.width, this._table.height, true)
     } else {
-      paddle.setAttribute('paddlecolor', '#0074D9')
+      paddle.setAttribute('paddlecolor', '#FF851B')
       paddle.setAttribute('paddlename', 'Player 2')
       paddle._setStartPosition(this._table.width, this._table.height, false)
     }
@@ -249,6 +249,7 @@ class PongTable extends window.HTMLElement {
   _updatePaddles () {
     this._movePaddle(this._paddleOne, this._paddleOneUp, this._paddleOneDown)
     this._movePaddle(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
+    this._moveBot()
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
   }
@@ -287,7 +288,7 @@ class PongTable extends window.HTMLElement {
       }
     }
 
-    if (ballX === rightPaddleX) {
+    if (ballX - ballRadius === rightPaddleX) {
       if (ballY + ballRadius > this._paddleOne._getY() && ballY - ballRadius < this._paddleOne.getBottomPos()) {
         this._ball._moveLeft()
       }
@@ -304,6 +305,15 @@ class PongTable extends window.HTMLElement {
       if (paddle.getBottomPos() < this._table.height) {
         paddle._moveDown()
       }
+    }
+  }
+
+  _moveBot () {
+    if (this._ball.getVerticalDirection() === 'down') {
+      this._paddleTwo._moveDown()
+    }
+    if (this._ball.getVerticalDirection() === 'up') {
+      this._paddleTwo._moveUp()
     }
   }
 

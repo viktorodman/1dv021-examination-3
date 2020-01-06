@@ -13,6 +13,7 @@ class PongBall extends window.HTMLElement {
 
     this._color = 'black'
     this._radius = 10
+    this._verticalDirection = 'down'
     this._dy = 1
     this._dx = 1
     this._position = {
@@ -20,7 +21,7 @@ class PongBall extends window.HTMLElement {
       y: null
     }
     this._direction = {
-      dirY: -2,
+      dirY: 2,
       dirX: 2
     }
   }
@@ -80,10 +81,12 @@ class PongBall extends window.HTMLElement {
 
   _moveUp () {
     this._direction.dirY = -2
+    this._verticalDirection = 'up'
   }
 
   _moveDown () {
     this._direction.dirY = 2
+    this._verticalDirection = 'down'
   }
 
   _moveLeft () {
@@ -106,6 +109,10 @@ class PongBall extends window.HTMLElement {
   _stopBall () {
     this._direction.dirY = 0
     this._direction.dirX = 0
+  }
+
+  getVerticalDirection () {
+    return this._verticalDirection
   }
 }
 
