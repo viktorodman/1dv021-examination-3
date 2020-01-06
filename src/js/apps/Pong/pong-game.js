@@ -16,7 +16,8 @@ template.innerHTML = `
         }
     </style>
     <div class="wrapper">
-        <pong-table></pong-table>
+        <!-- <pong-table></pong-table> -->
+        <pong-home></pong-home>
     </div>
 `
 /**
@@ -45,11 +46,11 @@ class PongGame extends window.HTMLElement {
    * @memberof PongGame
    */
   connectedCallback () {
-    this._pongTable.addEventListener('win', event => {
+    /* this._pongTable.addEventListener('win', event => {
       const gameOver = document.createElement('game-over')
       this._pongTable.remove()
       this._wrapper.appendChild(gameOver)
-    })
+    }) */
   }
 }
 

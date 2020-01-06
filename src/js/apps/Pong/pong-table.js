@@ -248,7 +248,10 @@ class PongTable extends window.HTMLElement {
 
   _updatePaddles () {
     this._movePaddle(this._paddleOne, this._paddleOneUp, this._paddleOneDown)
-    this._movePaddle(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
+    if (this._twoPlayers) {
+      this._movePaddle(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
+    }
+
     this._moveBot()
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
@@ -312,6 +315,7 @@ class PongTable extends window.HTMLElement {
     if (this._ball.getVerticalDirection() === 'down') {
       this._paddleTwo._moveDown()
     }
+
     if (this._ball.getVerticalDirection() === 'up') {
       this._paddleTwo._moveUp()
     }
