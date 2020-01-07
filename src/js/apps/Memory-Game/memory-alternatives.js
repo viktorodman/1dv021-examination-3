@@ -21,7 +21,7 @@ template.innerHTML = `
                 color: #001f3f;
                 padding: 5px;
             }
-            .altWrapper {
+            .wrapper {
                 background-color: #317a5a;
                 height: 10%;
                 /* width: 65%; */
@@ -31,7 +31,7 @@ template.innerHTML = `
                 border-bottom-right-radius: 5px;
             }
         </style>
-        <div class="altWrapper">
+        <div class="wrapper">
             <input id="alt1" type="radio" name="Alternatives" rows="4" columns="4">
             <label for="alt1">4x4</label>
             <input id="alt2" type="radio" name="Alternatives" rows="2" columns="2">
@@ -57,7 +57,7 @@ class MemoryAlternatives extends window.HTMLElement {
 
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._radioButtons = this.shadowRoot.querySelectorAll('input')
-    this._altWrapper = this.shadowRoot.querySelector('.altWrapper')
+    this._wrapper = this.shadowRoot.querySelector('.wrapper')
   }
 
   /**
@@ -68,7 +68,7 @@ class MemoryAlternatives extends window.HTMLElement {
   connectedCallback () {
     this._boundOnRadioClick = this._onRadioClick.bind(this)
 
-    this._altWrapper.addEventListener('click', this._boundOnRadioClick)
+    this._wrapper.addEventListener('click', this._boundOnRadioClick)
   }
 
   /**
@@ -77,7 +77,7 @@ class MemoryAlternatives extends window.HTMLElement {
    * @memberof MemoryAlternatives
    */
   disconnectedCallback () {
-    this._altWrapper.removeEventListener('click', this._boundOnRadioClick)
+    this._wrapper.removeEventListener('click', this._boundOnRadioClick)
   }
 
   /**

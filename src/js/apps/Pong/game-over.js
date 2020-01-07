@@ -7,9 +7,20 @@
 */
 const template = document.createElement('template')
 template.innerHTML = `
+    <style>
+        :host {
+            color: #FFFFFF;
+        }
+        .wrapper {
+            margin: auto;
+            width: 80%;
+            text-align: center;
+        }
+    </style>
     <div class="wrapper">
+        <div ></div>
         <span class="wintext">You win</span>
-        <button class="restart">Play Again</button>
+        
     </div>
 `
 class GameOver extends window.HTMLElement {
@@ -17,15 +28,9 @@ class GameOver extends window.HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
-
-    this._restartButton = this.shadowRoot.querySelector('.restart')
   }
 
   connectedCallback () {
-    this._boundOnRestart = this._onRestart.bind(this)
-  }
-
-  onRestart (event) {
 
   }
 }

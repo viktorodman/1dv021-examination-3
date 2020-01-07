@@ -206,6 +206,8 @@ class MemoryGame extends window.HTMLElement {
    */
   _addGameButtons () {
     const gameButtons = document.createElement('memory-game-buttons')
+    gameButtons.setAttribute('bgcolor', '#317a5a')
+    gameButtons.setAttribute('fcolor', '#001f3f')
     this._memoryWrapper.appendChild(gameButtons)
 
     this._gameButtons = this.shadowRoot.querySelector('memory-game-buttons')

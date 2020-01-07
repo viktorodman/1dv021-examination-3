@@ -74,7 +74,7 @@ template.innerHTML = `
   </div>
 `
 /**
- * Represents a name form
+ * Represents a Enter name form
  *
  * @class EnterName
  * @extends {window.HTMLElement}
@@ -98,7 +98,7 @@ class EnterName extends window.HTMLElement {
   /**
    * Runs when the element is appended to a document-connected element
    *
-   * @memberof QuizApp
+   * @memberof EnterName
    */
   connectedCallback () {
     this._boundOnButtonClick = this._addName.bind(this)
@@ -108,12 +108,35 @@ class EnterName extends window.HTMLElement {
     this._input.addEventListener('keydown', this._boundOnEnter)
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof EnterName
+   */
+  disconnectedCallback () {
+    this._button.removeEventListener('click', this._boundOnButtonClick)
+    this._input.removeEventListener('keydown', this._boundOnEnter)
+  }
+
+  /**
+  * Runs when a key is pressed
+  * Calls this._addName() if the the pressed key is 'enter'
+  *
+  * @param {*} event
+  * @memberof EnterName
+  */
   _onEnter (event) {
     if (event.code === 'Enter') {
       this._addName()
     }
   }
 
+  /**
+  * Dispatches a new event with the entered name
+  * if a name is entered
+  *
+  * @memberof EnterName
+  */
   _addName () {
     if (this._input.value.length > 0) {
       this._name = this._input.value

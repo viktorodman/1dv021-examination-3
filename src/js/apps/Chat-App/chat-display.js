@@ -34,7 +34,17 @@ template.innerHTML = `
     <button class="nameChange">Change Name</button>
     <message-area></message-area>
 `
+/**
+ * Represent a Chat Display
+ *
+ * @class ChatDisplay
+ * @extends {window.HTMLElement}
+ */
 class ChatDisplay extends window.HTMLElement {
+  /**
+   * Creates an instance of ChatDisplay.
+   * @memberof ChatDisplay
+   */
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
@@ -79,31 +89,42 @@ class ChatDisplay extends window.HTMLElement {
     }
   }
 
+  /**
+   * Runs when the element is appended to a document-connected element
+   *
+   * @memberof ChatDisplay
+   */
   connectedCallback () {
     this._socket = new window.WebSocket(this._socketURL)
 
-    this._boundOnOpen = this._onOpen.bind(this)
     this._boundOnMessage = this._onMessage.bind(this)
     this._boundOnSendMessage = this._onSendMessage.bind(this)
     this._boundOnNameChange = this._onNameChange.bind(this)
 
-    this._socket.addEventListener('open', this._boundOnOpen)
     this._socket.addEventListener('message', this._boundOnMessage)
     this._userMessage.addEventListener('sendmessage', this._boundOnSendMessage)
     this._changeName.addEventListener('click', this._boundOnNameChange)
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof ChatDisplay
+   */
   disconnectedCallback () {
     this._socket.close()
-    this._socket.removeEventListener('open', this._boundOnOpen)
     this._socket.removeEventListener('message', this._boundOnMessage)
     this._userMessage.removeEventListener('sendmessage', this._boundOnSendMessage)
+    this._changeName.removeEventListener('click', this._boundOnNameChange)
   }
 
-  _onOpen (event) {
-    /* this._socket.send(JSON.stringify(this._data)) */
-  }
-
+  /**
+   * Creates a new chat-message when the chat receives a new
+   * message from the websocket
+   *
+   * @param {Event} event An message Event
+   * @memberof ChatDisplay
+   */
   _onMessage (event) {
     const data = JSON.parse(event.data)
     console.log(data)
@@ -120,6 +141,12 @@ class ChatDisplay extends window.HTMLElement {
     this._messageContainer.scrollTop = this._messageContainer.scrollHeight
   }
 
+  /**
+   * Send a message to the websocket server
+   *
+   * @param {CustomEvent} event A Custom Event
+   * @memberof ChatDisplay
+   */
   _onSendMessage (event) {
     console.log(event.detail)
     const sendmessage = {
@@ -132,6 +159,12 @@ class ChatDisplay extends window.HTMLElement {
     this._socket.send(JSON.stringify(sendmessage))
   }
 
+  /**
+  * Dispatches a Custom Event when the change name button is clicked
+  *
+  * @param {Event} event A click Event
+  * @memberof ChatDisplay
+  */
   _onNameChange (event) {
     this.dispatchEvent(new window.CustomEvent('changeName'))
   }

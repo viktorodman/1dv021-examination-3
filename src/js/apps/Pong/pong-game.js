@@ -13,11 +13,15 @@ template.innerHTML = `
             width: 100%;
             height: 100%;
             background-color: #111111;
+            margin: auto;
+            text-align: center;
         }
     </style>
     <div class="wrapper">
        <!--  <pong-table></pong-table> -->
         <pong-home></pong-home>
+       <!--  <game-over></game-over>
+        <memory-game-buttons fcolor="yellow" bgcolor="green" ><memory-game-buttons> -->
     </div>
 `
 /**
@@ -39,6 +43,7 @@ class PongGame extends window.HTMLElement {
     this._home = this.shadowRoot.querySelector('pong-home')
     this._pongTable = undefined
     this._wrapper = this.shadowRoot.querySelector('.wrapper')
+    this._twoPlayers = false
   }
 
   /**
@@ -49,11 +54,9 @@ class PongGame extends window.HTMLElement {
   connectedCallback () {
     this._boundOnStartGame = this._onStartGame.bind(this)
     this._boundOnWin = this._onWin.bind(this)
-    /* this._pongTable.addEventListener('win', event => {
-      const gameOver = document.createElement('game-over')
-      this._pongTable.remove()
-      this._wrapper.appendChild(gameOver)
-    }) */
+    this._boundOnRestart = this._onRestart.bind(this)
+    this._boundOnHome = this._onHome.bind(this)
+
     this._home.addEventListener('startgame', this._boundOnStartGame)
   }
 
@@ -61,19 +64,53 @@ class PongGame extends window.HTMLElement {
     this._home.removeEventListener('startgame', this._boundOnStartGame)
     this._home.remove()
 
-    const table = document.createElement('pong-table')
-
     if (event.detail === 2) {
-      table.setAttribute('twoplayers', 'true')
+      this._twoPlayers = true
     }
-
-    this._wrapper.appendChild(table)
+    this._createPongTable(this._twoPlayers)
   }
 
   _onWin (event) {
     const gameOver = document.createElement('game-over')
+    const gameButtons = document.createElement('memory-game-buttons')
+    gameButtons.setAttribute('fcolor', '#FFFFFF')
+    gameButtons.setAttribute('bgcolor', '#4a4a4a')
     this._pongTable.remove()
-    this._wrapper.appendChild(gameOver)
+    this._gameOver = this._wrapper.appendChild(gameOver)
+    this._gameButtons = this._wrapper.appendChild(gameButtons)
+
+    this._gameButtons.addEventListener('restartclick', this._boundOnRestart)
+    this._gameButtons.addEventListener('homeclick', this._boundOnHome)
+  }
+
+  _onRestart (event) {
+    this._removeGameOver()
+    this._createPongTable()
+  }
+
+  _onHome (event) {
+    this._removeGameOver()
+    this._twoPlayers = false
+    this._home = this._wrapper.appendChild(document.createElement('pong-home'))
+    this._home.addEventListener('startgame', this._boundOnStartGame)
+  }
+
+  _createPongTable (twoPlayers) {
+    const table = document.createElement('pong-table')
+
+    if (twoPlayers) {
+      table.setAttribute('twoplayers', 'true')
+    }
+
+    this._pongTable = this._wrapper.appendChild(table)
+    this._pongTable.addEventListener('win', this._boundOnWin)
+  }
+
+  _removeGameOver () {
+    this._gameButtons.removeEventListener('restartclick', this._boundOnRestart)
+    this._gameButtons.removeEventListener('homeclick', this._boundOnHome)
+    this._gameOver.remove()
+    this._gameButtons.remove()
   }
 }
 

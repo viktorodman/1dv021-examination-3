@@ -33,33 +33,56 @@ template.innerHTML = `
       padding: 15px;
       color: #7FDBFF;
     }
-    button {
-      font-size: 30px;
-    }
   </style>
     <div class="messageBox">
         <textarea placeholder="Enter Message"></textarea>
-        
     </div>
 `
-
+/**
+ * Represents a Message Area
+ *
+ * @class MessageArea
+ * @extends {window.HTMLElement}
+ */
 class MessageArea extends window.HTMLElement {
+  /**
+   * Creates an instance of MessageArea.
+   * @memberof MessageArea
+   */
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this._textArea = this.shadowRoot.querySelector('textarea')
-    this._button = this.shadowRoot.querySelector('button')
   }
 
+  /**
+   * Runs when the element is appended to a document-connected element
+   *
+   * @memberof MessageArea
+   */
   connectedCallback () {
-    this._boundOnButtonClick = this._onButtonClick.bind(this)
     this._boundOnEnter = this._onEnter.bind(this)
-    /* this._button.addEventListener('click', this._boundOnButtonClick) */
     this._textArea.addEventListener('keydown', this._boundOnEnter)
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof MessageArea
+   */
+  disconnectedCallback () {
+    this._textArea.removeEventListener('keydown', this._boundOnEnter)
+  }
+
+  /**
+  * Runs when a key is pressed
+  * Calls _sendMessage() if the the pressed key is 'enter'
+  *
+  * @param {Event} event A click Event
+  * @memberof MessageArea
+  */
   _onEnter (event) {
     if (event.code === 'Enter') {
       if (!event.shiftKey) {
@@ -68,16 +91,14 @@ class MessageArea extends window.HTMLElement {
         this._textArea.value = ''
       }
     }
-    /* event.preventDefault() */
   }
 
-  _onButtonClick (event) {
-    event.preventDefault()
-    if (this._textArea.value.length > 0) {
-      this._sendMessage(this._textArea.value)
-    }
-  }
-
+  /**
+   * Dispatches an event with entered message
+   *
+   * @param {String} message A message
+   * @memberof MessageArea
+   */
   _sendMessage (message) {
     this.dispatchEvent(new window.CustomEvent('sendmessage', { detail: message }))
   }

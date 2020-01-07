@@ -316,9 +316,15 @@ class PongTable extends window.HTMLElement {
       this._paddleTwo._moveDown()
     }
 
-    if (this._ball.getVerticalDirection() === 'up') {
+    if (this._ball.getPosition().y < this._paddleTwo._getY() - (this._paddleTwo._getHeight() / 2)) {
       this._paddleTwo._moveUp()
     }
+    if (this._ball.getPosition().y > this._paddleTwo.getBottomPos()) {
+      this._paddleTwo._moveDown()
+    }
+    /*  if (this._ball.getVerticalDirection() === 'up') {
+
+    } */
   }
 
   _checkWin (score, player) {

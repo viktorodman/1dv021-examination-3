@@ -44,6 +44,10 @@ template.innerHTML = `
  * @extends {window.HTMLElement}
  */
 class ChatMessage extends window.HTMLElement {
+  /**
+   * Creates an instance of ChatMessage.
+   * @memberof ChatMessage
+   */
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
@@ -91,6 +95,11 @@ class ChatMessage extends window.HTMLElement {
     }
   }
 
+  /**
+   * Runs when the element is appended to a document-connected element
+   *
+   * @memberof ChatMessage
+   */
   connectedCallback () {
     this._messageSpan.textContent = this._message
     this._nameSpan.textContent = this._userName

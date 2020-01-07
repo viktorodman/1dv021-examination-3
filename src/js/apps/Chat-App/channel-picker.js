@@ -49,6 +49,15 @@ class ChannelPicker extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
   }
+
+  /**
+   * Runs when the element is appended to a document-connected element
+   *
+   * @memberof ChannelPicker
+   */
+  connectedCallback () {
+
+  }
 }
 
 window.customElements.define('channel-picker', ChannelPicker)
