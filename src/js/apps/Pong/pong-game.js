@@ -60,6 +60,31 @@ class PongGame extends window.HTMLElement {
     this._home.addEventListener('startgame', this._boundOnStartGame)
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof PongGame
+   */
+  disconnectedCallback () {
+    if (this._home) {
+      this._home.removeEventListener('startgame', this._boundOnStartGame)
+    }
+    if (this._gameButtons) {
+      this._gameButtons.removeEventListener('restartclick', this._boundOnRestart)
+      this._gameButtons.removeEventListener('homeclick', this._boundOnHome)
+    }
+    if (this._pongTable) {
+      this._pongTable.removeEventListener('win', this._boundOnWin)
+    }
+  }
+
+  /**
+   * Runs when the user presses start game
+   * Adds a new pongtable to the wrapper
+   *
+   * @param {CustomEvent} event A startgame event
+   * @memberof PongGame
+   */
   _onStartGame (event) {
     this._home.removeEventListener('startgame', this._boundOnStartGame)
     this._home.remove()
@@ -70,12 +95,24 @@ class PongGame extends window.HTMLElement {
     this._createPongTable(this._twoPlayers)
   }
 
+  /**
+  * Runs when a win occurs
+  * Removes the pong-table and adds game-buttons and
+  * a game-over elements
+  *
+  * @param {CustomEvent} event A win event
+  * @memberof PongGame
+  */
   _onWin (event) {
     const gameOver = document.createElement('game-over')
     const gameButtons = document.createElement('memory-game-buttons')
+
     gameButtons.setAttribute('fcolor', '#FFFFFF')
     gameButtons.setAttribute('bgcolor', '#4a4a4a')
+
+    this._pongTable.removeEventListener('win', this._boundOnWin)
     this._pongTable.remove()
+
     this._gameOver = this._wrapper.appendChild(gameOver)
     this._gameButtons = this._wrapper.appendChild(gameButtons)
 
@@ -83,11 +120,27 @@ class PongGame extends window.HTMLElement {
     this._gameButtons.addEventListener('homeclick', this._boundOnHome)
   }
 
+  /**
+  * Runs when the restart button is clicked
+  * Removes the game-buttons element and the game-over element
+  * And adds a new pong-table with the same settings as before
+  *
+  * @param {CustomEvent} event A restartclick event
+  * @memberof PongGame
+  */
   _onRestart (event) {
     this._removeGameOver()
-    this._createPongTable()
+    this._createPongTable(this._twoPlayers)
   }
 
+  /**
+  * Runs when the home button is clicked
+  * Removes the game-buttons element and the game-over element
+  * And adds a pong-home element
+  *
+  * @param {CustomEvent} event A homeclick event
+  * @memberof PongGame
+  */
   _onHome (event) {
     this._removeGameOver()
     this._twoPlayers = false
@@ -95,6 +148,12 @@ class PongGame extends window.HTMLElement {
     this._home.addEventListener('startgame', this._boundOnStartGame)
   }
 
+  /**
+   * Creates a new pong-table
+   *
+   * @param {Boolean} twoPlayers true or false
+   * @memberof PongGame
+   */
   _createPongTable (twoPlayers) {
     const table = document.createElement('pong-table')
 
@@ -106,6 +165,11 @@ class PongGame extends window.HTMLElement {
     this._pongTable.addEventListener('win', this._boundOnWin)
   }
 
+  /**
+   * Removes the game-over element and the game-buttons
+   *
+   * @memberof PongGame
+   */
   _removeGameOver () {
     this._gameButtons.removeEventListener('restartclick', this._boundOnRestart)
     this._gameButtons.removeEventListener('homeclick', this._boundOnHome)

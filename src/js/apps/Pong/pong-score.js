@@ -1,5 +1,5 @@
 /**
- * Module for PongTable
+ * Module for PongScore
  *
  * @module src/js/Pong/pong-score
  * @author Viktor Ödman
@@ -28,15 +28,28 @@ class PongScore extends window.HTMLElement {
 
   }
 
+  /**
+   * Renders the Pong Score
+   *
+   * @param {CanvasRenderingContext2D} canvas A html canvas
+   * @memberof PongScore
+   */
   _render (canvas) {
     canvas.font = this._font
 
     canvas.textAlign = 'center'
 
     canvas.fillText(this._score, this._position.x, this._position.y)
-    /* canvas.fillText('asdfa', 10, 10) */
   }
 
+  /**
+   * Sets the position of the score
+   *
+   * @param {Number} canvasWidth The canvas width
+   * @param {Number} canvasHeight The canvas height
+   * @param {Boolean} right True if the score should be on the right side
+   * @memberof PongScore
+   */
   setScorePosition (canvasWidth, canvasHeight, right) {
     if (right) {
       this._position.x = (canvasWidth / 2) + (canvasWidth / 6)
@@ -49,10 +62,21 @@ class PongScore extends window.HTMLElement {
     this._position.y = canvasHeight / 10
   }
 
+  /**
+   * Adds 1 to the score
+   *
+   * @memberof PongScore
+   */
   addScore () {
     this._score += 1
   }
 
+  /**
+   * Gets the current score
+   *
+   * @returns {number} The current score
+   * @memberof PongScore
+   */
   getScore () {
     return this._score
   }

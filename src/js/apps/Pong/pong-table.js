@@ -105,12 +105,23 @@ class PongTable extends window.HTMLElement {
     this._canvasWrapper.addEventListener('keyup', this._boundOnKeyUp)
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof PongTable
+   */
   disconnectedCallback () {
     clearInterval(this._intervalID)
     this._canvasWrapper.removeEventListener('keydown', this._boundOnKeyDown)
     this._canvasWrapper.removeEventListener('keyup', this._boundOnKeyUp)
+    this._canvasWrapper.removeEventListener('keydown', this._boundOnSpace)
   }
 
+  /**
+   *
+   *
+   * @memberof PongTable
+   */
   _pauseGame () {
     this._paddleOne._render(this.ctx)
     this._paddleTwo._render(this.ctx)
@@ -123,12 +134,24 @@ class PongTable extends window.HTMLElement {
     this._canvasWrapper.addEventListener('keydown', this._boundOnSpace)
   }
 
+  /**
+   * Starts an interval thats repaints the canvas
+   * every 10 milliseconds
+   *
+   * @memberof PongTable
+   */
   _startGame () {
     this._intervalID = window.setInterval(() => {
       this._renderBoard()
     }, 10)
   }
 
+  /**
+   * Handles the keydown events for the players
+   *
+   * @param {Event} event A keydown event
+   * @memberof PongTable
+   */
   _onKeyDown (event) {
     event.preventDefault()
     switch (event.code) {
@@ -142,6 +165,12 @@ class PongTable extends window.HTMLElement {
     }
   }
 
+  /**
+  * Handles the keyup events for the players
+  *
+  * @param {Event} event A keyup event
+  * @memberof PongTable
+  */
   _onKeyUp (event) {
     event.preventDefault()
     switch (event.code) {
@@ -155,6 +184,12 @@ class PongTable extends window.HTMLElement {
     }
   }
 
+  /**
+   * Handles keypress for the 'space' key
+   *
+   * @param {Event} event A keydown event
+   * @memberof PongTable
+   */
   _onSpace (event) {
     event.preventDefault()
     if (event.code !== 'Space') {
@@ -165,6 +200,12 @@ class PongTable extends window.HTMLElement {
     this._startGame()
   }
 
+  /**
+   * Creates a html canvas and appends it to the wrapper
+   *
+   * @returns {HTMLCanvasElement} The created canvas
+   * @memberof PongTable
+   */
   _createCanvas () {
     const canvas = document.createElement('canvas')
     canvas.width = this._resolution.width
@@ -175,6 +216,13 @@ class PongTable extends window.HTMLElement {
     return this._canvasWrapper.appendChild(canvas)
   }
 
+  /**
+   * Create a new paddle element
+   *
+   * @param {Boolean} player1 True if its player one
+   * @returns {HTMLElement} The created element
+   * @memberof PongTable
+   */
   _createPaddle (player1) {
     const paddle = document.createElement('pong-paddle')
     paddle.setAttribute('paddlewidth', 40)
@@ -192,6 +240,12 @@ class PongTable extends window.HTMLElement {
     return this._table.appendChild(paddle)
   }
 
+  /**
+   * Creates a pong-ball element
+   *
+   * @returns {HTMLElement} The created element
+   * @memberof PongTable
+   */
   _createBall () {
     const ball = document.createElement('pong-ball')
     ball.setAttribute('ballradius', 10)
@@ -200,6 +254,13 @@ class PongTable extends window.HTMLElement {
     return this._table.appendChild(ball)
   }
 
+  /**
+   * Create a new score element
+   *
+   * @param {Boolean} player1 True if its player one
+   * @returns {HTMLElement} The created element
+   * @memberof PongTable
+   */
   _createScore (player1) {
     const score = document.createElement('pong-score')
 
@@ -212,6 +273,11 @@ class PongTable extends window.HTMLElement {
     return this._table.appendChild(score)
   }
 
+  /**
+   * Creates all the elements for the game
+   *
+   * @memberof PongTable
+   */
   _createShapes () {
     this._paddleOne = this._createPaddle(true)
     this._paddleTwo = this._createPaddle(false)
@@ -220,6 +286,11 @@ class PongTable extends window.HTMLElement {
     this._p2Score = this._createScore(false)
   }
 
+  /**
+   * Renders all the parts of the game
+   *
+   * @memberof PongTable
+   */
   _renderBoard () {
     this.ctx.clearRect(0, 0, this._table.width, this._table.height)
     if (this._pause) {
@@ -245,6 +316,11 @@ class PongTable extends window.HTMLElement {
     this._checkWin(this._p2Score.getScore(), this._paddleTwo.getName())
   }
 
+  /**
+   * Updates the paddles positions
+   *
+   * @memberof PongTable
+   */
   _updatePaddles () {
     this._movePaddle(this._paddleOne, this._paddleOneUp, this._paddleOneDown)
     if (this._twoPlayers) {
@@ -257,16 +333,34 @@ class PongTable extends window.HTMLElement {
     this._paddleTwo._render(this.ctx)
   }
 
+  /**
+   * Updates the balls position
+   *
+   * @memberof PongTable
+   */
   _updateBall () {
     this._ball._move()
     this._ball._render(this.ctx)
   }
 
+  /**
+  * Updates the players scores
+  *
+  * @memberof PongTable
+  */
   _updateScore () {
     this._p1Score._render(this.ctx)
     this._p2Score._render(this.ctx)
   }
 
+  /**
+   * Check for the Collisions between the ball and the walls
+   *
+   * @param {Number} ballX The balls vertical position
+   * @param {Number} ballY The balls Horizontal position
+   * @param {Number} ballRadius The balls radius
+   * @memberof PongTable
+   */
   _checkWallCollision (ballX, ballY, ballRadius) {
     if (ballY - ballRadius < 0) {
       this._ball._moveDown()
@@ -284,6 +378,16 @@ class PongTable extends window.HTMLElement {
     }
   }
 
+  /**
+   * Checks collision between the paddles and the ball
+   *
+   * @param {Number} ballX The balls vertical position
+   * @param {Number} ballY The balls Horizontal position
+   * @param {Number} ballRadius The balls radius
+   * @param {Number} rightPaddleX The right paddles vertical position
+   * @param {Number} leftPaddleX The left paddles vertical position
+   * @memberof PongTable
+   */
   _checkPaddleCollision (ballX, ballY, ballRadius, rightPaddleX, leftPaddleX) {
     if (ballX - ballRadius === leftPaddleX) {
       if (ballY + ballRadius > this._paddleTwo._getY() && ballY - ballRadius < this._paddleTwo.getBottomPos()) {
@@ -298,6 +402,14 @@ class PongTable extends window.HTMLElement {
     }
   }
 
+  /**
+  * Moves the passed paddle
+  *
+  * @param {HTMLElement} paddle The passed pong-paddle
+  * @param {Boolean} up true if the paddles up key is pressed
+  * @param {Boolean} down true if the paddles down key is pressed
+  * @memberof PongTable
+  */
   _movePaddle (paddle, up, down) {
     if (up) {
       if (paddle._getY() > 0) {
@@ -311,6 +423,11 @@ class PongTable extends window.HTMLElement {
     }
   }
 
+  /**
+   * Moving the paddles based on the position of the ball
+   *
+   * @memberof PongTable
+   */
   _moveBot () {
     if (this._ball.getVerticalDirection() === 'down') {
       this._paddleTwo._moveDown()
@@ -327,6 +444,14 @@ class PongTable extends window.HTMLElement {
     } */
   }
 
+  /**
+   * Checks if any of the players score equals the win score
+   * Dispatches an event if a win has occurred
+   *
+   * @param {Number} score A players score
+   * @param {String} player A players name
+   * @memberof PongTable
+   */
   _checkWin (score, player) {
     if (score === 5) {
       this.dispatchEvent(new window.CustomEvent('win', { detail: player }))

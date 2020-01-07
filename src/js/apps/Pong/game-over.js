@@ -23,7 +23,17 @@ template.innerHTML = `
         
     </div>
 `
+/**
+ * Represents a game over display
+ *
+ * @class GameOver
+ * @extends {window.HTMLElement}
+ */
 class GameOver extends window.HTMLElement {
+  /**
+   * Creates an instance of GameOver.
+   * @memberof GameOver
+   */
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })

@@ -75,8 +75,17 @@ template.innerHTML = `
         </div>
     </div>
 `
-
+/**
+ * Represents the home screen of a Pong Game
+ *
+ * @class PongHome
+ * @extends {window.HTMLElement}
+ */
 class PongHome extends window.HTMLElement {
+  /**
+   * Creates an instance of PongHome.
+   * @memberof PongHome
+   */
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
@@ -87,6 +96,11 @@ class PongHome extends window.HTMLElement {
     this._playButton = this.shadowRoot.querySelector('.play')
   }
 
+  /**
+   * Runs when the element is appended to a document-connected element
+   *
+   * @memberof PongHome
+   */
   connectedCallback () {
     this._boundOnAltChange = this._onAltChange.bind(this)
     this._boundOnPlayClick = this._onPlayClick.bind(this)
@@ -95,6 +109,22 @@ class PongHome extends window.HTMLElement {
     this._playButton.addEventListener('click', this._boundOnPlayClick)
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof PongHome
+   */
+  disconnectedCallback () {
+    this._alternatives.removeEventListener('click', this._boundOnAltChange)
+    this._playButton.removeEventListener('click', this._boundOnPlayClick)
+  }
+
+  /**
+   * Dispatches a custom event with the number of players choosen
+   *
+   * @param {Event} event A click event
+   * @memberof PongHome
+   */
   _onPlayClick (event) {
     if (!this._numberOfPlayers) {
       return
@@ -102,6 +132,13 @@ class PongHome extends window.HTMLElement {
     this.dispatchEvent(new window.CustomEvent('startgame', { detail: this._numberOfPlayers }))
   }
 
+  /**
+   * Changes the numberofplayers property
+   * depending on what radiobutton that was clicked
+   *
+   * @param {Event} event A click event
+   * @memberof PongHome
+   */
   _onAltChange (event) {
     if (event.target.nodeName !== 'INPUT') {
       return
