@@ -103,7 +103,7 @@ class MemoryGame extends window.HTMLElement {
    * Runs when a radiobutton is clicked on the memory-alternatives.
    * Sets the boardsize of the memory board
    *
-   * @param {Event} event An altchange event (custom event)
+   * @param {CustomEvent} event An altchange event
    * @memberof MemoryGame
    */
   _onAltChange (event) {
@@ -114,7 +114,7 @@ class MemoryGame extends window.HTMLElement {
    * Starts a new memory game
    * Runs when the start game button is clicked.
    *
-   * @param {Event} event A startgame event (custom event)
+   * @param {CustomEvent} event A startgame event
    * @memberof MemoryGame
    */
   _onStartGame (event) {
@@ -132,7 +132,7 @@ class MemoryGame extends window.HTMLElement {
    * Restarts the memory game
    * Runs when the restart button is clicked.
    *
-   * @param {Event} event A restartclick event (custom event)
+   * @param {CustomEvent} event A restartclick event
    * @memberof MemoryGame
    */
   _onRestart (event) {
@@ -149,7 +149,7 @@ class MemoryGame extends window.HTMLElement {
    * Removes the memory game and displays the start screen
    * Runs when the home button is clicked
    *
-   * @param {Event} event A homeclick event (Custom Event)
+   * @param {CustomEvent} event A homeclick event
    * @memberof MemoryGame
    */
   _onHome (event) {
@@ -157,10 +157,8 @@ class MemoryGame extends window.HTMLElement {
     const alternatives = document.createElement('memory-alternatives')
     const startScreen = document.createElement('memory-start-screen')
 
-    this._memoryWrapper.appendChild(alternatives)
-    this._memoryWrapper.appendChild(startScreen)
-    this._alternatives = this.shadowRoot.querySelector('memory-alternatives')
-    this._startScreen = this.shadowRoot.querySelector('memory-start-screen')
+    this._alternatives = this._memoryWrapper.appendChild(alternatives)
+    this._startScreen = this._memoryWrapper.appendChild(startScreen)
     this._boardSize = null
 
     this._alternatives.addEventListener('altchange', this._boundOnAltChange)
@@ -208,9 +206,8 @@ class MemoryGame extends window.HTMLElement {
     const gameButtons = document.createElement('memory-game-buttons')
     gameButtons.setAttribute('bgcolor', '#317a5a')
     gameButtons.setAttribute('fcolor', '#001f3f')
-    this._memoryWrapper.appendChild(gameButtons)
 
-    this._gameButtons = this.shadowRoot.querySelector('memory-game-buttons')
+    this._gameButtons = this._memoryWrapper.appendChild(gameButtons)
 
     this._gameButtons.addEventListener('restartclick', this._boundOnRestart)
     this._gameButtons.addEventListener('homeclick', this._boundOnHome)
@@ -223,13 +220,11 @@ class MemoryGame extends window.HTMLElement {
    */
   _addTimer () {
     const timer = document.createElement('game-timer')
-    this._memoryWrapper.appendChild(timer)
-
-    this._timer = this.shadowRoot.querySelector('game-timer')
+    this._timer = this._memoryWrapper.appendChild(timer)
   }
 
   /**
-   * Runs the game is over
+   * Runs when the game is over
    *
    * @memberof MemoryGame
    */

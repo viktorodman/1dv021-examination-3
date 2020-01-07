@@ -9,10 +9,7 @@ const template = document.createElement('template')
 template.innerHTML = `
     <style>
         .wrapper {
-           /*  background-color: #c4c4c4; */
             margin-top: 20px;
-            /* width: 90%;
-            margin: 0 auto; */
             color: #001f3f;
         }
         button {

@@ -128,6 +128,12 @@ class MessageArea extends window.HTMLElement {
     this.dispatchEvent(new window.CustomEvent('sendmessage', { detail: message }))
   }
 
+  /**
+   * Updates the placeholder text on the textarea
+   *
+   * @param {String} channel A channel name
+   * @memberof MessageArea
+   */
   _updatePlaceHolder (channel) {
     this._textArea.placeholder = `Message #${channel}`
   }

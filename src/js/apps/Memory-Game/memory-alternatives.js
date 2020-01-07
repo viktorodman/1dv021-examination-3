@@ -41,7 +41,7 @@ template.innerHTML = `
         </div>
 `
 /**
- * Represents Alternatives for a memory-game
+ * Represents Alternatives for a Memory Game
  *
  * @class MemoryAlternatives
  * @extends {window.HTMLElement}

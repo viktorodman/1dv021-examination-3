@@ -186,6 +186,12 @@ class ChatDisplay extends window.HTMLElement {
     this.dispatchEvent(new window.CustomEvent('changeName'))
   }
 
+  /**
+   * Changes the channel to what the user entered
+   *
+   * @param {CustomEvent} event A Custom Event
+   * @memberof ChatDisplay
+   */
   _onChannelChange (event) {
     if (event.detail.length > 0) {
       if (event.detail === 'all') {
