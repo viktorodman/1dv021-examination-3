@@ -35,7 +35,7 @@ template.innerHTML = `
     }
   </style>
     <div class="messageBox">
-        <textarea placeholder="Enter Message"></textarea>
+        <textarea></textarea>
     </div>
 `
 /**
@@ -55,6 +55,31 @@ class MessageArea extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     this._textArea = this.shadowRoot.querySelector('textarea')
+  }
+
+  /**
+   * Get what attributes attributeChangedCallback should look for
+   *
+   * @readonly
+   * @static
+   * @memberof ChatDisplay
+   */
+  static get observedAttributes () {
+    return ['chatchannel']
+  }
+
+  /**
+   * Is called when some of the observed attributes is called
+   *
+   * @param {String} name the attribute name
+   * @param {String} oldValue old attribute value
+   * @param {String} newValue new attribute value
+   * @memberof ChatDisplay
+   */
+  attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'chatchannel') {
+      this._updatePlaceHolder(newValue)
+    }
   }
 
   /**
@@ -101,6 +126,10 @@ class MessageArea extends window.HTMLElement {
    */
   _sendMessage (message) {
     this.dispatchEvent(new window.CustomEvent('sendmessage', { detail: message }))
+  }
+
+  _updatePlaceHolder (channel) {
+    this._textArea.placeholder = `Message #${channel}`
   }
 }
 window.customElements.define('message-area', MessageArea)

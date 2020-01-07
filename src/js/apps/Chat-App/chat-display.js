@@ -103,6 +103,7 @@ class ChatDisplay extends window.HTMLElement {
     this._boundOnSendMessage = this._onSendMessage.bind(this)
     this._boundOnNameChange = this._onNameChange.bind(this)
     this._boundOnChannelChange = this._onChannelChange.bind(this)
+    this._userMessage.setAttribute('chatchannel', 'all')
 
     this._socket.addEventListener('message', this._boundOnMessage)
     this._userMessage.addEventListener('sendmessage', this._boundOnSendMessage)
@@ -137,11 +138,8 @@ class ChatDisplay extends window.HTMLElement {
     }
 
     if (data.username === 'The Server') {
-      /* message.setAttribute('server', 'true') */
       this._addMessage(data.username, data.data, true)
     } else if (this._channelName === '') {
-      /* message.setAttribute('username', data.username)
-      message.setAttribute('message', data.data) */
       this._addMessage(data.username, data.data, false)
     } else if (data.channel === this._channelName) {
       this._addMessage(data.username, data.data, false)
@@ -189,7 +187,14 @@ class ChatDisplay extends window.HTMLElement {
   }
 
   _onChannelChange (event) {
-    this._channelName = event.detail
+    if (event.detail.length > 0) {
+      if (event.detail === 'all') {
+        this._channelName = ''
+      } else {
+        this._channelName = event.detail
+      }
+    }
+    this._userMessage.setAttribute('chatchannel', event.detail)
   }
 }
 window.customElements.define('chat-display', ChatDisplay)

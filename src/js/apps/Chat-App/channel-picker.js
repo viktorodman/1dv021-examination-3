@@ -68,6 +68,7 @@ class ChannelPicker extends window.HTMLElement {
       return
     }
     const channel = this._channelName.value
+    this._channelName.value = ''
     this.dispatchEvent(new window.CustomEvent('channelchange', { detail: channel }))
   }
 }
