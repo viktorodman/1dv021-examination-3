@@ -30,7 +30,7 @@ template.innerHTML = `
     }
     </style>
     <div class="channel">
-      <input class="name" type="text" placeholder="Pick A Channel">
+      <input class="channelName" type="text" placeholder="Pick A Channel">
     </div>
 `
 /**
@@ -48,6 +48,8 @@ class ChannelPicker extends window.HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+
+    this._channelName = this.shadowRoot.querySelector('.channelName')
   }
 
   /**
@@ -56,7 +58,17 @@ class ChannelPicker extends window.HTMLElement {
    * @memberof ChannelPicker
    */
   connectedCallback () {
+    this._boundOnEnter = this._onEnter.bind(this)
 
+    this._channelName.addEventListener('keydown', this._boundOnEnter)
+  }
+
+  _onEnter (event) {
+    if (event.code !== 'Enter') {
+      return
+    }
+    const channel = this._channelName.value
+    this.dispatchEvent(new window.CustomEvent('channelchange', { detail: channel }))
   }
 }
 

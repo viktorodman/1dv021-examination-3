@@ -52,8 +52,10 @@ class ChatDisplay extends window.HTMLElement {
     this._socket = undefined
     this._socketURL = undefined
     this._userMessage = this.shadowRoot.querySelector('message-area')
+    this._channelPicker = this.shadowRoot.querySelector('channel-picker')
     this._messageContainer = this.shadowRoot.querySelector('.messageContainer')
     this._changeName = this.shadowRoot.querySelector('.nameChange')
+    this._channelName = ''
     this._data = {
       type: 'message',
       data: '',
@@ -100,10 +102,12 @@ class ChatDisplay extends window.HTMLElement {
     this._boundOnMessage = this._onMessage.bind(this)
     this._boundOnSendMessage = this._onSendMessage.bind(this)
     this._boundOnNameChange = this._onNameChange.bind(this)
+    this._boundOnChannelChange = this._onChannelChange.bind(this)
 
     this._socket.addEventListener('message', this._boundOnMessage)
     this._userMessage.addEventListener('sendmessage', this._boundOnSendMessage)
     this._changeName.addEventListener('click', this._boundOnNameChange)
+    this._channelPicker.addEventListener('channelchange', this._boundOnChannelChange)
   }
 
   /**
@@ -131,13 +135,28 @@ class ChatDisplay extends window.HTMLElement {
     if (data.username === 'The Server' && data.type === 'heartbeat') {
       return
     }
-    const message = document.createElement('chat-message')
+
     if (data.username === 'The Server') {
-      message.setAttribute('server', 'true')
+      /* message.setAttribute('server', 'true') */
+      this._addMessage(data.username, data.data, true)
+    } else if (this._channelName === '') {
+      /* message.setAttribute('username', data.username)
+      message.setAttribute('message', data.data) */
+      this._addMessage(data.username, data.data, false)
+    } else if (data.channel === this._channelName) {
+      this._addMessage(data.username, data.data, false)
     }
-    message.setAttribute('username', data.username)
-    message.setAttribute('message', data.data)
-    this._messageContainer.appendChild(message)
+  }
+
+  _addMessage (name, message, serverMessage) {
+    const newMessage = document.createElement('chat-message')
+    if (serverMessage) {
+      newMessage.setAttribute('server', 'true')
+    }
+
+    newMessage.setAttribute('username', name)
+    newMessage.setAttribute('message', message)
+    this._messageContainer.appendChild(newMessage)
     this._messageContainer.scrollTop = this._messageContainer.scrollHeight
   }
 
@@ -153,7 +172,7 @@ class ChatDisplay extends window.HTMLElement {
       type: 'message',
       data: event.detail,
       username: this._userName,
-      channel: '',
+      channel: this._channelName,
       key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     }
     this._socket.send(JSON.stringify(sendmessage))
@@ -167,6 +186,10 @@ class ChatDisplay extends window.HTMLElement {
   */
   _onNameChange (event) {
     this.dispatchEvent(new window.CustomEvent('changeName'))
+  }
+
+  _onChannelChange (event) {
+    this._channelName = event.detail
   }
 }
 window.customElements.define('chat-display', ChatDisplay)
