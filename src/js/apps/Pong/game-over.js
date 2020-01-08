@@ -108,7 +108,7 @@ class GameOver extends window.HTMLElement {
   _updateRendering () {
     this._addTextContent(this._timeSelector, this._time)
     this._addTextContent(this._gameInfoSelector, this._gameInfo)
-    this._addTextContent(this._winnerNameSelector, `${this._winnerName} Wins!`)
+    this._addTextContent(this._winnerNameSelector, this._winnerName)
     this._addTextContent(this._winTextSelector, this._winText)
   }
 

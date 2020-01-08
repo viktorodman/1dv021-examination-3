@@ -15,10 +15,9 @@ TODO
     Create Clickable Icons
     Fix Bug when i close the last window
 ****Inte Klart
-    FIX Pong BOT
-    FIX Brick flip speed
     TOP Bar with time and day
     Fix Selected window bug when releasing a window under another
+    Move Imports
 
     
 

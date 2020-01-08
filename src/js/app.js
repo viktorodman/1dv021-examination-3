@@ -7,6 +7,7 @@
 
 // Desktop
 import './desktop/my-desktop.js'
+import './desktop/info-bar.js'
 // Task Bar
 import './taskbar/task-bar.js'
 import './taskbar/task-button.js'

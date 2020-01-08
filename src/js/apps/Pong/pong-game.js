@@ -104,7 +104,7 @@ class PongGame extends window.HTMLElement {
   _onWin (event) {
     const gameOver = document.createElement('game-over')
     const gameButtons = document.createElement('memory-game-buttons')
-    gameOver.setAttribute('winnername', event.detail)
+    gameOver.setAttribute('winnername', `${event.detail} Wins!`)
     gameOver.setAttribute('wintext', 'Play Again')
     gameButtons.setAttribute('fcolor', '#FFFFFF')
     gameButtons.setAttribute('bgcolor', '#4a4a4a')

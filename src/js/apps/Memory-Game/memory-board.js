@@ -63,6 +63,7 @@ class MemoryBoard extends window.HTMLElement {
     this._turn1 = null
     this._turn2 = null
     this._attemptCounter = 0
+    this._brickFlipTime = 700
   }
 
   /**
@@ -247,7 +248,7 @@ class MemoryBoard extends window.HTMLElement {
    * @memberof MemoryBoard
    */
   flipBrick (eventTarget) {
-    if (eventTarget.nodeName !== 'A' || this._turn2) {
+    if (eventTarget.nodeName !== 'A' || this._turn2 || eventTarget.firstChild.classList.contains('hidden')) {
       return
     }
 
@@ -259,6 +260,7 @@ class MemoryBoard extends window.HTMLElement {
       this._changePicture(this._turn2.firstChild, this._getImage(this._turn2))
       this._attemptCounter += 1
       const match = this._checkMatch(this._getImage(this._turn1), this._getImage(this._turn2))
+
       // MATCH
       if (match) {
         setTimeout(() => {
@@ -268,7 +270,7 @@ class MemoryBoard extends window.HTMLElement {
           this._turn2 = null
           this._clearedBricks++
           this.checkWin()
-        }, 500)
+        }, this._brickFlipTime)
       } else {
         // NO MATCH
         setTimeout(() => {
@@ -277,7 +279,7 @@ class MemoryBoard extends window.HTMLElement {
 
           this._turn1 = null
           this._turn2 = null
-        }, 1200)
+        }, this._brickFlipTime)
       }
     }
   }

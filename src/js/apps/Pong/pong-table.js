@@ -392,16 +392,12 @@ class PongTable extends window.HTMLElement {
     if (ballX - ballRadius === leftPaddleX) {
       if (ballY + ballRadius > this._paddleTwo._getY() && ballY < this._paddleTwo.getTopEdge()) {
         this._ball._moveRight()
-        console.log('1')
         if (this._ball.getVerticalDirection() === 'down') {
-          console.log('2')
           this._ball._moveUp()
         }
       } else if (ballY - ballRadius < this._paddleTwo.getBottomPos() && ballY > this._paddleTwo.getBottomEdge()) {
         this._ball._moveRight()
-        console.log('1')
         if (this._ball.getVerticalDirection() === 'up') {
-          console.log('2')
           this._ball._moveDown()
         }
       } else if (ballY + ballRadius > this._paddleTwo._getY() && ballY - ballRadius < this._paddleTwo.getBottomPos()) {
@@ -412,16 +408,12 @@ class PongTable extends window.HTMLElement {
     if (ballX - ballRadius === rightPaddleX) {
       if (ballY + ballRadius > this._paddleOne._getY() && ballY < this._paddleOne.getTopEdge()) {
         this._ball._moveLeft()
-        console.log('1')
         if (this._ball.getVerticalDirection() === 'down') {
-          console.log('2')
           this._ball._moveUp()
         }
       } else if (ballY - ballRadius < this._paddleOne.getBottomPos() && ballY > this._paddleOne.getBottomEdge()) {
         this._ball._moveRight()
-        console.log('1')
         if (this._ball.getVerticalDirection() === 'up') {
-          console.log('2')
           this._ball._moveDown()
         }
       } else if (ballY + ballRadius > this._paddleOne._getY() && ballY - ballRadius < this._paddleOne.getBottomPos()) {
