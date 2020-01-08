@@ -18,10 +18,8 @@ template.innerHTML = `
         }
     </style>
     <div class="wrapper">
-       <!--  <pong-table></pong-table> -->
-        <!-- <pong-home></pong-home> -->
-       <game-over></game-over>
-        <memory-game-buttons fcolor="yellow" bgcolor="green" ><memory-game-buttons> -->
+       
+        <pong-home></pong-home>
     </div>
 `
 /**
@@ -106,7 +104,8 @@ class PongGame extends window.HTMLElement {
   _onWin (event) {
     const gameOver = document.createElement('game-over')
     const gameButtons = document.createElement('memory-game-buttons')
-
+    gameOver.setAttribute('winnername', event.detail)
+    gameOver.setAttribute('wintext', 'Play Again')
     gameButtons.setAttribute('fcolor', '#FFFFFF')
     gameButtons.setAttribute('bgcolor', '#4a4a4a')
 

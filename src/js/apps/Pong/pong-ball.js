@@ -31,7 +31,7 @@ class PongBall extends window.HTMLElement {
       y: null
     }
     this._direction = {
-      dirY: 2,
+      dirY: 0,
       dirX: 2
     }
   }

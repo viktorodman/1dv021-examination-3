@@ -26,7 +26,7 @@ class PongPaddle extends window.HTMLElement {
     this._paddleSpacing = 20
     this._color = 'black'
     this._tableSide = undefined
-    this._dy = 1
+    this._dy = 1.9
     this._name = undefined
 
     this._position = {
@@ -214,6 +214,14 @@ class PongPaddle extends window.HTMLElement {
    */
   getName () {
     return this._name
+  }
+
+  getTopEdge () {
+    return this._getY() + (this._getHeight() / 3)
+  }
+
+  getBottomEdge () {
+    return this.getBottomPos() - (this._getHeight() / 3)
   }
 }
 

@@ -15,13 +15,11 @@ TODO
     Create Clickable Icons
     Fix Bug when i close the last window
 ****Inte Klart
-    Click counter on Memory-Game
     FIX Pong BOT
     FIX Brick flip speed
     TOP Bar with time and day
-    Gameover on pong game
     Fix Selected window bug when releasing a window under another
-    
+
     
 
     

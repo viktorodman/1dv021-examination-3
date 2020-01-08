@@ -14,24 +14,28 @@ template.innerHTML = `
         .wrapper {
             margin: auto;
             width: 80%;
+            height: 80%;
             text-align: center;
         }
         .winText {
             text-align: center;
             font-size: 60px;
         }
+        .row{
+            height: 20%;
+        }
     </style>
     <div class="wrapper">
-        <div class="row1">
-            <span class="time">Row 1</span>
+        <div class="row1 row">
+            <span class="time"></span>
         </div>
-        <div class="row2">
-            <span class="gameInfo">Row 2</span>
+        <div class="row2 row">
+            <span class="gameInfo"></span>
         </div>
-        <div class="row3">
+        <div class="row3 row">
             <span class="winnerName"></span>
         </div>
-        <div class="row4">
+        <div class="row4 row">
             <span class="winText">YOU WIN</span>
         </div>
     </div>
@@ -104,7 +108,7 @@ class GameOver extends window.HTMLElement {
   _updateRendering () {
     this._addTextContent(this._timeSelector, this._time)
     this._addTextContent(this._gameInfoSelector, this._gameInfo)
-    this._addTextContent(this._winnerNameSelector, this._winnerName)
+    this._addTextContent(this._winnerNameSelector, `${this._winnerName} Wins!`)
     this._addTextContent(this._winTextSelector, this._winText)
   }
 
