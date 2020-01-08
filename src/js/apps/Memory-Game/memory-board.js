@@ -62,6 +62,7 @@ class MemoryBoard extends window.HTMLElement {
     this._clearedBricks = 0
     this._turn1 = null
     this._turn2 = null
+    this._attemptCounter = 0
   }
 
   /**
@@ -256,7 +257,7 @@ class MemoryBoard extends window.HTMLElement {
     } else if (this._turn1 !== eventTarget) {
       this._turn2 = eventTarget
       this._changePicture(this._turn2.firstChild, this._getImage(this._turn2))
-
+      this._attemptCounter += 1
       const match = this._checkMatch(this._getImage(this._turn1), this._getImage(this._turn2))
       // MATCH
       if (match) {
@@ -288,7 +289,7 @@ class MemoryBoard extends window.HTMLElement {
    */
   checkWin () {
     if (this._clearedBricks === this._columns * this._rows / 2) {
-      this.dispatchEvent(new window.CustomEvent('gameover'))
+      this.dispatchEvent(new window.CustomEvent('gameover', { detail: this._attemptCounter }))
     }
   }
 

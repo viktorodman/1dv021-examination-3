@@ -229,21 +229,15 @@ class MemoryGame extends window.HTMLElement {
    * @memberof MemoryGame
    */
   _onWin (event) {
-    const h1 = document.createElement('h1')
-    const span = document.createElement('span')
-    const div = document.createElement('div')
-
     const time = this._timer._stopTimer()
     this._memoryBoard.remove()
     this._timer.remove()
 
-    span.textContent = `Your time ${time}`
-    h1.textContent = 'YOU WIN'
-    h1.setAttribute('class', 'winText')
-
-    div.appendChild(span)
-    div.appendChild(h1)
-    this._memoryWrapper.insertBefore(div, this._gameButtons)
+    const gameOver = document.createElement('game-over')
+    gameOver.setAttribute('gametime', `Time: ${time}.s`)
+    gameOver.setAttribute('gameinfo', `Attempts: ${event.detail}`)
+    gameOver.setAttribute('wintext', 'You Win!')
+    this._memoryWrapper.insertBefore(gameOver, this._gameButtons)
   }
 }
 

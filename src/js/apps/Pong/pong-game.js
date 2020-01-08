@@ -19,8 +19,8 @@ template.innerHTML = `
     </style>
     <div class="wrapper">
        <!--  <pong-table></pong-table> -->
-        <pong-home></pong-home>
-       <!--  <game-over></game-over>
+        <!-- <pong-home></pong-home> -->
+       <game-over></game-over>
         <memory-game-buttons fcolor="yellow" bgcolor="green" ><memory-game-buttons> -->
     </div>
 `
