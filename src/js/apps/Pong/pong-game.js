@@ -6,6 +6,14 @@
  * @version 1.0.0
 */
 
+import './pong-table.js'
+import './pong-paddle.js'
+import './pong-ball.js'
+import './pong-score.js'
+import './pong-game-over.js'
+import './pong-home.js'
+import './pong-game-buttons.js'
+
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
@@ -102,8 +110,8 @@ class PongGame extends window.HTMLElement {
   * @memberof PongGame
   */
   _onWin (event) {
-    const gameOver = document.createElement('game-over')
-    const gameButtons = document.createElement('memory-game-buttons')
+    const gameOver = document.createElement('pong-game-over')
+    const gameButtons = document.createElement('pong-game-buttons')
     gameOver.setAttribute('winnername', `${event.detail} Wins!`)
     gameOver.setAttribute('wintext', 'Play Again')
     gameButtons.setAttribute('fcolor', '#FFFFFF')

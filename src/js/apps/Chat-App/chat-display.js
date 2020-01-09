@@ -24,7 +24,7 @@ template.innerHTML = `
         transition-duration: 0.4s;
     }
     .nameChange:hover {
-        background-color: #7FDBFF; /* Green */
+        background-color: #7FDBFF;
         color: #111111;
     }
     </style>

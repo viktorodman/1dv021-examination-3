@@ -5,6 +5,7 @@
  * @author Viktor Ödman
  * @version 1.0.0
 */
+import './window-title-bar.js'
 
 const template = document.createElement('template')
 template.innerHTML = `

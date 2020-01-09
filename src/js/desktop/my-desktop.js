@@ -5,6 +5,12 @@
  * @author Viktor Ödman
  * @version 1.0.0
 */
+import './info-bar.js'
+import '../taskbar/task-bar.js'
+import '../window/app-window.js'
+import '../apps/Memory-Game/memory-game.js'
+import '../apps/Chat-App/chat-app.js'
+import '../apps/Pong/pong-game.js'
 
 const template = document.createElement('template')
 template.innerHTML = `

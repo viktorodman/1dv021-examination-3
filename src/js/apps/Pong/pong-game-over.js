@@ -1,7 +1,7 @@
 /**
- * Module for GameOver
+ * Module for PongGameOver
  *
- * @module src/js/Pong/game-over
+ * @module src/js/Pong/pong-game-over
  * @author Viktor Ödman
  * @version 1.0.0
 */
@@ -41,15 +41,15 @@ template.innerHTML = `
     </div>
 `
 /**
- * Represents a game over display
+ * Represents a Pong game over display
  *
- * @class GameOver
+ * @class PongGameOver
  * @extends {window.HTMLElement}
  */
-class GameOver extends window.HTMLElement {
+class PongGameOver extends window.HTMLElement {
   /**
-   * Creates an instance of GameOver.
-   * @memberof GameOver
+   * Creates an instance of PongGameOver.
+   * @memberof PongGameOver
    */
   constructor () {
     super()
@@ -72,7 +72,7 @@ class GameOver extends window.HTMLElement {
    *
    * @readonly
    * @static
-   * @memberof MemoryBoard
+   * @memberof PongGameOver
    */
   static get observedAttributes () {
     return ['gametime', 'gameinfo', 'winnername', 'wintext']
@@ -84,7 +84,7 @@ class GameOver extends window.HTMLElement {
    * @param {String} name the attribute name
    * @param {String} oldValue old attribute value
    * @param {String} newValue new attribute value
-   * @memberof MemoryBoard
+   * @memberof PongGameOver
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'gametime') {
@@ -119,4 +119,4 @@ class GameOver extends window.HTMLElement {
   }
 }
 
-window.customElements.define('game-over', GameOver)
+window.customElements.define('pong-game-over', PongGameOver)

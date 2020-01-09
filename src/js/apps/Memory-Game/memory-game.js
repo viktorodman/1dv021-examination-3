@@ -5,6 +5,14 @@
  * @author Viktor Ödman
  * @version 1.0.0
 */
+import './game-timer.js'
+import './memory-alternatives.js'
+import './memory-board.js'
+import './memory-brick.js'
+import './memory-game-buttons.js'
+import './memory-start-screen.js'
+import './memory-game-over.js'
+
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
@@ -233,7 +241,7 @@ class MemoryGame extends window.HTMLElement {
     this._memoryBoard.remove()
     this._timer.remove()
 
-    const gameOver = document.createElement('game-over')
+    const gameOver = document.createElement('memory-game-over')
     gameOver.setAttribute('gametime', `Time: ${time}.s`)
     gameOver.setAttribute('gameinfo', `Attempts: ${event.detail}`)
     gameOver.setAttribute('wintext', 'You Win!')
