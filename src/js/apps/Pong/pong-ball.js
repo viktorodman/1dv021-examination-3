@@ -24,6 +24,7 @@ class PongBall extends window.HTMLElement {
     this._color = 'black'
     this._radius = 10
     this._verticalDirection = 'down'
+    this._horizontalDirection = 'right'
     this._dy = 1
     this._dx = 1
     this._position = {
@@ -31,8 +32,8 @@ class PongBall extends window.HTMLElement {
       y: null
     }
     this._direction = {
-      dirY: 2,
-      dirX: 2
+      dirY: 0,
+      dirX: -2
     }
   }
 
@@ -139,6 +140,7 @@ class PongBall extends window.HTMLElement {
    */
   _moveLeft () {
     this._direction.dirX = -2
+    this._horizontalDirection = 'left'
   }
 
   /**
@@ -148,6 +150,7 @@ class PongBall extends window.HTMLElement {
    */
   _moveRight () {
     this._direction.dirX = 2
+    this._horizontalDirection = 'right'
   }
 
   /**
@@ -190,6 +193,10 @@ class PongBall extends window.HTMLElement {
    */
   getVerticalDirection () {
     return this._verticalDirection
+  }
+
+  getHorizontalDirection () {
+    return this._horizontalDirection
   }
 }
 

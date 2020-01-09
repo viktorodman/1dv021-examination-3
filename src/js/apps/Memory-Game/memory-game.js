@@ -5,10 +5,10 @@
  * @author Viktor Ödman
  * @version 1.0.0
 */
+
 import './game-timer.js'
 import './memory-alternatives.js'
 import './memory-board.js'
-import './memory-brick.js'
 import './memory-game-buttons.js'
 import './memory-start-screen.js'
 import './memory-game-over.js'

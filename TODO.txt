@@ -1,9 +1,5 @@
 
 
-
-
- 
-
 TODO
 *****Klart
     WINDOW
@@ -15,9 +11,17 @@ TODO
     Create Clickable Icons
     Fix Bug when i close the last window
 ****Inte Klart
-    TOP Bar with time and day
-    Fix Selected window bug when releasing a window under another
-    Move Imports
+   Fix Paddle edges for collision
+   Give the chat message a different color if the user entered the message
+   Add window top collision for the windows. So that the windows collides with the info-bar
+   Add focus for the memory game
+   Add emoji
+   Change Desktop
+   Change Ball speed variable
+   Change Pong Function Names from private to public
+
+
+
 
     
 

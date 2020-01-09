@@ -6,6 +6,9 @@
  * @version 1.0.0
 */
 
+import './chat-message.js'
+import './message-area.js'
+import './channel-picker.js'
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
@@ -34,6 +37,7 @@ template.innerHTML = `
     <button class="nameChange">Change Name</button>
     <message-area></message-area>
 `
+
 /**
  * Represent a Chat Display
  *

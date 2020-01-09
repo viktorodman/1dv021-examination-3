@@ -20,7 +20,6 @@ class PongPaddle extends window.HTMLElement {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
-    this._dpi = window.devicePixelRatio
     this._height = 30
     this._width = 10
     this._paddleSpacing = 20
@@ -213,11 +212,11 @@ class PongPaddle extends window.HTMLElement {
   }
 
   getTopEdge () {
-    return this._getY() + (this._getHeight() / 3)
+    return this._getY() + (this._getHeight() / 4)
   }
 
   getBottomEdge () {
-    return this.getBottomPos() - (this._getHeight() / 3)
+    return this.getBottomPos() - (this._getHeight() / 4)
   }
 }
 

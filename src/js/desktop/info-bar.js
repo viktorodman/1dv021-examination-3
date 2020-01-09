@@ -82,6 +82,10 @@ class InfoBar extends window.HTMLElement {
     this._getDate()
   }
 
+  disconnectedCallback () {
+    clearInterval(this._intervalID)
+  }
+
   _getDate () {
     this._intervalID = window.setInterval(() => {
       this._updateTime()

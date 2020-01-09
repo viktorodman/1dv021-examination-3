@@ -7,9 +7,6 @@
 */
 
 import './pong-table.js'
-import './pong-paddle.js'
-import './pong-ball.js'
-import './pong-score.js'
 import './pong-game-over.js'
 import './pong-home.js'
 import './pong-game-buttons.js'
@@ -26,7 +23,6 @@ template.innerHTML = `
         }
     </style>
     <div class="wrapper">
-       
         <pong-home></pong-home>
     </div>
 `

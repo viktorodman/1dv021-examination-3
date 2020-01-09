@@ -5,6 +5,11 @@
  * @author Viktor Ödman
  * @version 1.0.0
 */
+
+import './pong-paddle.js'
+import './pong-ball.js'
+import './pong-score.js'
+
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
@@ -310,7 +315,11 @@ class PongTable extends window.HTMLElement {
     this._updateScore()
 
     this._checkWallCollision(ballX, ballY, ballRadius)
-    this._checkPaddleCollision(ballX, ballY, ballRadius, this._paddleOne.getX(), this._paddleTwo.getX())
+    /* this._checkPaddleCollision(ballX, ballY, ballRadius, this._paddleOne.getX(), this._paddleTwo.getX()) */
+    /* this._checkPaddleCollision(ballX, ballY, ballRadius, this._paddleOne)
+    this._checkPaddleCollision(ballX, ballY, ballRadius, this._paddleTwo) */
+    this._rightPaddleCollision(ballX, ballY, ballRadius, this._paddleOne)
+    this._leftPaddleCollision(ballX, ballY, ballRadius, this._paddleTwo)
 
     this._checkWin(this._p1Score.getScore(), this._paddleOne.getName())
     this._checkWin(this._p2Score.getScore(), this._paddleTwo.getName())
@@ -379,46 +388,53 @@ class PongTable extends window.HTMLElement {
   }
 
   /**
-   * Checks collision between the paddles and the ball
+   * Checks collision between the left paddle and the ball
    *
    * @param {Number} ballX The balls vertical position
    * @param {Number} ballY The balls Horizontal position
    * @param {Number} ballRadius The balls radius
-   * @param {Number} rightPaddleX The right paddles vertical position
-   * @param {Number} leftPaddleX The left paddles vertical position
+   * @param {HTMLElement} paddle The left paddle
    * @memberof PongTable
    */
-  _checkPaddleCollision (ballX, ballY, ballRadius, rightPaddleX, leftPaddleX) {
-    if (ballX - ballRadius === leftPaddleX) {
-      if (ballY + ballRadius > this._paddleTwo._getY() && ballY < this._paddleTwo.getTopEdge()) {
-        this._ball._moveRight()
-        if (this._ball.getVerticalDirection() === 'down') {
-          this._ball._moveUp()
-        }
-      } else if (ballY - ballRadius < this._paddleTwo.getBottomPos() && ballY > this._paddleTwo.getBottomEdge()) {
-        this._ball._moveRight()
-        if (this._ball.getVerticalDirection() === 'up') {
-          this._ball._moveDown()
-        }
-      } else if (ballY + ballRadius > this._paddleTwo._getY() && ballY - ballRadius < this._paddleTwo.getBottomPos()) {
-        this._ball._moveRight()
-      }
+  _leftPaddleCollision (ballX, ballY, ballRadius, paddle) {
+    const ballXPos = ballX - ballRadius + this._ball.getDirection().dirX
+    if (ballXPos === paddle.getX() && ballY + ballRadius > paddle._getY() && ballY - ballRadius < paddle.getBottomPos()) {
+      this._ball._moveRight()
+      this._paddleEdgeCollision(ballY, ballRadius, paddle)
     }
+  }
 
-    if (ballX - ballRadius === rightPaddleX) {
-      if (ballY + ballRadius > this._paddleOne._getY() && ballY < this._paddleOne.getTopEdge()) {
-        this._ball._moveLeft()
-        if (this._ball.getVerticalDirection() === 'down') {
-          this._ball._moveUp()
-        }
-      } else if (ballY - ballRadius < this._paddleOne.getBottomPos() && ballY > this._paddleOne.getBottomEdge()) {
-        this._ball._moveLeft()
-        if (this._ball.getVerticalDirection() === 'up') {
-          this._ball._moveDown()
-        }
-      } else if (ballY + ballRadius > this._paddleOne._getY() && ballY - ballRadius < this._paddleOne.getBottomPos()) {
-        this._ball._moveLeft()
-      }
+  /**
+   * Checks collision between the right paddle and the ball
+   *
+   * @param {Number} ballX The balls vertical position
+   * @param {Number} ballY The balls Horizontal position
+   * @param {Number} ballRadius The balls radius
+   * @param {HTMLElement} paddle The right paddle
+   * @memberof PongTable
+   */
+  _rightPaddleCollision (ballX, ballY, ballRadius, paddle) {
+    const ballXPos = ballX - ballRadius + this._ball.getDirection().dirX
+    if (ballXPos === paddle.getX() && ballY + ballRadius > paddle._getY() && ballY - ballRadius < paddle.getBottomPos()) {
+      this._ball._moveLeft()
+      this._paddleEdgeCollision(ballY, ballRadius, paddle)
+    }
+  }
+
+  /**
+   * Checks if the ball collides with the bottom or top edge
+   * of the passed paddle
+   *
+   * @param {Number} ballY The balls Horizontal position
+   * @param {Number} ballRadius The balls radius
+   * @param {HTMLElement} paddle A pong-paddle
+   * @memberof PongTable
+   */
+  _paddleEdgeCollision (ballY, ballRadius, paddle) {
+    if (ballY + ballRadius > paddle._getY() && ballY + ballRadius < paddle.getTopEdge()) {
+      this._ball._moveUp()
+    } else if (ballY - ballRadius < paddle.getBottomPos() && ballY - ballRadius > paddle.getBottomEdge()) {
+      this._ball._moveDown()
     }
   }
 
@@ -449,11 +465,6 @@ class PongTable extends window.HTMLElement {
    * @memberof PongTable
    */
   _moveBot () {
-    /* if (this._ball.getVerticalDirection() === 'down') {
-      this._paddleTwo._moveDown()
-    } */
-    /* if (this._ball.getPosition().y < this._paddleTwo._getY()) */
-
     if (this._ball.getPosition().y < this._paddleTwo._getY()) {
       if (this._paddleTwo._getY() > 0) {
         this._paddleTwo._moveUp()
@@ -464,9 +475,6 @@ class PongTable extends window.HTMLElement {
         this._paddleTwo._moveDown()
       }
     }
-    /*  if (this._ball.getVerticalDirection() === 'up') {
-
-    } */
   }
 
   /**
