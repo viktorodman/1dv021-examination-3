@@ -412,7 +412,7 @@ class PongTable extends window.HTMLElement {
           this._ball._moveUp()
         }
       } else if (ballY - ballRadius < this._paddleOne.getBottomPos() && ballY > this._paddleOne.getBottomEdge()) {
-        this._ball._moveRight()
+        this._ball._moveLeft()
         if (this._ball.getVerticalDirection() === 'up') {
           this._ball._moveDown()
         }

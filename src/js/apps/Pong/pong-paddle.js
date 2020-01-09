@@ -69,10 +69,6 @@ class PongPaddle extends window.HTMLElement {
     }
   }
 
-  connectedCallback () {
-
-  }
-
   /**
    * Renders the Pong Paddle
    *

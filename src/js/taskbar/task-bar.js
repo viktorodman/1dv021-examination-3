@@ -21,7 +21,7 @@ template.innerHTML = `
         position: fixed;
        }
        .taskBar {
-        background-color: rgba(53, 53, 53, 0.3);
+        background-color: rgba(0, 32, 63, 0.4);
         width: 350px;
         height: 100%;
         margin: auto;

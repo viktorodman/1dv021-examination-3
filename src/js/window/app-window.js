@@ -231,7 +231,10 @@ class AppWindow extends window.HTMLElement {
       }
       const x = this._mousePosition.x + this._offset[0]
       const y = this._mousePosition.y + this._offset[1]
-      if (x > 0 && x < (this._window.offsetParent.offsetWidth - parseInt(this._window.style.width, 10))) {
+      /* const x = this._mousePosition.x + this._offset[0]
+      const y = this._mousePosition.y + this._offset[1] */
+      console.log(parseInt(this._window.style.left, 10))
+      if (parseInt(this._window.style.left, 10) + x >= 0 /* && x < (this._window.offsetParent.offsetWidth - parseInt(this._window.style.width, 10)) */) {
         this._window.style.left = (x) + 'px'
       }
       if (y > 0 && y < (this._window.offsetParent.offsetHeight - parseInt(this._window.style.height, 10))) {

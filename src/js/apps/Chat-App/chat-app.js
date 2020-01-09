@@ -5,6 +5,13 @@
  * @author Viktor Ödman
  * @version 1.0.0
 */
+
+import './chat-message.js'
+import './message-area.js'
+import './enter-name.js'
+import './chat-display.js'
+import './channel-picker.js'
+
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
