@@ -188,7 +188,6 @@ class AppWindow extends window.HTMLElement {
    */
   _onTitleEvent (event) {
     this.dispatchEvent(new window.CustomEvent('windowexit', { detail: this._windowID }))
-    console.log('då')
   }
 
   /**
@@ -232,16 +231,25 @@ class AppWindow extends window.HTMLElement {
       }
       const x = this._mousePosition.x + this._offset[0]
       const y = this._mousePosition.y + this._offset[1]
-      /* const x = this._mousePosition.x + this._offset[0]
-      const y = this._mousePosition.y + this._offset[1] */
-      console.log(parseInt(this._window.style.left, 10))
-      if (parseInt(this._window.style.left, 10) + x >= 0 /* && x < (this._window.offsetParent.offsetWidth - parseInt(this._window.style.width, 10)) */) {
+
+      const desktopWidth = this._window.offsetParent.offsetWidth
+      const desktopHeight = this._window.offsetParent.offsetHeight
+
+      const windowLeft = parseInt(this._window.style.left, 10)
+      const windowRight = parseInt(this._window.style.width, 10)
+      const windowHeight = parseInt(this._window.style.height, 10)
+
+      if (windowLeft + x >= 0 && x < (desktopWidth - windowRight)) {
         this._window.style.left = (x) + 'px'
       }
-      if (y > 0 && y < (this._window.offsetParent.offsetHeight - parseInt(this._window.style.height, 10))) {
+      if (y > 0 && y < (desktopHeight - windowHeight)) {
         this._window.style.top = (y) + 'px'
       }
     }
+  }
+
+  getBottomPosition () {
+    return parseInt(this._window.style.height, 10) - parseInt(this._window.style.top, 10)
   }
 }
 

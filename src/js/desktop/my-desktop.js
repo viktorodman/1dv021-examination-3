@@ -62,6 +62,17 @@ class MyDesktop extends window.HTMLElement {
     this._mainWindow = this.shadowRoot.querySelector('.main')
     this._windowID = 0
     this._storage = window.localStorage
+    this._startAppPos = {
+      x: 40,
+      y: 40
+    }
+    this._appPosition = {
+      x: this._startAppPos.x,
+      y: this._startAppPos.y
+    }
+
+    this.appPosIncrement = 30
+    this._latestWindow = undefined
   }
 
   /**
@@ -110,14 +121,34 @@ class MyDesktop extends window.HTMLElement {
     appWindow.setAttribute('elementname', event.detail.appElement)
     appWindow.setAttribute('windowid', this._windowID)
     appWindow.setAttribute('zindex', this._windowID)
-    appWindow.setAttribute('startx', '20px')
-    appWindow.setAttribute('starty', '20px')
+    appWindow.setAttribute('startx', `${this._appPosition.x}px`)
+    appWindow.setAttribute('starty', `${this._appPosition.y}px`)
     if (event.detail.appName === 'pong') {
       appWindow.setAttribute('appwidth', '600')
       appWindow.setAttribute('appheight', '400')
     }
-    this._mainWindow.appendChild(appWindow)
+    if (this._latestWindow) {
+      if (this._checkWindowPosition(this._latestWindow)) {
+        this._appPosition.x += this._startAppPos.x * 2
+        this._appPosition.y = this._startAppPos.y
+      }
+    }
+    this._appPosition.x += this.appPosIncrement
+    this._appPosition.y += this.appPosIncrement
+    this._latestWindow = this._mainWindow.appendChild(appWindow)
     appWindow.addEventListener('windowexit', this._boundOnAppExit)
+  }
+
+  _checkWindowPosition (appWindow) {
+    let maxHeight = false
+    console.log('desktop height ' + this._mainWindow.offsetHeight)
+    console.log('window height ' + (appWindow.getBottomPosition() - this.appPosIncrement))
+
+    if (appWindow.getBottomPosition() + this.appPosIncrement < 0) {
+      console.log('yeah')
+      maxHeight = true
+    }
+    return maxHeight
   }
 
   /**

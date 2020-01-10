@@ -17,6 +17,16 @@ template.innerHTML = `
         overflow: auto;
         padding: 12px;
     }
+    .messageContainer::-webkit-scrollbar {
+      width: 5px;
+      height: 8px;
+      background-color: #7FDBFF;
+    }
+    .messageContainer::-webkit-scrollbar-thumb {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+      background-color: #111111;
+      border-radius: 10px;
+    }
     .nameChange {
         margin-left: 15px;
         color: #7FDBFF;
