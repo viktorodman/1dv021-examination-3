@@ -112,6 +112,7 @@ class MemoryBoard extends window.HTMLElement {
 
     this._brickContainer.addEventListener('click', this._boundOnBrickClick)
     this._brickContainer.addEventListener('keydown', this._boundOnKeyDown)
+    this._brickContainer.querySelectorAll('a')[0].focus()
   }
 
   /**

@@ -22,6 +22,7 @@ template.innerHTML = `
             margin-top: 10px;
             margin-bottom: 10px;
             padding-bottom: 10px;
+            overflow-wrap: break-word;
         }
         .username {
             text-transform: uppercase;

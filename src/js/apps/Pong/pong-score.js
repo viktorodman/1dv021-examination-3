@@ -24,17 +24,13 @@ class PongScore extends window.HTMLElement {
     }
   }
 
-  connectedCallback () {
-
-  }
-
   /**
    * Renders the Pong Score
    *
    * @param {CanvasRenderingContext2D} canvas A html canvas
    * @memberof PongScore
    */
-  _render (canvas) {
+  render (canvas) {
     canvas.font = this._font
 
     canvas.textAlign = 'center'

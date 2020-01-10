@@ -71,7 +71,7 @@ class MyDesktop extends window.HTMLElement {
       y: this._startAppPos.y
     }
 
-    this.appPosIncrement = 30
+    this.appPosIncrement = 50
     this._latestWindow = undefined
   }
 
@@ -84,6 +84,7 @@ class MyDesktop extends window.HTMLElement {
     if (this._storage.getItem('chat') === null) {
       this._storage.setItem('chat', '{}')
     }
+
     this._boundOnAppClick = this._onAppClick.bind(this)
     this._boundOnAppExit = this._onAppExit.bind(this)
     this._boundOnWindowClick = this._onWindowClick.bind(this)
@@ -115,6 +116,14 @@ class MyDesktop extends window.HTMLElement {
    */
   _onAppClick (event) {
     this._windowID++
+    event.preventDefault()
+    if (this._latestWindow) {
+      if (this._checkWindowPosition(this._latestWindow)) {
+        this._appPosition.x -= this._startAppPos.x * 4
+        this._appPosition.y = this._startAppPos.y
+      }
+    }
+
     const appWindow = document.createElement('app-window')
     appWindow.setAttribute('imgurl', event.detail.appImg)
     appWindow.setAttribute('appname', event.detail.appName)
@@ -127,12 +136,7 @@ class MyDesktop extends window.HTMLElement {
       appWindow.setAttribute('appwidth', '600')
       appWindow.setAttribute('appheight', '400')
     }
-    if (this._latestWindow) {
-      if (this._checkWindowPosition(this._latestWindow)) {
-        this._appPosition.x += this._startAppPos.x * 2
-        this._appPosition.y = this._startAppPos.y
-      }
-    }
+
     this._appPosition.x += this.appPosIncrement
     this._appPosition.y += this.appPosIncrement
     this._latestWindow = this._mainWindow.appendChild(appWindow)
@@ -141,11 +145,8 @@ class MyDesktop extends window.HTMLElement {
 
   _checkWindowPosition (appWindow) {
     let maxHeight = false
-    console.log('desktop height ' + this._mainWindow.offsetHeight)
-    console.log('window height ' + (appWindow.getBottomPosition() - this.appPosIncrement))
 
     if (appWindow.getBottomPosition() + this.appPosIncrement < 0) {
-      console.log('yeah')
       maxHeight = true
     }
     return maxHeight

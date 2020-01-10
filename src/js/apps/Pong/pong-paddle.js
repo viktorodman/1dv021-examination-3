@@ -74,7 +74,7 @@ class PongPaddle extends window.HTMLElement {
    * @param {CanvasRenderingContext2D} canvas A html canvas
    * @memberof PongBall
    */
-  _render (canvas) {
+  render (canvas) {
     canvas.beginPath()
     canvas.rect(this._position.x, this._position.y, this._width, this._height)
     canvas.fillStyle = this._color
@@ -90,7 +90,7 @@ class PongPaddle extends window.HTMLElement {
    * @param {Boolean} rightPaddle True if the paddle should be on the right side
    * @memberof PongPaddle
    */
-  _setStartPosition (canvasWidth, canvasHeight, rightPaddle) {
+  setStartPosition (canvasWidth, canvasHeight, rightPaddle) {
     if (rightPaddle) {
       this._setRight(canvasWidth)
       this._tableSide = 'right'
@@ -106,7 +106,7 @@ class PongPaddle extends window.HTMLElement {
    *
    * @memberof PongPaddle
    */
-  _moveUp () {
+  moveUp () {
     this._position.y -= this._dy
   }
 
@@ -115,7 +115,7 @@ class PongPaddle extends window.HTMLElement {
    *
    * @memberof PongPaddle
    */
-  _moveDown () {
+  moveDown () {
     this._position.y += this._dy
   }
 
@@ -153,7 +153,7 @@ class PongPaddle extends window.HTMLElement {
   * @returns {Number} The paddles height
   * @memberof PongPaddle
   */
-  _getHeight () {
+  getHeight () {
     return this._height
   }
 
@@ -163,7 +163,7 @@ class PongPaddle extends window.HTMLElement {
   * @returns {Number} The paddles width
   * @memberof PongPaddle
   */
-  _getWidth () {
+  getWidth () {
     return this._width
   }
 
@@ -173,7 +173,7 @@ class PongPaddle extends window.HTMLElement {
    * @returns {Number} A vertical position
    * @memberof PongPaddle
    */
-  _getY () {
+  getY () {
     return this._position.y
   }
 
@@ -184,9 +184,9 @@ class PongPaddle extends window.HTMLElement {
   * @memberof PongPaddle
   */
   getX () {
-    let xPosition = this._position.x + this._getWidth()
+    let xPosition = this._position.x + this.getWidth()
     if (this._tableSide === 'right') {
-      xPosition = this._position.x - (this._getWidth() / 2)
+      xPosition = this._position.x - (this.getWidth() / 2)
     }
     return xPosition
   }
@@ -198,7 +198,7 @@ class PongPaddle extends window.HTMLElement {
    * @memberof PongPaddle
    */
   getBottomPos () {
-    return (this._getY() + this._getHeight())
+    return (this.getY() + this.getHeight())
   }
 
   /**
@@ -211,12 +211,24 @@ class PongPaddle extends window.HTMLElement {
     return this._name
   }
 
+  /**
+   * Gets the top edge of the paddle
+   *
+   * @returns {number} The top edge of the paddle
+   * @memberof PongPaddle
+   */
   getTopEdge () {
-    return this._getY() + (this._getHeight() / 4)
+    return this.getY() + (this.getHeight() / 4)
   }
 
+  /**
+   * Gets the bottom edge of the paddle
+   *
+   * @returns {number} The bottom edge of the paddle
+   * @memberof PongPaddle
+   */
   getBottomEdge () {
-    return this.getBottomPos() - (this._getHeight() / 4)
+    return this.getBottomPos() - (this.getHeight() / 4)
   }
 }
 

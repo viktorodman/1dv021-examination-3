@@ -95,6 +95,7 @@ class TaskBar extends window.HTMLElement {
     if (event.target.nodeName !== 'TASK-BUTTON') {
       return
     }
+    event.preventDefault()
     const appName = event.target.getAttribute('appname')
     const appImg = event.target.getAttribute('imgurl')
     const appElement = event.target.getAttribute('elementname')

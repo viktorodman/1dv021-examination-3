@@ -64,17 +64,13 @@ class PongBall extends window.HTMLElement {
     }
   }
 
-  connectedCallback () {
-
-  }
-
   /**
    * Renders the pong ball
    *
    * @param {CanvasRenderingContext2D} canvas A html canvas
    * @memberof PongBall
    */
-  _render (canvas) {
+  render (canvas) {
     canvas.beginPath()
     canvas.arc(this._position.x, this._position.y, this._radius, 0, Math.PI * 2)
     canvas.fillStyle = this._color
@@ -107,7 +103,7 @@ class PongBall extends window.HTMLElement {
    *
    * @memberof PongBall
    */
-  _move () {
+  move () {
     this._position.x += this._direction.dirX
     this._position.y += this._direction.dirY
   }
@@ -117,7 +113,7 @@ class PongBall extends window.HTMLElement {
    *
    * @memberof PongBall
    */
-  _moveUp () {
+  moveUp () {
     this._direction.dirY = -this._speed
     this._verticalDirection = 'up'
   }
@@ -127,7 +123,7 @@ class PongBall extends window.HTMLElement {
    *
    * @memberof PongBall
    */
-  _moveDown () {
+  moveDown () {
     this._direction.dirY = this._speed
     this._verticalDirection = 'down'
   }
@@ -137,7 +133,7 @@ class PongBall extends window.HTMLElement {
    *
    * @memberof PongBall
    */
-  _moveLeft () {
+  moveLeft () {
     this._direction.dirX = -this._speed
     this._horizontalDirection = 'left'
   }
@@ -147,7 +143,7 @@ class PongBall extends window.HTMLElement {
    *
    * @memberof PongBall
    */
-  _moveRight () {
+  moveRight () {
     this._direction.dirX = this._speed
     this._horizontalDirection = 'right'
   }
@@ -158,7 +154,7 @@ class PongBall extends window.HTMLElement {
    * @returns {Number} The balls radius
    * @memberof PongBall
    */
-  _getBallRadius () {
+  getBallRadius () {
     return this._radius
   }
 
@@ -169,17 +165,18 @@ class PongBall extends window.HTMLElement {
    * @param {Number} canvasHeight The canvas height
    * @memberof PongBall
    */
-  _setStartPosition (canvasWidth, canvasHeight) {
+  setStartPosition (canvasWidth, canvasHeight) {
     this._position.x = (canvasWidth / 2)
     this._position.y = (canvasHeight / 2)
   }
 
   /**
   * Stops the ball from moving
+  * Used in testing
   *
   * @memberof PongBall
   */
-  _stopBall () {
+  stopBall () {
     this._direction.dirY = 0
     this._direction.dirX = 0
   }
@@ -194,16 +191,32 @@ class PongBall extends window.HTMLElement {
     return this._verticalDirection
   }
 
+  /**
+   * Gets the current horizontal direction in form of a string
+   *
+   * @returns {String} The current vertical direction
+   * @memberof PongBall
+   */
   getHorizontalDirection () {
     return this._horizontalDirection
   }
 
+  /**
+   * Adds 0.1 to the balls speed
+   *
+   * @memberof PongBall
+   */
   accelerate () {
     this._speed += 0.1
     console.log('accelerating')
     console.log(this._speed)
   }
 
+  /**
+   * Sets the balls speed to its initial value
+   *
+   * @memberof PongBall
+   */
   setStartSpeed () {
     this._speed = 2
   }

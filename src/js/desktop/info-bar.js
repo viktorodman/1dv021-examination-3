@@ -67,6 +67,7 @@ class InfoBar extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
+    this._wrapper = this.shadowRoot.querySelector('.wrapper')
     this._dateText = this.shadowRoot.querySelector('.dateText')
     this._timeText = this.shadowRoot.querySelector('.timeText')
     this._dateInfo = undefined
@@ -105,6 +106,10 @@ class InfoBar extends window.HTMLElement {
     const day = this._date.toLocaleDateString()
 
     this._dateText.textContent = day
+  }
+
+  getHeight () {
+    return this._wrapper.offsetHeight
   }
 }
 

@@ -234,6 +234,7 @@ class AppWindow extends window.HTMLElement {
 
       const desktopWidth = this._window.offsetParent.offsetWidth
       const desktopHeight = this._window.offsetParent.offsetHeight
+      const desktopTop = this.parentElement.firstElementChild.getHeight()
 
       const windowLeft = parseInt(this._window.style.left, 10)
       const windowRight = parseInt(this._window.style.width, 10)
@@ -242,7 +243,7 @@ class AppWindow extends window.HTMLElement {
       if (windowLeft + x >= 0 && x < (desktopWidth - windowRight)) {
         this._window.style.left = (x) + 'px'
       }
-      if (y > 0 && y < (desktopHeight - windowHeight)) {
+      if (y > desktopTop && y < (desktopHeight - windowHeight)) {
         this._window.style.top = (y) + 'px'
       }
     }
