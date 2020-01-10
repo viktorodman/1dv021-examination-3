@@ -63,6 +63,7 @@ class PongTable extends window.HTMLElement {
     this._paddleTwoDown = false
     this._pause = true
 
+    this._collisionCounter = 0
     this._winScore = 5
   }
 
@@ -310,14 +311,11 @@ class PongTable extends window.HTMLElement {
     const ballY = this._ball.getPosition().y
     const ballRadius = this._ball._getBallRadius()
 
-    this._updatePaddles()
+    this._updatePaddles(ballY, ballRadius)
     this._updateBall()
     this._updateScore()
 
     this._checkWallCollision(ballX, ballY, ballRadius)
-    /* this._checkPaddleCollision(ballX, ballY, ballRadius, this._paddleOne.getX(), this._paddleTwo.getX()) */
-    /* this._checkPaddleCollision(ballX, ballY, ballRadius, this._paddleOne)
-    this._checkPaddleCollision(ballX, ballY, ballRadius, this._paddleTwo) */
     this._rightPaddleCollision(ballX, ballY, ballRadius, this._paddleOne)
     this._leftPaddleCollision(ballX, ballY, ballRadius, this._paddleTwo)
 
@@ -330,12 +328,12 @@ class PongTable extends window.HTMLElement {
    *
    * @memberof PongTable
    */
-  _updatePaddles () {
+  _updatePaddles (ballY, ballRadius) {
     this._movePaddle(this._paddleOne, this._paddleOneUp, this._paddleOneDown)
     if (this._twoPlayers) {
       this._movePaddle(this._paddleTwo, this._paddleTwoUp, this._paddleTwoDown)
     } else {
-      this._moveBot()
+      this._moveBot(ballY, ballRadius, this._paddleTwo)
     }
 
     this._paddleOne._render(this.ctx)
@@ -379,10 +377,14 @@ class PongTable extends window.HTMLElement {
     }
     if (ballX < 0) {
       this._p1Score.addScore()
+      this._collisionCounter = 0
+      this._ball.setStartSpeed()
       this._pause = true
     }
     if (ballX > this._table.width) {
       this._p2Score.addScore()
+      this._collisionCounter = 0
+      this._ball.setStartSpeed()
       this._pause = true
     }
   }
@@ -398,8 +400,13 @@ class PongTable extends window.HTMLElement {
    */
   _leftPaddleCollision (ballX, ballY, ballRadius, paddle) {
     const ballXPos = ballX - ballRadius + this._ball.getDirection().dirX
-    if (ballXPos === paddle.getX() && ballY + ballRadius > paddle._getY() && ballY - ballRadius < paddle.getBottomPos()) {
+    if (ballXPos <= paddle.getX() && ballXPos >= paddle.getX() - (paddle._getWidth() / 4) && ballY + ballRadius > paddle._getY() && ballY - ballRadius < paddle.getBottomPos()) {
       this._ball._moveRight()
+      this._collisionCounter += 1
+      if (this._collisionCounter % 2 === 0) {
+        this._ball.accelerate()
+      }
+      console.log(this._collisionCounter)
       this._paddleEdgeCollision(ballY, ballRadius, paddle)
     }
   }
@@ -414,10 +421,16 @@ class PongTable extends window.HTMLElement {
    * @memberof PongTable
    */
   _rightPaddleCollision (ballX, ballY, ballRadius, paddle) {
-    const ballXPos = ballX - ballRadius + this._ball.getDirection().dirX
-    if (ballXPos === paddle.getX() && ballY + ballRadius > paddle._getY() && ballY - ballRadius < paddle.getBottomPos()) {
+    const directionSpeed = this._ball.getDirection().dirX
+    const ballXPos = ballX - ballRadius + directionSpeed
+    if (ballXPos >= paddle.getX() && ballXPos <= paddle.getX() + (paddle._getWidth() / 4) && ballY + ballRadius > paddle._getY() && ballY - ballRadius < paddle.getBottomPos()) {
       this._ball._moveLeft()
       this._paddleEdgeCollision(ballY, ballRadius, paddle)
+      this._collisionCounter += 1
+      if (this._collisionCounter % 2 === 0) {
+        this._ball.accelerate()
+      }
+      console.log(this._collisionCounter)
     }
   }
 
@@ -464,10 +477,21 @@ class PongTable extends window.HTMLElement {
    *
    * @memberof PongTable
    */
-  _moveBot () {
-    if (this._ball.getPosition().y < this._paddleTwo._getY()) {
-      if (this._paddleTwo._getY() > 0) {
-        this._paddleTwo._moveUp()
+  _moveBot (ballY, ballRadius, paddle) {
+    if (ballY < paddle._getY()) {
+      if (paddle._getY() > 0) {
+        paddle._moveUp()
+      }
+    }
+    if (ballY + ballRadius > paddle._getY() && ballY - ballRadius < paddle.getBottomPos()) {
+      if (this._ball.getVerticalDirection() === 'down') {
+        if (paddle.getBottomPos() < this._table.height) {
+          this._paddleTwo._moveDown()
+        } else {
+          if (this._paddleTwo.getBottomPos() < this._table.height) {
+            this._paddleTwo._moveDown()
+          }
+        }
       }
     }
     if (this._ball.getPosition().y > this._paddleTwo.getBottomPos()) {

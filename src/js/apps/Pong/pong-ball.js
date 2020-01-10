@@ -25,15 +25,14 @@ class PongBall extends window.HTMLElement {
     this._radius = 10
     this._verticalDirection = 'down'
     this._horizontalDirection = 'right'
-    this._dy = 1
-    this._dx = 1
+    this._speed = 2
     this._position = {
       x: null,
       y: null
     }
     this._direction = {
-      dirY: 0,
-      dirX: -2
+      dirY: this._speed,
+      dirX: -this._speed
     }
   }
 
@@ -119,7 +118,7 @@ class PongBall extends window.HTMLElement {
    * @memberof PongBall
    */
   _moveUp () {
-    this._direction.dirY = -2
+    this._direction.dirY = -this._speed
     this._verticalDirection = 'up'
   }
 
@@ -129,7 +128,7 @@ class PongBall extends window.HTMLElement {
    * @memberof PongBall
    */
   _moveDown () {
-    this._direction.dirY = 2
+    this._direction.dirY = this._speed
     this._verticalDirection = 'down'
   }
 
@@ -139,7 +138,7 @@ class PongBall extends window.HTMLElement {
    * @memberof PongBall
    */
   _moveLeft () {
-    this._direction.dirX = -2
+    this._direction.dirX = -this._speed
     this._horizontalDirection = 'left'
   }
 
@@ -149,7 +148,7 @@ class PongBall extends window.HTMLElement {
    * @memberof PongBall
    */
   _moveRight () {
-    this._direction.dirX = 2
+    this._direction.dirX = this._speed
     this._horizontalDirection = 'right'
   }
 
@@ -197,6 +196,16 @@ class PongBall extends window.HTMLElement {
 
   getHorizontalDirection () {
     return this._horizontalDirection
+  }
+
+  accelerate () {
+    this._speed += 0.1
+    console.log('accelerating')
+    console.log(this._speed)
+  }
+
+  setStartSpeed () {
+    this._speed = 2
   }
 }
 

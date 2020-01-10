@@ -11,7 +11,6 @@ TODO
     Create Clickable Icons
     Fix Bug when i close the last window
 ****Inte Klart
-   Fix Paddle edges for collision
    Give the chat message a different color if the user entered the message
    Add window top collision for the windows. So that the windows collides with the info-bar
    Add focus for the memory game
