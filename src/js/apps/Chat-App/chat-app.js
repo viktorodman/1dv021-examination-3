@@ -37,34 +37,9 @@ class ChatApp extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._storage = window.localStorage
     this._chatContainer = this.shadowRoot.querySelector('.chatContainer')
-    this._socketURL = 'ws://vhost3.lnu.se:20080/socket/'
+
     this._newName = undefined
     this._chat = undefined
-  }
-
-  /**
-   * Get what attributes attributeChangedCallback should look for
-   *
-   * @readonly
-   * @static
-   * @memberof ChatApp
-   */
-  static get observedAttributes () {
-    return ['socketurl']
-  }
-
-  /**
-   * Is called when some of the observed attributes is called
-   *
-   * @param {String} name the attribute name
-   * @param {String} oldValue old attribute value
-   * @param {String} newValue new attribute value
-   * @memberof ChatApp
-   */
-  attributeChangedCallback (name, oldValue, newValue) {
-    if (name === 'socketurl') {
-      this._socketURL = newValue
-    }
   }
 
   /**
@@ -131,7 +106,6 @@ class ChatApp extends window.HTMLElement {
    */
   _displayChat () {
     const chat = document.createElement('chat-display')
-    chat.setAttribute('socketurl', this._socketURL)
     this._chat = this._chatContainer.appendChild(chat)
 
     this._chat.addEventListener('changeName', this._boundOnNameChange)

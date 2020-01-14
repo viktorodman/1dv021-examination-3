@@ -64,45 +64,16 @@ class ChatDisplay extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._socket = undefined
-    this._socketURL = undefined
     this._userMessage = this.shadowRoot.querySelector('message-area')
     this._channelPicker = this.shadowRoot.querySelector('channel-picker')
     this._messageContainer = this.shadowRoot.querySelector('.messageContainer')
     this._changeName = this.shadowRoot.querySelector('.nameChange')
     this._channelName = ''
-    this._data = {
-      type: 'message',
-      data: '',
-      username: 'testname',
-      channel: '',
-      key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
-    }
     this._userName = JSON.parse(window.localStorage.getItem('chat')).username
-  }
 
-  /**
-   * Get what attributes attributeChangedCallback should look for
-   *
-   * @readonly
-   * @static
-   * @memberof ChatDisplay
-   */
-  static get observedAttributes () {
-    return ['socketurl']
-  }
-
-  /**
-   * Is called when some of the observed attributes is called
-   *
-   * @param {String} name the attribute name
-   * @param {String} oldValue old attribute value
-   * @param {String} newValue new attribute value
-   * @memberof ChatDisplay
-   */
-  attributeChangedCallback (name, oldValue, newValue) {
-    if (name === 'socketurl') {
-      this._socketURL = newValue
-    }
+    this._socketURL = 'ws://vhost3.lnu.se:20080/socket/'
+    this._socketKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+    this._type = 'message'
   }
 
   /**
@@ -187,11 +158,11 @@ class ChatDisplay extends window.HTMLElement {
    */
   _onSendMessage (event) {
     const sendmessage = {
-      type: 'message',
+      type: this._type,
       data: event.detail,
       username: this._userName,
       channel: this._channelName,
-      key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+      key: this._socketKey
     }
     this._socket.send(JSON.stringify(sendmessage))
   }

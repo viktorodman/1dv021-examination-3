@@ -38,6 +38,7 @@ template.innerHTML = `
 <div class="main">
   <info-bar></info-bar>
   <task-bar></task-bar>
+  
 </div>
 `
 /**

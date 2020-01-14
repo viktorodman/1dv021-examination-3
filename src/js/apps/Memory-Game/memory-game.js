@@ -68,6 +68,8 @@ class MemoryGame extends window.HTMLElement {
     this._memoryBoard = undefined
     this._timer = undefined
     this._gameButtons = undefined
+
+    this._localStorage = window.localStorage
   }
 
   /**
@@ -82,6 +84,9 @@ class MemoryGame extends window.HTMLElement {
     this._boundOnHome = this._onHome.bind(this)
     this._boundOnWin = this._onWin.bind(this)
 
+    if (!this._localStorage.getItem('memorygame')) {
+      this._createBestTime()
+    }
     this._alternatives.addEventListener('altchange', this._boundOnAltChange)
     this._startScreen.addEventListener('startgame', this._boundOnStartGame)
   }
@@ -105,6 +110,10 @@ class MemoryGame extends window.HTMLElement {
       this._gameButtons.removeEventListener('restartclick', this._boundOnRestart)
       this._gameButtons.removeEventListener('homeclick', this._boundOnHome)
     }
+  }
+
+  _createBestTime () {
+    this._localStorage.setItem('memorygame', '{"x4": "", "x8": "", "x16": ""}')
   }
 
   /**
@@ -240,12 +249,29 @@ class MemoryGame extends window.HTMLElement {
     const time = this._timer._stopTimer()
     this._memoryBoard.remove()
     this._timer.remove()
+    const size = Number(this._boardSize[0] * Number(this._boardSize[1]))
+
+    const bestTime = this._checkBestTime(size, time)
 
     const gameOver = document.createElement('memory-game-over')
     gameOver.setAttribute('gametime', `Time: ${time}.s`)
     gameOver.setAttribute('gameinfo', `Attempts: ${event.detail}`)
-    gameOver.setAttribute('wintext', 'You Win!')
+    gameOver.setAttribute('wintext', `Best Time ${this._boardSize[0]}x${this._boardSize[1]}: ${bestTime}`)
     this._memoryWrapper.insertBefore(gameOver, this._gameButtons)
+  }
+
+  _checkBestTime (size, time) {
+    const bestTime = JSON.parse(this._localStorage.getItem('memorygame'))
+
+    const currentBest = bestTime[`x${size}`]
+    if (!currentBest) {
+      bestTime[`x${size}`] = time
+    } else if (Number(time) < Number(currentBest)) {
+      bestTime[`x${size}`] = time
+    }
+    this._localStorage.setItem('memorygame', JSON.stringify(bestTime))
+
+    return bestTime[`x${size}`]
   }
 }
 

@@ -19,7 +19,7 @@ template.innerHTML = `
         }
         .winText {
             text-align: center;
-            font-size: 60px;
+            font-size: 40px;
         }
         .row{
             height: 20%;
