@@ -112,6 +112,11 @@ class MemoryGame extends window.HTMLElement {
     }
   }
 
+  /**
+   * Create an object in local storage
+   *
+   * @memberof MemoryGame
+   */
   _createBestTime () {
     this._localStorage.setItem('memorygame', '{"x4": "", "x8": "", "x16": ""}')
   }
@@ -260,6 +265,16 @@ class MemoryGame extends window.HTMLElement {
     this._memoryWrapper.insertBefore(gameOver, this._gameButtons)
   }
 
+  /**
+   * Check if there is a best time for the passed board size
+   * Adds a the passed time if there is no current time or
+   * if passed time is less the than the current
+   *
+   * @param {Number} size Amout of bricks on the board
+   * @param {String} time The players time
+   * @returns
+   * @memberof MemoryGame
+   */
   _checkBestTime (size, time) {
     const bestTime = JSON.parse(this._localStorage.getItem('memorygame'))
 

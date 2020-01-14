@@ -1,6 +1,9 @@
 /**
  * Module for ChatDisplay
  *
+ * Change The Socket URl AND the socket key
+ * if you want to change the server
+ *
  * @module src/js/apps/Chat-App/chat-display
  * @author Viktor Ödman
  * @version 1.0.0
