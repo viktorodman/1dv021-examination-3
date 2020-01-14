@@ -16,6 +16,10 @@ template.innerHTML = `
                 /* background-color: #3d3d3d; */
                 border-bottom: 4px solid #001f3f;
             }
+            input:hover + label {
+              color: #003973;
+              border-bottom: 4px solid #003973;
+            }
             label {
                 width: 30px;
                 color: #001f3f;

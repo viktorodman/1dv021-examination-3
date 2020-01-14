@@ -124,7 +124,7 @@ class PongTable extends window.HTMLElement {
   }
 
   /**
-   *
+   * Renders a non moving pong-table
    *
    * @memberof PongTable
    */

@@ -11,8 +11,6 @@ const template = document.createElement('template')
 template.innerHTML = `
     <style>
         .window {
-            /* width: 400px;
-            height: 450px; */
             background-color: none;
             position: absolute;
             border-radius: 5px;
@@ -23,7 +21,6 @@ template.innerHTML = `
         .app {
             width: 100%;
             height: 92%;
-            /* background-color: black; */
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
             overflow: hidden;
@@ -72,7 +69,7 @@ class AppWindow extends window.HTMLElement {
    *
    * @readonly
    * @static
-   * @memberof WindowTitleBar
+   * @memberof AppWindow
    */
   static get observedAttributes () {
     return [
@@ -94,7 +91,7 @@ class AppWindow extends window.HTMLElement {
    * @param {String} name the attribute name
    * @param {String} oldValue old attribute value
    * @param {String} newValue new attribute value
-   * @memberof TaskButton
+   * @memberof AppWindow
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'imgurl') {
@@ -161,6 +158,11 @@ class AppWindow extends window.HTMLElement {
     this._titleBar.removeEventListener('titlebutton', this._boundOnTitleEvent)
   }
 
+  /**
+   * Updates the windows img, title, width and height
+   *
+   * @memberof AppWindow
+   */
   _updateRendering () {
     if (this._appImg) {
       this._titleBar.setAttribute('imgurl', this._appImg)
@@ -176,6 +178,11 @@ class AppWindow extends window.HTMLElement {
     this._window.style.height = `${this._appheight}px`
   }
 
+  /**
+   * Updates the windows zindex
+   *
+   * @memberof AppWindow
+   */
   _updateZIndex () {
     this._window.style.zIndex = this._zindex
   }
@@ -249,8 +256,24 @@ class AppWindow extends window.HTMLElement {
     }
   }
 
+  /**
+   * Gets the location of the bottom position of the appwindow
+   *
+   * @returns
+   * @memberof AppWindow
+   */
   getBottomPosition () {
-    return parseInt(this._window.style.height, 10) - parseInt(this._window.style.top, 10)
+    return parseInt(this._window.style.height, 10) + parseInt(this._window.style.top, 10)
+  }
+
+  /**
+   * Gets the location of the right position of the appwindow
+   *
+   * @returns
+   * @memberof AppWindow
+   */
+  getRightPosition () {
+    return parseInt(this._window.style.width, 10) + parseInt(this._window.style.left, 10)
   }
 }
 

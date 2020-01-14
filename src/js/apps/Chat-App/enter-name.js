@@ -122,7 +122,7 @@ class EnterName extends window.HTMLElement {
   * Runs when a key is pressed
   * Calls this._addName() if the the pressed key is 'enter'
   *
-  * @param {*} event
+  * @param {Event} event A "keydown" Event
   * @memberof EnterName
   */
   _onEnter (event) {

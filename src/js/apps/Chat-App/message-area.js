@@ -62,7 +62,7 @@ class MessageArea extends window.HTMLElement {
    *
    * @readonly
    * @static
-   * @memberof ChatDisplay
+   * @memberof MessageArea
    */
   static get observedAttributes () {
     return ['chatchannel']
@@ -74,7 +74,7 @@ class MessageArea extends window.HTMLElement {
    * @param {String} name the attribute name
    * @param {String} oldValue old attribute value
    * @param {String} newValue new attribute value
-   * @memberof ChatDisplay
+   * @memberof MessageArea
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'chatchannel') {

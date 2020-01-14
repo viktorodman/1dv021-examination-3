@@ -23,13 +23,13 @@ template.innerHTML = `
         position: fixed;
        }
        .taskBar {
-        background-color: rgba(0, 32, 63, 0.4);
+        background-color: rgba(0, 32, 63, 0.1);
         width: 350px;
         height: 100%;
         margin: auto;
-        border-left: 1px solid rgba(53, 53, 53, 0.9);
-        border-right: 1px solid rgba(53, 53, 53, 0.9);
-        border-top: 1px solid rgba(53, 53, 53, 0.9);
+        border-left: 1px solid rgba(0, 32, 63, 0.9);
+        border-right: 1px solid rgba(0, 32, 63, 0.9);
+        border-top: 1px solid rgba(0, 32, 63, 0.9);
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
         text-align: center;
@@ -39,9 +39,9 @@ template.innerHTML = `
     
     <div class="wrapper">
         <div class="taskBar">
-            <task-button imgurl="image/app-icons/memory.png" appname="memorygame" elementname="memory-game"></task-button>
-            <task-button imgurl="image/app-icons/chat.png" appname="chatapp" elementname="chat-app"></task-button>
-            <task-button imgurl="image/app-icons/pong.png" appname="pong" elementname="pong-game"></task-button>
+            <task-button imgurl="image/app-icons/memory.png" appname="memorygame"></task-button>
+            <task-button imgurl="image/app-icons/chat.png" appname="chatapp"></task-button>
+            <task-button imgurl="image/app-icons/pong.png" appname="pong"></task-button>
         </div>
     </div>
 `
@@ -98,8 +98,7 @@ class TaskBar extends window.HTMLElement {
     event.preventDefault()
     const appName = event.target.getAttribute('appname')
     const appImg = event.target.getAttribute('imgurl')
-    const appElement = event.target.getAttribute('elementname')
-    this.dispatchEvent(new window.CustomEvent('appclicked', { detail: { appName, appImg, appElement } }))
+    this.dispatchEvent(new window.CustomEvent('appclicked', { detail: { appName, appImg } }))
   }
 }
 

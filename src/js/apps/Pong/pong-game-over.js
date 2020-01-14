@@ -101,10 +101,20 @@ class PongGameOver extends window.HTMLElement {
     }
   }
 
+  /**
+   * Runs when the element is appended to a document-connected element
+   *
+   * @memberof PongGameOver
+   */
   connectedCallback () {
     this._updateRendering()
   }
 
+  /**
+   * Updates The text content for the different spantags
+   *
+   * @memberof PongGameOver
+   */
   _updateRendering () {
     this._addTextContent(this._timeSelector, this._time)
     this._addTextContent(this._gameInfoSelector, this._gameInfo)
@@ -112,6 +122,13 @@ class PongGameOver extends window.HTMLElement {
     this._addTextContent(this._winTextSelector, this._winText)
   }
 
+  /**
+   * Adds text to the passed element
+   *
+   * @param {HTMLElement} element A html element
+   * @param {String} text A string
+   * @memberof PongGameOver
+   */
   _addTextContent (element, text) {
     if (text) {
       element.textContent = text

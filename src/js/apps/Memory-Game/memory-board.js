@@ -162,7 +162,6 @@ class MemoryBoard extends window.HTMLElement {
    * @memberof MemoryBoard
    */
   _onBrickClick (event) {
-    console.log(event.target)
     this.flipBrick(event.target.parentElement)
     event.preventDefault()
   }

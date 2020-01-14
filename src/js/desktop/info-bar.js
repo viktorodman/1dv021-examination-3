@@ -15,6 +15,8 @@ template.innerHTML = `
             font-family: "Courier New", Courier, monospace;
             font-size: 20px;
             color: #7FDBFF;
+            text-shadow: #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px,
+             #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px;
         }
         .wrapper {
             width: 100%;
@@ -23,6 +25,7 @@ template.innerHTML = `
             border-bottom: 1px solid rgba(0, 32, 63, 0.9);
             position: fixed;
         }
+        
         .content {
             width: fit-content;
             float: right;
@@ -30,7 +33,6 @@ template.innerHTML = `
             text-align:center;
             padding-right: 20px;
             padding-top: 3px;
-            /* margin-top: 5px; */
         }
         .time {
             display: inline-block;
@@ -48,6 +50,16 @@ template.innerHTML = `
         .dateText {
 
         }
+        button {
+          font-size: 17px;
+          background-color: rgba(0, 32, 63, 0.1);
+          border: none;
+          padding: 0;
+          outline: none;
+          color: #7FDBFF;
+          text-shadow: #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px,
+             #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px;
+        }
 
     </style>
     <div class="wrapper">
@@ -61,7 +73,17 @@ template.innerHTML = `
         </div>
     </div>
 `
+/**
+ * Represents a Info Bar
+ *
+ * @class InfoBar
+ * @extends {window.HTMLElement}
+ */
 class InfoBar extends window.HTMLElement {
+  /**
+   * Creates an instance of InfoBar.
+   * @memberof InfoBar
+   */
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
@@ -75,18 +97,31 @@ class InfoBar extends window.HTMLElement {
     this._date = new Date()
   }
 
+  /**
+   * Runs when the element is appended to a document-connected element
+   *
+   * @memberof InfoBar
+   */
   connectedCallback () {
-    /* this._dateText.textContent = this._dateInfo.toDateString()
-    this._timeText.textContent = this._dateInfo.toTimeString() */
     this._updateTime()
     this._updateDate()
     this._getDate()
   }
 
+  /**
+   * Runs when the element is removed from a document-connected element
+   *
+   * @memberof InfoBar
+   */
   disconnectedCallback () {
     clearInterval(this._intervalID)
   }
 
+  /**
+   * Calls _updateTime and updateDate every second
+   *
+   * @memberof InfoBar
+   */
   _getDate () {
     this._intervalID = window.setInterval(() => {
       this._updateTime()
@@ -94,6 +129,11 @@ class InfoBar extends window.HTMLElement {
     }, 1000)
   }
 
+  /**
+   * Updates the infobars clock
+   *
+   * @memberof InfoBar
+   */
   _updateTime () {
     this._date = new Date()
 
@@ -102,12 +142,23 @@ class InfoBar extends window.HTMLElement {
     this._timeText.textContent = time
   }
 
+  /**
+   * Updates the infobars date
+   *
+   * @memberof InfoBar
+   */
   _updateDate () {
     const day = this._date.toLocaleDateString()
 
     this._dateText.textContent = day
   }
 
+  /**
+   * Gets the height of the infobar
+   *
+   * @returns {Number} The infobars height
+   * @memberof InfoBar
+   */
   getHeight () {
     return this._wrapper.offsetHeight
   }

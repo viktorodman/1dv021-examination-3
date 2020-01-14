@@ -72,7 +72,7 @@ class PongPaddle extends window.HTMLElement {
    * Renders the Pong Paddle
    *
    * @param {CanvasRenderingContext2D} canvas A html canvas
-   * @memberof PongBall
+   * @memberof PongPaddle
    */
   render (canvas) {
     canvas.beginPath()

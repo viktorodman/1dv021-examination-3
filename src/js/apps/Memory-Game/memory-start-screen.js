@@ -19,6 +19,11 @@ template.innerHTML = `
             outline: none;
             margin-top: 30px;
             margin-bottom: 30px;
+            border: 4px solid #001f3f;
+        }
+        button:hover {
+            border: 4px solid #003973;
+            color: #003973;
         }
     </style>
     <div class="wrapper">

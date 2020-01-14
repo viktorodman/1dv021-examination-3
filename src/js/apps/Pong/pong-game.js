@@ -27,7 +27,7 @@ template.innerHTML = `
     </div>
 `
 /**
- * Represents a Pong Game
+ * Represents a PongGame
  *
  * @class PongGame
  * @extends {window.HTMLElement}

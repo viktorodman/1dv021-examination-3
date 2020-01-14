@@ -15,7 +15,6 @@ template.innerHTML = `
         .wrapper {
             width: 80%;
             height: 100%;
-            /* background-color: green; */
             margin: auto;
             text-align: center;
         }
@@ -43,7 +42,6 @@ template.innerHTML = `
             }
             input:checked + label {
                 background-color: #3d3d3d;
-                /* border-bottom: 4px solid #001f3f; */
             }
             label {
                 width: 30px;

@@ -72,7 +72,7 @@ class MemoryGameOver extends window.HTMLElement {
    *
    * @readonly
    * @static
-   * @memberof MemoryBoard
+   * @memberof MemoryGameOver
    */
   static get observedAttributes () {
     return ['gametime', 'gameinfo', 'winnername', 'wintext']
@@ -84,7 +84,7 @@ class MemoryGameOver extends window.HTMLElement {
    * @param {String} name the attribute name
    * @param {String} oldValue old attribute value
    * @param {String} newValue new attribute value
-   * @memberof MemoryBoard
+   * @memberof MemoryGameOver
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'gametime') {

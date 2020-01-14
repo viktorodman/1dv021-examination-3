@@ -16,8 +16,6 @@ const template = document.createElement('template')
 template.innerHTML = `
 <style>
   .main {
-    /* height: 100%;
-    width: 100%; */
     max-height: 100%;
     max-width: 100%;
     min-height: 100%;
@@ -90,7 +88,7 @@ class MyDesktop extends window.HTMLElement {
     this._boundOnWindowClick = this._onWindowClick.bind(this)
 
     this._taskBar.addEventListener('appclicked', this._boundOnAppClick)
-    this._mainWindow.addEventListener('click', this._boundOnWindowClick)
+    this._mainWindow.addEventListener('mousedown', this._boundOnWindowClick)
   }
 
   /**
@@ -118,24 +116,42 @@ class MyDesktop extends window.HTMLElement {
     this._windowID++
     event.preventDefault()
     if (this._latestWindow) {
-      if (this._checkWindowPosition(this._latestWindow)) {
-        this._appPosition.x -= this._startAppPos.x * 4
-        this._appPosition.y = this._startAppPos.y
-      }
+      this._checkWindowPosition(this._latestWindow)
     }
 
+    switch (event.detail.appName) {
+      case 'memorygame' : this._openAppWindow('memory-game', 400, 450, event.detail)
+        break
+      case 'chatapp' : this._openAppWindow('chat-app', 400, 450, event.detail)
+        break
+      case 'pong' : this._openAppWindow('pong-game', 600, 400, event.detail)
+        break
+    }
+  }
+
+  /**
+   * Opens a new app-window with the passed height, width and app
+   *
+   * @param {String} elementName A custom element name
+   * @param {Number} width The app-windows width
+   * @param {*} height The app-windows height
+   * @param {Object} appDetails The name of the app and a img URL
+   * @memberof MyDesktop
+   */
+  _openAppWindow (elementName, width, height, appDetails) {
     const appWindow = document.createElement('app-window')
-    appWindow.setAttribute('imgurl', event.detail.appImg)
-    appWindow.setAttribute('appname', event.detail.appName)
-    appWindow.setAttribute('elementname', event.detail.appElement)
+
+    appWindow.setAttribute('appwidth', width)
+    appWindow.setAttribute('appheight', height)
+
+    appWindow.setAttribute('elementname', elementName)
+    appWindow.setAttribute('imgurl', appDetails.appImg)
+    appWindow.setAttribute('appname', appDetails.appName)
     appWindow.setAttribute('windowid', this._windowID)
+
     appWindow.setAttribute('zindex', this._windowID)
     appWindow.setAttribute('startx', `${this._appPosition.x}px`)
     appWindow.setAttribute('starty', `${this._appPosition.y}px`)
-    if (event.detail.appName === 'pong') {
-      appWindow.setAttribute('appwidth', '600')
-      appWindow.setAttribute('appheight', '400')
-    }
 
     this._appPosition.x += this.appPosIncrement
     this._appPosition.y += this.appPosIncrement
@@ -143,13 +159,22 @@ class MyDesktop extends window.HTMLElement {
     appWindow.addEventListener('windowexit', this._boundOnAppExit)
   }
 
+  /**
+   * Checks the next app-windows position is going to appear outside of
+   * the desktop.
+   *
+   * @param {HTMLElement} appWindow The most recently opened window
+   * @memberof MyDesktop
+   */
   _checkWindowPosition (appWindow) {
-    let maxHeight = false
-
-    if (appWindow.getBottomPosition() + this.appPosIncrement < 0) {
-      maxHeight = true
+    if (appWindow.getBottomPosition() + this.appPosIncrement > this._mainWindow.offsetHeight) {
+      this._appPosition.x += this._startAppPos.x * 4
+      this._appPosition.y = this._startAppPos.y
     }
-    return maxHeight
+    if (appWindow.getRightPosition() + this.appPosIncrement > this._mainWindow.offsetWidth) {
+      this._appPosition.x = this._startAppPos.x
+      this._appPosition.y = this._startAppPos.y
+    }
   }
 
   /**
@@ -181,8 +206,9 @@ class MyDesktop extends window.HTMLElement {
       return
     }
     const clickedZIndex = event.target.getAttribute('zindex')
-    const windows = this._mainWindow.querySelectorAll('app-window')
-    const sortedWindows = this.sortByZIndex(windows)
+    const windowCollection = this._mainWindow.querySelectorAll('app-window')
+    const sortedWindows = this.sortByZIndex(windowCollection)
+
     if (event.target !== sortedWindows[0]) {
       const filteredWindows = sortedWindows.filter(windows => windows.getAttribute('zindex') > clickedZIndex)
       event.target.setAttribute('zindex', sortedWindows[0].getAttribute('zindex'))
@@ -203,7 +229,6 @@ class MyDesktop extends window.HTMLElement {
    */
   sortByZIndex (elements) {
     const elementsArray = Array.from(elements)
-
     return elementsArray.sort((a, b) => Number(b.getAttribute('zindex')) - Number(a.getAttribute('zindex')))
   }
 }

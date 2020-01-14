@@ -1,7 +1,7 @@
 /**
- * Module for PongPaddle
+ * Module for PongBall
  *
- * @module src/js/Pong/pong-paddle
+ * @module src/js/Pong/pong-ball
  * @author Viktor Ödman
  * @version 1.0.0
 */
@@ -208,8 +208,6 @@ class PongBall extends window.HTMLElement {
    */
   accelerate () {
     this._speed += 0.1
-    console.log('accelerating')
-    console.log(this._speed)
   }
 
   /**

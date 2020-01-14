@@ -63,6 +63,13 @@ class ChannelPicker extends window.HTMLElement {
     this._channelName.addEventListener('keydown', this._boundOnEnter)
   }
 
+  /**
+   * Handles keydown events. Dispatches a "channelchange"
+   * event when user clicks enter.
+   *
+   * @param {CustomEvent} event A "channelchange" event
+   * @memberof ChannelPicker
+   */
   _onEnter (event) {
     if (event.code !== 'Enter') {
       return

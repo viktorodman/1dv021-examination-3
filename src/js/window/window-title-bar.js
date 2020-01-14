@@ -97,7 +97,7 @@ class WindowTitleBar extends window.HTMLElement {
    * @param {String} name the attribute name
    * @param {String} oldValue old attribute value
    * @param {String} newValue new attribute value
-   * @memberof TaskButton
+   * @memberof WindowTitleBar
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'imgurl') {
@@ -120,13 +120,18 @@ class WindowTitleBar extends window.HTMLElement {
     this._buttons.addEventListener('click', this._boundOnButtonClick)
   }
 
+  /**
+   * Dispatches an event with what button on the
+   * title bar that was clicked
+   *
+   * @param {Event} event A "click" event
+   * @memberof WindowTitleBar
+   */
   _onButtonClick (event) {
     if (event.target.nodeName !== 'BUTTON') {
       return
     }
-    console.log('hej')
     this._clickedButton = event.target.name
-    console.log(this._clickedButton)
     this.dispatchEvent(new window.CustomEvent('titlebutton', { detail: this._clickedButton }))
   }
 }

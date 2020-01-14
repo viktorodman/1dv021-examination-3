@@ -146,7 +146,6 @@ class ChatDisplay extends window.HTMLElement {
    */
   _onMessage (event) {
     const data = JSON.parse(event.data)
-    console.log(data)
     if (data.username === 'The Server' && data.type === 'heartbeat') {
       return
     }
@@ -160,6 +159,14 @@ class ChatDisplay extends window.HTMLElement {
     }
   }
 
+  /**
+   * Appends a new "chat-message" element to the messageContainer
+   *
+   * @param {String} name The username to the message
+   * @param {String} message The message
+   * @param {Boolean} serverMessage True if it was a server message
+   * @memberof ChatDisplay
+   */
   _addMessage (name, message, serverMessage) {
     const newMessage = document.createElement('chat-message')
     if (serverMessage) {
@@ -179,7 +186,6 @@ class ChatDisplay extends window.HTMLElement {
    * @memberof ChatDisplay
    */
   _onSendMessage (event) {
-    console.log(event.detail)
     const sendmessage = {
       type: 'message',
       data: event.detail,
